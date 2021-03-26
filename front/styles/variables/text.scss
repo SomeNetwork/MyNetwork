@@ -1,0 +1,22 @@
+.text-header {
+  font-size: 32px;
+  font-weight: 600;
+}
+.text-title {
+  font-size: 24px;
+  font-weight: 500;
+}
+.text-subtitle {
+  font-size: 16px;
+  font-weight: 300;
+}
+.text-body {
+  font-size: 18px;
+}
+.text-body2 {
+  font-size: 14px;
+  font-weight: 300;
+}
+@mixin text-button {
+  font-size: 18px;
+}

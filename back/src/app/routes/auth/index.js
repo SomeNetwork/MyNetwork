@@ -28,4 +28,9 @@ router.post('/signin', (req, res) => {
         })
 })
 
+router.get('/me', (req, res) => {
+    if (req.user) {
+        res.send({ success: true, me: req.user })
+    } else res.status(401).send({ success: false, error: 'Need to SignIn!' })
+})
 module.exports = router

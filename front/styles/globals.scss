@@ -1,0 +1,40 @@
+@import "./variables/main.scss";
+
+html,
+body {
+  padding: 100px;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+button {
+  padding: $size-step;
+  border: 2px solid;
+  border-radius: 2 * $size-step;
+  border-color: $primary-color;
+  background-color: white;
+  color: black;
+  transition: $time-step;
+  outline: none;
+  cursor: pointer;
+  @include text-button;
+  &:hover {
+    background-color: $primary-color;
+    color: $primary-text-color;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  &.fluid {
+    width: 100%;
+  }
+}

@@ -73,8 +73,13 @@ class AuthManager {
         if (signature === tokenParts[2])
             return JSON.parse(
                 Buffer.from(tokenParts[1], 'base64').toString('utf8')
-            )
+            )._id
         return null
+    }
+    getUserByJWT(token) {
+        const id = this.getUserIdByJWT(token)
+        if (id) return Users.findById(id)
+        else return null
     }
 }
 

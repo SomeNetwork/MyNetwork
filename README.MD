@@ -13,8 +13,9 @@
 
 <!-- - TS -->
 - NextJS
+- PropTypes
 - Redux
-- SASS
+- SCSS
   
 ### Backend
 
