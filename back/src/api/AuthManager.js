@@ -65,6 +65,7 @@ class AuthManager {
     }
 
     getUserIdByJWT(token) {
+        if (!token) return null
         let tokenParts = token.split('.')
         let signature = crypto
             .createHmac('SHA256', process.env.JWT_KEY || '1a2b-3c4d-5e6f-7g8h')

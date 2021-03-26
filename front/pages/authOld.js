@@ -1,9 +1,6 @@
 // import { Form } from "components/atoms";
-import PropTypes from "prop-types";
 import { Form, Card } from "components/atoms";
 import React from "react";
-import { connect } from "react-redux";
-import { localSaveUser } from "store/auth/actions";
 
 const config = {
   title: "Sign In",
@@ -48,38 +45,28 @@ const config = {
   },
 };
 
-const Auth = (props) => {
-  const { username, token } = props;
-  const handleSubmit = (data) => {
-    const { localSaveUser } = props;
-    localSaveUser(data);
-  };
+const Auth = () => {
   return (
     <>
-      <p>username: {username}</p>
-      <p>token: {token}</p>
       <Card>
-        {/* <Form {...config} onSubmit={(res) => console.log("res :>> ", res)} /> */}
-        <Form {...config} onSubmit={(res) => handleSubmit(res)} />
+        <Form
+          {...config}
+          //   fields={config.fields}
+          //   submitButton={config.button}
+
+          onSubmit={(res) => console.log("res :>> ", res)}
+        />
       </Card>
     </>
   );
 };
 
-Auth.propTypes = {
-  token: PropTypes.string,
-  username: PropTypes.string,
+const mapStateToProps = () => {
+  return {};
 };
 
-const mapStateToProps = (state) => {
-  return {
-    username: state.auth.username,
-    token: state.auth.token,
-  };
-};
-
-const mapDispatchToProps = {
-  localSaveUser,
+const mapDispatchToProps = () => {
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

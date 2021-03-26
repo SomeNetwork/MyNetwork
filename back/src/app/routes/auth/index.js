@@ -9,8 +9,8 @@ router.post('/signup', (req, res) => {
         .then(() => {
             res.send({ success: true })
         })
-        .catch((a) => {
-            res.status(500).send({ success: false })
+        .catch((error) => {
+            res.status(500).send({ success: false, error: error.message })
         })
 })
 router.post('/signin', (req, res) => {
@@ -18,10 +18,15 @@ router.post('/signin', (req, res) => {
     console.log('signin :>> ', body)
     AuthManager.signIn({ username: body.username, password: body.password })
         .then((token) => {
-            res.send({
-                success: true,
-                token,
+            res.cookie('token', token, {
+                maxAge: 12 * 60 * 60 * 1000,
+                httpOnly: true,
             })
+            res.redirect('/auth/me')
+            // res.send({
+            //     success: true,
+            //     me: req.user,
+            // })
         })
         .catch((err) => {
             res.send({ success: false, error: err })
@@ -30,6 +35,8 @@ router.post('/signin', (req, res) => {
 
 router.get('/me', (req, res) => {
     if (req.user) {
+        req.user.password = null
+        // delete req.user.password
         res.send({ success: true, me: req.user })
     } else res.status(401).send({ success: false, error: 'Need to SignIn!' })
 })
