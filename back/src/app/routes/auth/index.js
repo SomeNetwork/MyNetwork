@@ -28,8 +28,8 @@ router.post('/signin', (req, res) => {
             //     me: req.user,
             // })
         })
-        .catch((err) => {
-            res.send({ success: false, error: err })
+        .catch((error) => {
+            res.send({ success: false, error: error.message })
         })
 })
 

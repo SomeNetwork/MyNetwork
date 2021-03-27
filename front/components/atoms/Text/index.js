@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Text = (props) => {
   const { children, variant } = props;
-  return <p className={styles[`text-${variant || "body"}`]}>{children}</p>;
+  return <p className={styles[`text-${variant}`]}>{children}</p>;
 };
 
 Text.propTypes = {
@@ -16,6 +16,10 @@ Text.propTypes = {
     "body2",
     "button",
   ]),
+};
+
+Text.defaultProps = {
+  variant: "body",
 };
 
 export default Text;

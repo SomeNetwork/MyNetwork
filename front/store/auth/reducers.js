@@ -2,7 +2,7 @@ const { AUTH_SAVE_USER, AUTH_SAVE_TOKEN } = require("./actions");
 
 const defaultState = {
   username: "",
-  token: "",
+  _id: "",
 };
 
 export const authReduser = (state = defaultState, action) => {
@@ -10,7 +10,7 @@ export const authReduser = (state = defaultState, action) => {
   switch (type) {
     // case:
     case AUTH_SAVE_USER:
-      debugger;
+      console.log("payload :>> ", payload);
       return {
         ...state,
         _id: payload._id,

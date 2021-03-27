@@ -24,7 +24,9 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response) {
     const data = response.data;
-    console.log("success :>> ", data.success);
+    if (data.success === false) {
+      return Promise.reject(new Error(data.error));
+    }
     return data;
   },
   function (error) {

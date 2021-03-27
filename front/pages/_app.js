@@ -2,23 +2,31 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import createMiddlewar from "redux-saga";
 import logger from "redux-logger";
+import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "store/reducers";
-import { watchSignIn } from "store/sagas";
+import rootSagas from "store/sagas";
+
+import ToastManager from "components/managers/ToastManager";
 
 import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
   const sagaMiddleware = createMiddlewar();
+  // const store = createStore(
+  //   rootReducer,
+  //   applyMiddleware(logger, sagaMiddleware)
+  // );
   const store = createStore(
     rootReducer,
-    applyMiddleware(logger, sagaMiddleware)
+    composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
   );
 
-  sagaMiddleware.run(watchSignIn);
+  sagaMiddleware.run(rootSagas);
 
   return (
     <Provider store={store}>
       <Component {...pageProps} />
+      <ToastManager />
     </Provider>
   );
 }

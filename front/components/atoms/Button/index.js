@@ -24,7 +24,7 @@ export const ButtonPropTypes = {
     "warning",
     "error",
   ]),
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   text: PropTypes.string,
   onClick: PropTypes.func,
   fluid: PropTypes.bool,
