@@ -1,0 +1,33 @@
+@import "styles/variables/main.scss";
+
+.tabs-container {
+  // border: 2px solid black;
+  width: 400px;
+  // padding: $size-step;
+  border-radius: 8px;
+  margin: $size-step;
+  position: relative;
+  // box-shadow: 0px 2px 4px 4px rgba(34, 60, 80, 0.2);
+
+  .tabs {
+    display: flex;
+    overflow: hidden;
+    padding-top: $size-step;
+    padding-left: $size-step;
+    padding-right: $size-step;
+    margin-top: -$size-step;
+    margin-left: -10px;
+    margin-right: -10px;
+    height: 48px;
+    z-index: 0;
+  }
+  .content {
+    padding: $size-step;
+    border-radius: $size-step;
+    padding-top: 0;
+    margin-top: -28px;
+    background-color: white;
+    z-index: 1;
+    position: relative;
+  }
+}

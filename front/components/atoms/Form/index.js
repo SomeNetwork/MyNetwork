@@ -20,7 +20,9 @@ const Form = (props) => {
     )
   );
   const rules = Object.fromEntries(
-    fields.map((field) => [field.name, field.rules])
+    fields.map((field) => {
+      return [field.name, field.rules];
+    })
   );
   const submit = (event) => {
     const { onSubmit } = props;
@@ -62,7 +64,7 @@ const Form = (props) => {
     setState(newState);
     return valid;
   };
-
+  // debugger;
   return (
     <div>
       <Text variant="title">{title}</Text>

@@ -6,11 +6,17 @@ router.post('/signup', (req, res) => {
     const body = req.body
     console.log('signup :>> ', body)
     AuthManager.signUp({ username: body.username, password: body.password })
-        .then(() => {
-            res.send({ success: true })
+        .then((user) => {
+            // res.send({ success: true })
+            const token = AuthManager.generateJWT(user)
+            res.cookie('token', token, {
+                maxAge: 12 * 60 * 60 * 1000,
+                httpOnly: true,
+            })
+            res.redirect('/auth/me')
         })
         .catch((error) => {
-            res.status(500).send({ success: false, error: error.message })
+            res.send({ success: false, error: error.message })
         })
 })
 router.post('/signin', (req, res) => {
