@@ -1,5 +1,5 @@
 import { Card, Form } from "components/atoms";
-import Tabs from "components/atoms/Tabs";
+import Tabs from "components/moleculs/Tabs";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn, signUp } from "store/auth/actions";

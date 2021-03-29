@@ -1,4 +1,4 @@
-import Form from "components/atoms/Form";
+import Form from "components/moleculs/Form";
 
 const fields = [
   {

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import Tab from "./Tab";
+import Tab from "../../atoms/Tab";
 import styles from "./Tabs.module.scss";
 const Tabs = (props) => {
   const { tabs, children } = props;

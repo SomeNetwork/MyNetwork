@@ -2,7 +2,7 @@ import ButtonComponent from "./Button";
 // import IconButtonComponent from "./IconButton";
 import TextComponent from "./Text";
 import InputComponent from "./Input";
-import FormComponent from "./Form";
+import FormComponent from "../moleculs/Form";
 import CardComponent from "./Card";
 import ToastComponent from "./Toast";
 

@@ -6,7 +6,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "store/reducers";
 import rootSagas from "store/sagas";
 
-import ToastManager from "components/managers/ToastManager";
+import ToastManager from "components/organisms/managers/ToastManager";
 
 import "../styles/globals.scss";
 
