@@ -2,8 +2,10 @@ import styles from "./Text.module.scss";
 import PropTypes from "prop-types";
 
 const Text = (props) => {
-  const { children, variant } = props;
-  return <p className={styles[`text-${variant}`]}>{children}</p>;
+  const { children, variant, className } = props;
+  return (
+    <p className={`${styles[`text-${variant}`]} ${className}`}>{children}</p>
+  );
 };
 
 Text.propTypes = {

@@ -6,7 +6,7 @@ import {
   notificationUpdate,
 } from "store/notifications/actions";
 import styles from "./ToastManager.module.scss";
-const ToastManager = (props) => {
+const ToastManager = () => {
   const toasts = useSelector((state) => state.notifications);
   const dispatch = useDispatch();
 
@@ -33,5 +33,6 @@ const ToastManager = (props) => {
     </div>
   );
 };
+ToastManager.propTypes = {};
 
 export default ToastManager;

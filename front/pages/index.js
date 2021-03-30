@@ -75,3 +75,11 @@ export default function Home() {
     </>
   );
 }
+
+// export async function getServerSideProps(route) {
+//   debugger;
+//   console.log("route :>> ", route.resolvedUrl);
+//   return {
+//     props: {},
+//   };
+// }

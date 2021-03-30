@@ -1,0 +1,36 @@
+@import "styles/variables/main.scss";
+
+.nav-tab {
+  //   border: 2px solid black;
+  height: 100%;
+  width: fit-content;
+  margin: auto 4px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  .label {
+    margin: 0;
+  }
+  &::after {
+    content: "";
+    transform: scaleX(0);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    // bottom: -10px;
+    border-bottom: 2px solid $primary-light-color;
+    transition: $time-step;
+  }
+  &:hover::after {
+    content: "";
+    transform: scaleX(1);
+  }
+  &.active::after {
+    content: "";
+    transform: scaleX(1);
+    border-bottom: 2px solid $primary-color;
+  }
+}

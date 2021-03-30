@@ -1,4 +1,4 @@
-import AuthForm from "components/organisms/managers/AuthManager/AuthForm/index.js";
+import { AuthForm } from "components/organisms";
 import React from "react";
 
 const Auth = () => {

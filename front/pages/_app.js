@@ -1,34 +1,29 @@
 import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
-import createMiddlewar from "redux-saga";
-import logger from "redux-logger";
-import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "store/reducers";
-import rootSagas from "store/sagas";
 
-import ToastManager from "components/organisms/managers/ToastManager";
-
+import { AuthManager, Bar, ToastManager } from "components/organisms";
+import { useStore } from "store";
 import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
-  const sagaMiddleware = createMiddlewar();
-  // const store = createStore(
-  //   rootReducer,
-  //   applyMiddleware(logger, sagaMiddleware)
-  // );
-  const store = createStore(
-    rootReducer,
-    composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
-  );
-
-  sagaMiddleware.run(rootSagas);
+  const store = useStore(pageProps.initialReduxState);
 
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
+      <AuthManager>
+        <Bar />
+        <Component {...pageProps} />
+      </AuthManager>
       <ToastManager />
     </Provider>
   );
 }
+
+// export async function getServerSideProps(route) {
+//   debugger;
+//   console.log("route :>> ", route);
+//   return {
+//     props: {},
+//   };
+// }
 
 export default MyApp;

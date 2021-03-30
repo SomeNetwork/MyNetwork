@@ -1,26 +1,42 @@
-const { AUTH_SAVE_USER, AUTH_SAVE_TOKEN } = require("./actions");
+const {
+  AUTH_SAVE_USER,
+  AUTH_SIGN_OUT,
+  AUTH_CHECK,
+  AUTH_CHECKED,
+} = require("./actions");
 
 const defaultState = {
   username: "",
   _id: "",
+  isAuth: false,
+  authChecking: null,
 };
 
 export const authReduser = (state = defaultState, action) => {
   const { type, payload } = action;
   switch (type) {
-    // case:
     case AUTH_SAVE_USER:
-      console.log("payload :>> ", payload);
       return {
         ...state,
         _id: payload._id,
         username: payload.username,
+        isAuth: true,
+        authChecking: false,
       };
-    case AUTH_SAVE_TOKEN:
+    case AUTH_CHECK:
       return {
         ...state,
-        username: payload.username,
-        token: payload.token,
+        authChecking: true,
+      };
+    case AUTH_CHECKED:
+      return {
+        ...state,
+        authChecking: false,
+      };
+    case AUTH_SIGN_OUT:
+      return {
+        ...defaultState,
+        authChecking: false,
       };
   }
   return state;

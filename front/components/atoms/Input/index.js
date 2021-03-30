@@ -41,6 +41,7 @@ const Input = (props) => {
         type={type || "text"}
         onChange={(oEvent) => onChange && onChange(oEvent.target.value)}
         {...htmlProps}
+        autoComplete={"false"}
         // onKeyDown={onKeyDown}
       />
       <label

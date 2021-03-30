@@ -1,7 +1,7 @@
 import { Card, Form } from "components/atoms";
 import Tabs from "components/moleculs/Tabs";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signIn, signUp } from "store/auth/actions";
 import styles from "./AuthForm.module.scss";
 
@@ -96,19 +96,36 @@ const configSignUp = {
       required: true,
       fluid: true,
     },
+    {
+      label: "Repeat password",
+      name: "repeat_password",
+      type: "password",
+      rules: [
+        (v) => v.length >= 8 || "Must be longer than 8 characters",
+        (v, state) => v === state.password || "Passwords must be the same",
+        (v) => v !== "" || "Required field",
+        (v) => /(?=.*[0-9])/.test(v) || "Must contain number",
+        // (v) => /(?=.*[!@#$%^&*])/.test(v) || "Must contain special character",
+        (v) => /(?=.*[a-z])/.test(v) || "Must contain lowercase latin letter",
+        (v) => /(?=.*[A-Z])/.test(v) || "Must contain uppercase latin letter",
+        (v) =>
+          /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g.test(v) ||
+          "Wrong format",
+      ],
+      required: true,
+      fluid: true,
+    },
   ],
   submitButton: {
     variant: "primary",
     text: "SignUp",
     fluid: true,
+    animated: true,
   },
 };
 
 const AuthForm = () => {
   const dispatch = useDispatch();
-  const handleSubmit = (data) => {
-    dispatch(signIn(data));
-  };
 
   return (
     <>

@@ -40,7 +40,7 @@ const Form = (props) => {
   const fieldValidation = (value, rules) => {
     //return true(vlaid)  string(error)
     for (let rule of rules) {
-      const res = rule(value);
+      const res = rule(value, state);
       if (res !== true) return res;
     }
     return true;
@@ -112,15 +112,6 @@ Form.propTypes = {
       required: InputPropTypes.required,
       htmlProps: InputPropTypes.htmlProps,
       fluid: InputPropTypes.fluid,
-
-      // name: PropTypes.string.isRequired,
-      // label: PropTypes.string.isRequired,
-      // defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      // type: PropTypes.oneOf(["text", "number", null]),
-      // variant: PropTypes.oneOf(["outlined"]),
-      // rules: PropTypes.arrayOf(PropTypes.func),
-      // required: PropTypes.bool,
-      // htmlProps: PropTypes.object,
     })
   ).isRequired,
   onSubmit: PropTypes.func,
@@ -128,6 +119,7 @@ Form.propTypes = {
   submitButton: PropTypes.shape({
     text: ButtonPropTypes.text,
     variant: ButtonPropTypes.variant,
+    animated: ButtonPropTypes.animated,
   }),
   // customProp: function (props, propName, componentName) {
   //   if (!/matchme/.test(props[propName])) {

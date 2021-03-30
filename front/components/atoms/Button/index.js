@@ -3,12 +3,12 @@ import styles from "./Button.module.scss";
 import PropTypes from "prop-types";
 
 const Button = (props) => {
-  const { children, variant, onClick, text, fluid } = props;
+  const { children, variant, onClick, text, fluid, animated } = props;
   return (
     <button
       className={`${styles[`btn-${variant || "primary"}`]} ${
         fluid ? "fluid" : ""
-      }`}
+      } ${animated ? styles["animated"] : ""}`}
       onClick={onClick}
     >
       {text || children}
@@ -28,8 +28,13 @@ export const ButtonPropTypes = {
   text: PropTypes.string,
   onClick: PropTypes.func,
   fluid: PropTypes.bool,
+  animated: PropTypes.bool,
 };
 
 Button.propTypes = ButtonPropTypes;
+
+Button.defaultProps = {
+  animated: false,
+};
 
 export default Button;

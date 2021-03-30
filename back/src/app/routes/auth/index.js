@@ -38,12 +38,19 @@ router.post('/signin', (req, res) => {
             res.send({ success: false, error: error.message })
         })
 })
+router.post('/signout', (req, res) => {
+    const body = req.body
+    console.log('signout :>> ', body)
+
+    res.clearCookie('token')
+    res.send({ success: true })
+})
 
 router.get('/me', (req, res) => {
     if (req.user) {
         req.user.password = null
         // delete req.user.password
         res.send({ success: true, me: req.user })
-    } else res.status(401).send({ success: false, error: 'Need to SignIn!' })
+    } else res.send({ success: false, error: 'Need to SignIn!' })
 })
 module.exports = router
