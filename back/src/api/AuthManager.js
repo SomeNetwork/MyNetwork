@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
+const { v4: uuidv4 } = require('uuid')
 const { Users } = require('../db/crud')
+const Email = require('../email')
 
 class AuthManager {
     signIn(data) {
@@ -11,8 +13,12 @@ class AuthManager {
                 return this.comparePass(password, user.password).then(
                     (passwordsAreIdentical) => {
                         if (passwordsAreIdentical) {
-                            const token = this.generateJWT(user)
-                            return token
+                            if (user.confirmed) {
+                                const token = this.generateJWT(user)
+                                return token
+                            } else {
+                                throw new Error('User not confirmed!')
+                            }
                         } else {
                             throw new Error('Wrong password!')
                         }
@@ -37,11 +43,45 @@ class AuthManager {
                 return this.encodePass(password)
             })
             .then((hash) => {
+                const emailConfirmationCode = uuidv4()
                 return Users.create({
                     ...data,
                     password: hash,
+                    emailConfirmationCode,
                 })
             })
+            .then(async (user) => {
+                await Email.send(data.email, {
+                    subject: 'Some Network',
+                    text: `To confirm your account, follow the link http://dev.localhost:3000/auth/emailconfirmation?id=${user._id}&code=${user.emailConfirmationCode}`,
+                })
+                return user
+            })
+    }
+
+    sendConfirmationCodeById(id) {
+        this.findById(id).then(async (user) => {
+            await Email.send(data.email, {
+                subject: 'Some Network',
+                text: `To confirm your account, follow the link http://dev.localhost:3000/auth/emailconfirmation?id=${user._id}&code=${user.emailConfirmationCode}`,
+            })
+            return user
+        })
+    }
+
+    confirmEmail(id, code) {
+        return Users.findById(id).then((user) => {
+            if (!user) throw new Error('User not found!')
+            if (user.emailConfirmationCode === null) {
+                throw new Error('Email alredy confirmed!')
+            }
+            if (user.emailConfirmationCode === code) {
+                return Users.updateById(id, {
+                    emailConfirmationCode: null,
+                    confirmed: true,
+                })
+            } else throw new Error('The code is not correct!')
+        })
     }
 
     encodePass(password) {

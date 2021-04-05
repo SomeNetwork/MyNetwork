@@ -81,6 +81,9 @@
     font-size: 12px;
   }
 
+  &.error {
+    transform: scaleX(1);
+  }
   &.error::after {
     border-color: $error-color;
     transform: scaleX(1);

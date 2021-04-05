@@ -13,7 +13,7 @@ const Form = (props) => {
       fields.map((field) => [
         field.name,
         {
-          value: field.defaultValue == null ? "" : field.defaultValue,
+          value: field.defaultValue || "",
           error: false,
         },
       ])

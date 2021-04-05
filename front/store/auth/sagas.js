@@ -1,15 +1,16 @@
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import {
   authChecked,
   AUTH_CHECK,
   AUTH_SIGN_IN,
   AUTH_SIGN_OUT,
   AUTH_SIGN_UP,
+  AUTH_USER_UPDATE,
   localSaveUser,
 } from "./actions";
 import { notificationCreate } from "store/notifications/actions";
 import Router from "next/router";
-import { Auth } from "src/api";
+import { Auth, DB } from "src/api";
 
 /* SignIn */
 
@@ -97,6 +98,39 @@ export function* watchAuthCheck() {
   yield takeEvery(AUTH_CHECK, workerAuthCheck);
 }
 
+/* Update */
+function* workerUserUpdate({ type, payload }) {
+  try {
+    console.log("UserUpdate");
+    const username = yield select((state) => state.auth.username);
+    const { user } = yield call(() =>
+      DB.User.update({ username }, { ...payload })
+    );
+    debugger;
+    yield put(localSaveUser(user));
+    yield put(
+      notificationCreate({
+        variant: "success",
+        text: `Successful updated.`,
+      })
+    );
+  } catch (error) {
+    console.log("error :>> ", error);
+    yield put(notificationCreate({ variant: "error", text: error.message }));
+
+    // yield call(Router.push, "/auth");
+  }
+}
+export function* watchUserUpdate() {
+  yield takeEvery(AUTH_USER_UPDATE, workerUserUpdate);
+}
+
 export default function* rootSaga() {
-  yield all([watchSignIn(), watchSignUp(), watchSignOut(), watchAuthCheck()]);
+  yield all([
+    watchSignIn(),
+    watchSignUp(),
+    watchSignOut(),
+    watchAuthCheck(),
+    watchUserUpdate(),
+  ]);
 }

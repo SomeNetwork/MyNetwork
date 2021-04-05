@@ -1,5 +1,6 @@
 const app = require('./app')
-const api = require('./api')
-const db = require('./db')
+const API = require('./api')
+const DB = require('./db')
+const Email = require('./email')
 
-module.exports = { app, api, db }
+module.exports = { app, API, DB, Email }

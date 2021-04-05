@@ -8,7 +8,7 @@ class Users extends CRUD {
         return new Promise((resolve, reject) => {
             UserModel.create(user, function (err, user) {
                 if (err) {
-                    handleError(err)
+                    // handleError(err)
                     reject(err)
                 }
                 resolve(user)
@@ -19,7 +19,7 @@ class Users extends CRUD {
         return new Promise((resolve, reject) => {
             UserModel.findById(id, function (err, user) {
                 if (err) {
-                    handleError(err)
+                    // handleError(err)
                     reject(err)
                 }
                 resolve(user)
@@ -30,18 +30,36 @@ class Users extends CRUD {
         return new Promise((resolve, reject) => {
             UserModel.findOne({ username }, function (err, user) {
                 if (err) {
-                    handleError(err)
+                    // handleError(err)
                     reject(err)
                 }
                 resolve(user)
             })
         })
     }
+    updateByUsername(username, newDate) {
+        return new Promise((resolve, reject) => {
+            UserModel.findOneAndUpdate(
+                { username },
+                newDate,
+                {
+                    new: true,
+                },
+                function (err, user) {
+                    if (err) {
+                        // handleError(err)
+                        reject(err)
+                    }
+                    resolve(user)
+                }
+            )
+        })
+    }
     updateById(id, newDate) {
         return new Promise((resolve, reject) => {
-            UserModel.updateOne({ id }, newDate, function (err, user) {
+            UserModel.findOneAndUpdate({ _id: id }, newDate, function (err, user) {
                 if (err) {
-                    handleError(err)
+                    // handleError(err)
                     reject(err)
                 }
                 resolve(user)
@@ -52,7 +70,7 @@ class Users extends CRUD {
         return new Promise((resolve, reject) => {
             UserModel.find({ ...config }, function (err, user) {
                 if (err) {
-                    handleError(err)
+                    // handleError(err)
                     reject(err)
                 }
                 resolve(user)

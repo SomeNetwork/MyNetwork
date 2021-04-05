@@ -54,4 +54,22 @@ router.get('/me', (req, res) => {
         res.send({ success: true, me: req.user })
     } else res.send({ success: false, error: 'Need to SignIn!' })
 })
+
+router.get('/emailconfirmation/:id/:code', (req, res) => {
+    const { id, code } = req.params
+    AuthManager.confirmEmail(id, code)
+        .then((user) => {
+            if (user) {
+                user.password = undefined
+                // delete req.user.password
+                res.send({ success: true, user })
+            } else {
+                res.send({ success: false, error: 'wtf?!?' })
+            }
+        })
+        .catch((err) => {
+            res.send({ success: false, error: err.message })
+        })
+})
+
 module.exports = router

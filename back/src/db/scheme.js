@@ -25,6 +25,12 @@ const UserModelShema = new Schema({
     family_name: String,
     username: String,
     password: String,
+    emailConfirmationCode: String,
+    // confirmed: Boolean,
+    confirmed: {
+        type: Boolean,
+        default: false,
+    },
     // type: {
     //     type: String,
     //     enum: ['Coffee', 'Tea', 'Water'],

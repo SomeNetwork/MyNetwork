@@ -4,6 +4,12 @@ export const AUTH_SIGN_OUT = "AUTH_SIGN_OUT";
 export const AUTH_SAVE_USER = "AUTH_SAVE_USER";
 export const AUTH_CHECK = "AUTH_CHECK";
 export const AUTH_CHECKED = "AUTH_CHECKED";
+export const AUTH_USER_UPDATE = "AUTH_USER_UPDATE";
+
+export const updateUser = (payload) => ({
+  type: AUTH_USER_UPDATE,
+  payload,
+});
 
 export const localSaveUser = (payload) => ({
   type: AUTH_SAVE_USER,
