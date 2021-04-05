@@ -1,9 +1,12 @@
 import { Button, Card, Image, Text } from "components/atoms";
 import PropTypes from "prop-types";
 import React from "react";
+import UserNotFund from "./UserNotFund";
 import styles from "./UserPage.module.scss";
 const UserPage = (props) => {
   const { isOwner, user, isLoaded } = props;
+  // return <UserNotFund />;
+  if (!user) return <UserNotFund />;
   return (
     <div className={styles["container"]}>
       <div className={styles["info-container"]}>

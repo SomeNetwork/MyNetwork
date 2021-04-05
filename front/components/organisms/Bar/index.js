@@ -34,10 +34,16 @@ const Bar = () => {
               MainPage
             </NavTab>
             <NavTab
+              to={"/user/Fox1209"}
+              active={router.pathname === "/user/Fox1209"}
+            >
+              Fox1209
+            </NavTab>
+            <NavTab
               to={"/user/fox1209"}
               active={router.pathname === "/user/fox1209"}
             >
-              User test
+              fox1209
             </NavTab>
             <NavTab to={"/forms"} active={router.pathname === "/forms"}>
               forms
