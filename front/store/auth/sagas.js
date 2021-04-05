@@ -1,5 +1,4 @@
 import { all, call, put, takeEvery } from "redux-saga/effects";
-import axios from "src/axios";
 import {
   authChecked,
   AUTH_CHECK,
@@ -7,31 +6,16 @@ import {
   AUTH_SIGN_OUT,
   AUTH_SIGN_UP,
   localSaveUser,
-  signOut,
 } from "./actions";
 import { notificationCreate } from "store/notifications/actions";
 import Router from "next/router";
-
-function apiSignIn(data) {
-  return axios.post("auth/signin", data).then((res) => res.me);
-}
-
-function apiSignUp(data) {
-  return axios.post("auth/signup", data).then((res) => res.me);
-}
-function apiSignOut() {
-  return axios.post("auth/signout").then((res) => res.success);
-}
-
-function apiAuthCheck() {
-  return axios.get("auth/me").then((res) => res.me);
-}
+import { Auth } from "src/api";
 
 /* SignIn */
 
 function* workerSignIn({ type, payload }) {
   try {
-    const data = yield call(() => apiSignIn(payload));
+    const data = yield call(() => Auth.SignIn(payload));
     yield put(localSaveUser(data));
     yield put(
       notificationCreate({
@@ -50,7 +34,7 @@ export function* watchSignIn() {
 /* SignUP */
 function* workerSignUp({ type, payload }) {
   try {
-    const data = yield call(() => apiSignUp(payload));
+    const data = yield call(() => Auth.SignUp(payload));
     yield put(localSaveUser(data));
     yield put(
       notificationCreate({
@@ -69,7 +53,7 @@ export function* watchSignUp() {
 function* workerSignOut({ type, payload }) {
   console.log("payload :>> ", payload);
   try {
-    const success = yield call(() => apiSignOut());
+    const success = yield call(() => Auth.SignOut());
     yield put(
       notificationCreate({
         variant: "success",
@@ -88,7 +72,7 @@ export function* watchSignOut() {
 function* workerAuthCheck({ type, payload }) {
   try {
     console.log("workerAuthCheck1");
-    const data = yield call(() => apiAuthCheck());
+    const data = yield call(() => Auth.AuthCheck());
     yield put(localSaveUser(data));
     yield put(
       notificationCreate({

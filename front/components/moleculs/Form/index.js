@@ -67,7 +67,7 @@ const Form = (props) => {
   // debugger;
   return (
     <div>
-      <Text variant="title">{title}</Text>
+      {title && <Text variant="title">{title}</Text>}
       <form onSubmit={submit}>
         {fields.map((field, idx) => (
           <Input

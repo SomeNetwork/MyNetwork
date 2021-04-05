@@ -1,4 +1,4 @@
-import { Card } from "components/atoms";
+import { Card, Text } from "components/atoms";
 import PropTypes from "prop-types";
 import React from "react";
 import styles from "./Tab.module.scss";
@@ -10,7 +10,7 @@ const Tab = (props) => {
       className={`${styles["tab"]} ${active ? styles["active"] : ""}`}
       onClick={onClick}
     >
-      {label}
+      <Text>{label}</Text>
     </Card>
   );
 };

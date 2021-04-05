@@ -18,7 +18,7 @@ app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
+app.use(express.static('bucket'))
 app.use(routes)
 
 app.get('/', (req, res) => {

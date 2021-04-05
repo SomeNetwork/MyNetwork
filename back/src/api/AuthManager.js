@@ -38,7 +38,7 @@ class AuthManager {
             })
             .then((hash) => {
                 return Users.create({
-                    username,
+                    ...data,
                     password: hash,
                 })
             })

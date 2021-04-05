@@ -12,10 +12,14 @@ router.use(async (req, res, next) => {
         if (req.user === null) res.clearCookie('token')
         // next()
     }
+    // if (req.user == null){
+    //     res.status(401).send({success:false, error:"Need SignIn!"})
+    // }
+    
     next()
 })
 
-const routes = ['auth']
+const routes = ['auth', 'users']
 routes.forEach((route) => router.use(`/${route}`, require(`./${route}`)))
 // router.use(`/auth`, require(`./auth`))
 

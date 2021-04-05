@@ -20,6 +20,9 @@ const Schema = mongoose.Schema
 
 const UserModelShema = new Schema({
     id: Schema.Types.ObjectId,
+    email: String,
+    name: String,
+    family_name: String,
     username: String,
     password: String,
     // type: {

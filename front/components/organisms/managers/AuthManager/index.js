@@ -16,8 +16,8 @@ const AuthManager = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(authCheck());
-    setTimeout(() => dispatch(authCheck()), 10000);
+    dispatch(authCheck());
+    // setTimeout(() => dispatch(authCheck()), 10000);
   }, []);
   useEffect(() => {
     if (authChecking === true || authChecking === null) {

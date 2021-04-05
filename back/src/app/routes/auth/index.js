@@ -5,7 +5,8 @@ const { AuthManager } = require('../../../api')
 router.post('/signup', (req, res) => {
     const body = req.body
     console.log('signup :>> ', body)
-    AuthManager.signUp({ username: body.username, password: body.password })
+    AuthManager.signUp(body)
+        // AuthManager.signUp({ username: body.username, password: body.password })
         .then((user) => {
             // res.send({ success: true })
             const token = AuthManager.generateJWT(user)

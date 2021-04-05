@@ -17,9 +17,8 @@ export const authReduser = (state = defaultState, action) => {
   switch (type) {
     case AUTH_SAVE_USER:
       return {
-        ...state,
-        _id: payload._id,
-        username: payload.username,
+        // ...state,
+        ...payload,
         isAuth: true,
         authChecking: false,
       };

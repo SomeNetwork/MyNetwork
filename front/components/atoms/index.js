@@ -7,6 +7,7 @@ import CardComponent from "./Card";
 import ToastComponent from "./Toast";
 import NavTabComponent from "./NavTab";
 import LoaderComponent from "./Loader";
+import ImageComponent from "./Image";
 
 export const Button = ButtonComponent;
 // export const IconButton = IconButtonComponent;
@@ -17,3 +18,4 @@ export const Card = CardComponent;
 export const Toast = ToastComponent;
 export const NavTab = NavTabComponent;
 export const Loader = LoaderComponent;
+export const Image = ImageComponent;

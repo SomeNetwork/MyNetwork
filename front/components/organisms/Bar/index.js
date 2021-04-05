@@ -33,6 +33,12 @@ const Bar = () => {
             <NavTab to={"/"} active={router.pathname === "/"}>
               MainPage
             </NavTab>
+            <NavTab
+              to={"/user/fox1209"}
+              active={router.pathname === "/user/fox1209"}
+            >
+              User test
+            </NavTab>
             <NavTab to={"/forms"} active={router.pathname === "/forms"}>
               forms
             </NavTab>
