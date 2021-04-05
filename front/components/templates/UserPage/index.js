@@ -16,7 +16,11 @@ const UserPage = (props) => {
             className={styles["ava"]}
           />
           {isOwner ? (
-            <Button onClick={() => console.log("to settings")} fluid>
+            <Button
+              onClick={() => console.log("to settings")}
+              fluid
+              size="small"
+            >
               Edit
             </Button>
           ) : (

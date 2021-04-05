@@ -13,7 +13,7 @@ router.get('/:username', (req, res) => {
                 success: true,
                 data: {
                     user,
-                    isOwner: req.user?._id === user._id,
+                    isOwner: req.user?._id.toString() === user._id.toString(),
                 },
             })
         } else
