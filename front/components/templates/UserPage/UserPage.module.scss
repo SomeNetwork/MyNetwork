@@ -1,0 +1,70 @@
+@import "styles/variables/main.scss";
+
+.container {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: auto;
+  .info-container {
+    width: 100%;
+    max-height: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    align-items: stretch;
+    .info-left {
+      max-width: 400px;
+      width: 30%;
+      // height: 100%;
+      .avatar {
+      }
+      .btn-settings {
+      }
+    }
+    .info-right {
+      max-width: 800px;
+      width: 70%;
+      // height: 100%;
+      display: flex;
+      flex-direction: column;
+      .top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        position: relative;
+        .username {
+          .email {
+          }
+        }
+        .online {
+        }
+        &::after {
+          content: "";
+          width: 100%;
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-bottom: 1px solid $gray-light;
+        }
+      }
+      .down {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+    }
+    .not-found {
+      width: 100%;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

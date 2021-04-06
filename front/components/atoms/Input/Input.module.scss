@@ -1,0 +1,108 @@
+@import "styles/variables/main.scss";
+
+@mixin inp {
+  outline: none;
+  padding: $size-step/2;
+  border: none;
+  transition: border-bottom-color $time-step cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid $gray-light;
+  &:hover {
+    border-bottom: 2px solid $gray-dark;
+    padding-bottom: $size-step/2 - 1;
+  }
+
+  //   &.error::after {
+  //     border-color: $error-color;
+  //     border-bottom: 2px solid $error-color;
+  //     padding-bottom: $size-step/2 - 1;
+  //   }
+  &.fluid {
+    width: 100%;
+  }
+}
+
+.inp-outlined {
+  @include inp;
+}
+
+.inp-container {
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 24px;
+  //   margin-top: -20px;
+  //   margin-bottom: -24px;
+  //   margin-top: 20px;
+  //   margin-bottom: 24px;
+  width: fit-content;
+
+  &::after {
+    content: "";
+    transform: scaleX(0);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 24px;
+    transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    border-bottom: 2px solid $primary-color;
+  }
+
+  &:focus-within::after {
+    transform: scaleX(1);
+    z-index: 1;
+  }
+
+  .inp-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 23px;
+    z-index: 1;
+    transition: $time-step/2 linear;
+    color: $gray-light;
+    pointer-events: none;
+    &.required::after {
+      content: "*";
+      color: $gray-light;
+    }
+  }
+
+  &:focus-within {
+    transform: scaleX(1);
+    .inp-title {
+      top: 0px;
+      color: $primary-color;
+      font-size: 12px;
+    }
+  }
+
+  input:not([value=""]) + .inp-title {
+    top: 0;
+    color: $primary-color;
+    font-size: 12px;
+  }
+
+  &.error {
+    transform: scaleX(1);
+  }
+  &.error::after {
+    border-color: $error-color;
+    transform: scaleX(1);
+  }
+  .inp-errortext {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+
+    font-size: 12px;
+    color: $error-color;
+    z-index: -1;
+    transition: bottom $time-step;
+    &.show {
+      bottom: 8px;
+    }
+  }
+  &.fluid {
+    width: 100%;
+  }
+}

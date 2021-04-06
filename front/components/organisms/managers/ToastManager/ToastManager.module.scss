@@ -1,0 +1,15 @@
+@import "styles/variables/main.scss";
+
+.toasts-container {
+  position: fixed;
+  // border: 3px solid black;
+  margin: auto;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  top: auto;
+  pointer-events: none;
+  * {
+    pointer-events: all;
+  }
+}

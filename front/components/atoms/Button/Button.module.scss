@@ -1,0 +1,56 @@
+@import "styles/variables/main.scss";
+
+.btn-primary {
+  border-color: $primary-color;
+  &:hover {
+    background-color: $primary-color;
+    color: white;
+  }
+}
+.btn-secondary {
+  border-color: $secondary-color;
+  &:hover {
+    background-color: $secondary-color;
+    color: white;
+  }
+}
+.btn-success {
+  border-color: $success-color;
+  &:hover {
+    background-color: $success-color;
+    color: $success-text-color;
+  }
+}
+.btn-warning {
+  border-color: $warning-color;
+  &:hover {
+    background-color: $warning-color;
+    color: $warning-text-color;
+  }
+}
+.btn-error {
+  border-color: $error-color;
+  &:hover {
+    background-color: $error-color;
+    color: $error-text-color;
+  }
+}
+
+.animated {
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+.small {
+  padding: 2px;
+}
+.normal {
+}
+.huge {
+  padding: 16px;
+}

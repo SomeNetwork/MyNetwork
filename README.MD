@@ -12,12 +12,13 @@
 ### Frontend
 
 <!-- - TS -->
-- NextJS
-- Redux
-- SASS
+- NextJS (+PropTypes)
+- Redux (+Redux Saga)
+- SCSS
   
 ### Backend
 
 <!-- - TS -->
 - NodeJS
-- MongoDB
+- Express
+- MongoDB (+Mongoose)

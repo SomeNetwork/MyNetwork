@@ -1,0 +1,64 @@
+@import "styles/variables/main.scss";
+
+.nav-tab {
+  //   border: 2px solid black;
+  height: inherit;
+  width: fit-content;
+  margin: auto 4px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  .label {
+    margin: 0;
+  }
+  &::after {
+    content: "";
+    // transform: scaleX(0);
+    position: absolute;
+    // bottom: -10px;
+    // border-bottom: 2px;
+    border-width: 0;
+    border-style: solid;
+    border-color: $primary-light-color;
+    transition: $time-step;
+  }
+
+  &.left::after {
+    left: 0;
+    bottom: 0;
+    top: 0;
+    border-left-width: 2px;
+    transform: scaleY(0);
+  }
+  &.right::after {
+    right: 0;
+    bottom: 0;
+    top: 0;
+    border-right-width: 2px;
+    transform: scaleY(0);
+  }
+  &.bottom::after {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: scaleX(0);
+
+    // border-bottom: 2px;
+    border-bottom-width: 2px;
+  }
+  &:hover::after {
+    content: "";
+    transform: scaleX(1);
+    transform: scaleY(1);
+  }
+  &.active::after {
+    content: "";
+    transform: scaleX(1);
+    transform: scaleY(1);
+
+    // border-bottom: 2px solid $primary-color;
+    border-color: $primary-color;
+  }
+}

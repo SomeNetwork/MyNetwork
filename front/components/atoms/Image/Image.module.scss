@@ -1,0 +1,9 @@
+@import "styles/variables/main.scss";
+
+.image {
+  overflow: hidden;
+  height: auto;
+  img {
+    width: 100%;
+  }
+}
