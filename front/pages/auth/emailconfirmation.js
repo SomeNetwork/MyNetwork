@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Auth } from "src/api";
+import { loadUser } from "store/auth/actions";
 import { notificationCreate } from "store/notifications/actions";
 
 const EmailConfirmation = () => {
@@ -11,8 +12,8 @@ const EmailConfirmation = () => {
   const dispatch = useDispatch();
   console.log("router :>> ", router);
   useEffect(() => {
-    if (router.query.id && router.query.code) {
-      Auth.EmailConfirm(router.query.id, router.query.code)
+    if (router.query.username && router.query.code) {
+      Auth.EmailConfirm(router.query.username, router.query.code)
         .then(() => {
           dispatch(
             notificationCreate({
@@ -20,6 +21,7 @@ const EmailConfirmation = () => {
               text: `Email successful confirmed.`,
             })
           );
+          dispatch(loadUser());
           router.push("/");
         })
         .catch((error) => {

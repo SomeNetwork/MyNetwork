@@ -10,11 +10,12 @@ router.post('/signup', (req, res) => {
         .then((user) => {
             // res.send({ success: true })
             const token = AuthManager.generateJWT(user)
-            res.cookie('token', token, {
-                maxAge: 12 * 60 * 60 * 1000,
-                httpOnly: true,
-            })
-            res.redirect('/auth/me')
+            // res.cookie('token', token, {
+            //     maxAge: 12 * 60 * 60 * 1000,
+            //     httpOnly: true,
+            // })
+            // res.redirect('/auth/me')
+            res.send({ success: true })
         })
         .catch((error) => {
             res.send({ success: false, error: error.message })
@@ -55,21 +56,27 @@ router.get('/me', (req, res) => {
     } else res.send({ success: false, error: 'Need to SignIn!' })
 })
 
-router.get('/emailconfirmation/:id/:code', (req, res) => {
-    const { id, code } = req.params
-    AuthManager.confirmEmail(id, code)
+router.get('/emailconfirmation/resend/:username', (req, res) => {
+    const { username } = req.params
+    AuthManager.sendConfirmationCodeByUsername(username)
         .then((user) => {
-            if (user) {
-                user.password = undefined
-                // delete req.user.password
-                res.send({ success: true, user })
-            } else {
-                res.send({ success: false, error: 'wtf?!?' })
-            }
+            res.send({ success: true })
         })
         .catch((err) => {
             res.send({ success: false, error: err.message })
         })
 })
 
+router.get('/emailconfirmation/:username/:code', (req, res) => {
+    const { username, code } = req.params
+    AuthManager.confirmEmailByUsername(username, code)
+        .then((user) => {
+            if (user) {
+                res.send({ success: true })
+            }
+        })
+        .catch((err) => {
+            res.send({ success: false, error: err.message })
+        })
+})
 module.exports = router

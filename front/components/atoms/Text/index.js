@@ -16,6 +16,7 @@ Text.propTypes = {
     "subtitle",
     "body",
     "body2",
+    "small",
     "button",
   ]),
 };

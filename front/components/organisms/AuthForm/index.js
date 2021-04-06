@@ -1,8 +1,16 @@
 import { Card, Form } from "components/atoms";
 import Tabs from "components/moleculs/Tabs";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { signIn, signUp } from "store/auth/actions";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+// import { signIn, signUp } from "store/auth/actions";
+import {
+  gotoEmailConfirm,
+  gotoSignIn,
+  gotoSignUp,
+  submitEmailConfirm,
+  submitSignIn,
+  submitSignUp,
+} from "store/authForm/actions";
 import styles from "./AuthForm.module.scss";
 
 const configSignIn = {
@@ -147,24 +155,76 @@ const configSignUp = {
     animated: true,
   },
 };
+const configEmailConfirm = {
+  title: "",
+  fields: [
+    {
+      label: "Username",
+      name: "username",
+      type: "text",
+      rules: [
+        (v) => v.length > 5 || "Must be longer than 5 characters",
+        (v) => v !== "" || "Required field",
+        (v) => /^\w*$/.test(v) || "Username can only contain a-z,A-Z,0-9,_",
+      ],
+      required: true,
+      fluid: true,
+    },
+    {
+      label: "Code",
+      name: "code",
+      type: "text",
+      rules: [
+        (v) => v.length > 2 || "Must be longer than 5 characters",
+        (v) => v !== "" || "Required field",
+        (v) =>
+          /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/.test(
+            v
+          ) || "Invalid format",
+      ],
+      required: true,
+      fluid: true,
+    },
+  ],
+  submitButton: {
+    variant: "primary",
+    text: "Confirm accaunt",
+    fluid: true,
+    animated: true,
+  },
+};
 
 const AuthForm = () => {
+  const state = useSelector((store) => store.authForm);
   const dispatch = useDispatch();
-
+  // const [state, setState] = useState(0);
   return (
     <>
       <div className={styles["multiform-container"]}>
-        <Tabs tabs={[{ label: "SignIn" }, { label: "SignUp" }]}>
+        <Tabs
+          tabs={[
+            { label: "SignIn", onClick: () => dispatch(gotoSignIn()) },
+            { label: "SignUp", onClick: () => dispatch(gotoSignUp()) },
+            { label: "Confirm", onClick: () => dispatch(gotoEmailConfirm()) },
+          ]}
+          active={state.active}
+        >
           <div className={styles["form-container"]} key={1}>
             <Form
               {...configSignIn}
-              onSubmit={(data) => dispatch(signIn(data))}
+              onSubmit={(data) => dispatch(submitSignIn(data))}
             />
           </div>
           <div className={styles["form-container"]} key={2}>
             <Form
               {...configSignUp}
-              onSubmit={(data) => dispatch(signUp(data))}
+              onSubmit={(data) => dispatch(submitSignUp(data))}
+            />
+          </div>
+          <div className={styles["form-container"]} key={3}>
+            <Form
+              {...configEmailConfirm}
+              onSubmit={(data) => dispatch(submitEmailConfirm(data))}
             />
           </div>
         </Tabs>

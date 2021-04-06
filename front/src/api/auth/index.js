@@ -14,8 +14,12 @@ export function AuthCheck() {
   return Api.req.get("auth/me").then((res) => res.me);
 }
 
-export function EmailConfirm(id, code) {
-  return Api.req.get(`auth/emailconfirmation/${id}/${code}`);
+export function EmailConfirm(username, code) {
+  return Api.req.get(`auth/emailconfirmation/${username}/${code}`);
+}
+export function EmailConfirmationCodeResend(username) {
+  debugger;
+  return Api.req.get(`auth/emailconfirmation/resend/${username}`);
 }
 
 const Auth = {
@@ -24,5 +28,6 @@ const Auth = {
   SignOut,
   AuthCheck,
   EmailConfirm,
+  EmailConfirmationCodeResend,
 };
 export default Auth;

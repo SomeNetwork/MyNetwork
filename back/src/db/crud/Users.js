@@ -1,5 +1,7 @@
 const CRUD = require('./CRUD')
 const { UserModel } = require('../scheme')
+const { v4: uuidv4 } = require('uuid')
+
 class Users extends CRUD {
     constructor() {
         super()
@@ -37,11 +39,18 @@ class Users extends CRUD {
             })
         })
     }
-    updateByUsername(username, newDate) {
+    updateByUsername(username, newData) {
         return new Promise((resolve, reject) => {
+            if (newData.email) {
+                newData = {
+                    ...newData,
+                    confirmed: false,
+                    emailConfirmationCode: uuidv4(),
+                }
+            }
             UserModel.findOneAndUpdate(
                 { username },
-                newDate,
+                newData,
                 {
                     new: true,
                 },
@@ -55,15 +64,19 @@ class Users extends CRUD {
             )
         })
     }
-    updateById(id, newDate) {
+    updateById(id, newData) {
         return new Promise((resolve, reject) => {
-            UserModel.findOneAndUpdate({ _id: id }, newDate, function (err, user) {
-                if (err) {
-                    // handleError(err)
-                    reject(err)
+            UserModel.findOneAndUpdate(
+                { _id: id },
+                newData,
+                function (err, user) {
+                    if (err) {
+                        // handleError(err)
+                        reject(err)
+                    }
+                    resolve(user)
                 }
-                resolve(user)
-            })
+            )
         })
     }
     list(config) {

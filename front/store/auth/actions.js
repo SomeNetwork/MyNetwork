@@ -5,9 +5,20 @@ export const AUTH_SAVE_USER = "AUTH_SAVE_USER";
 export const AUTH_CHECK = "AUTH_CHECK";
 export const AUTH_CHECKED = "AUTH_CHECKED";
 export const AUTH_USER_UPDATE = "AUTH_USER_UPDATE";
+export const AUTH_USER_LOAD = "AUTH_USER_LOAD";
+export const AUTH_CONFIRM_EMAIL = "AUTH_CONFIRM_EMAIL";
 
 export const updateUser = (payload) => ({
   type: AUTH_USER_UPDATE,
+  payload,
+});
+
+export const loadUser = (payload) => ({
+  type: AUTH_USER_LOAD,
+  payload,
+});
+export const confirmEmail = (payload) => ({
+  type: AUTH_CONFIRM_EMAIL,
   payload,
 });
 

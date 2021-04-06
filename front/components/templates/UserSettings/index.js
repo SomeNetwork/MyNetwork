@@ -1,60 +1,17 @@
-import { Card, Form, Input, NavTab, Text } from "components/atoms";
+import { Button, Card, Form, Input, NavTab, Text } from "components/atoms";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateUser } from "store/auth/actions";
+import { confirmEmail, updateUser } from "store/auth/actions";
 import styles from "./UserSettings.module.scss";
-
-const tabs = [
-  "Personal Data",
-  "Email",
-  "Username",
-  "Avatar",
-  "Something else",
-  "Nothing",
-  "Nothing",
-];
-
-const configPersonalDataForm = {
-  title: "Personal Data",
-  fields: [
-    {
-      label: "Name",
-      name: "name",
-      type: "text",
-      rules: [
-        (v) => v.length > 2 || "Must be longer than 5 characters",
-        (v) => v !== "" || "Required field",
-        (v) =>
-          /^[a-zA-Zа-яА-Я]*$/.test(v) ||
-          "Username can only contain a-z,A-Z,А-Я,я-я",
-      ],
-      required: true,
-      defaultValue: "fff",
-      fluid: true,
-    },
-    {
-      label: "Family name",
-      name: "family_name",
-      type: "text",
-      rules: [
-        (v) => v.length > 2 || "Must be longer than 5 characters",
-        (v) => v !== "" || "Required field",
-        (v) =>
-          /^[a-zA-Zа-яА-Я]*$/.test(v) ||
-          "Username can only contain a-z,A-Z,А-Я,я-я",
-      ],
-      required: true,
-      fluid: true,
-    },
-  ],
-  submitButton: {
-    variant: "primary",
-    text: "Save data",
-    fluid: true,
-    animated: true,
-  },
-};
+import {
+  tabs,
+  configPersonalDataForm,
+  configEmailForm,
+  configEmailConfirmForm,
+} from "./formsConfig";
+import { Auth } from "src/api";
+import { notificationCreate } from "store/notifications/actions";
 
 const UserSettings = (props) => {
   const { user } = props;
@@ -78,19 +35,80 @@ const UserSettings = (props) => {
           ))}
           {/* <Text className={styles["paragraph"]}>Accaunt</Text> */}
         </Card>
-        <Card className={styles["settings-right"]}>
-          <Form
-            {...configPersonalDataForm}
-            fields={configPersonalDataForm.fields.map((field) => ({
-              ...field,
-              defaultValue: user[field.name],
-            }))}
-            onSubmit={(data) => {
-              console.log("data :>> ", data);
-              dispatch(updateUser(data));
-            }}
-          />
-        </Card>
+
+        <div className={styles["settings-right"]}>
+          {tab === 0 && (
+            <Card className={styles["block"]}>
+              <Form
+                {...configPersonalDataForm}
+                fields={configPersonalDataForm.fields.map((field) => ({
+                  ...field,
+                  defaultValue: user[field.name],
+                }))}
+                onSubmit={(data) => {
+                  console.log("data :>> ", data);
+                  dispatch(updateUser(data));
+                }}
+              />
+            </Card>
+          )}
+          {tab === 1 && (
+            <>
+              <Card className={styles["block"]}>
+                <Form
+                  {...configEmailForm}
+                  fields={configEmailForm.fields.map((field) => ({
+                    ...field,
+                    defaultValue: user[field.name],
+                  }))}
+                  onSubmit={(data) => {
+                    console.log("data :>> ", data);
+                    dispatch(updateUser(data));
+                  }}
+                />
+                {!user.confirmed && (
+                  <div className={styles["email-confirmation"]}>
+                    <div className={styles["top"]}>
+                      <Text variant="body">Email not confirmed</Text>
+                      <Button
+                        text="Send code"
+                        size="small"
+                        onClick={() =>
+                          Auth.EmailConfirmationCodeResend(user.username).then(
+                            () => {
+                              dispatch(
+                                notificationCreate({
+                                  variant: "success",
+                                  text: `Code sended.`,
+                                })
+                              );
+                            }
+                          )
+                        }
+                      />
+                    </div>
+                    <Text variant="small">
+                      To confirm, you need to click on the link in the email
+                      sent to you. If you can't find the email, we can send it
+                      to you again.
+                    </Text>
+                  </div>
+                )}
+              </Card>
+              {!user.confirmed && (
+                <Card className={styles["block"]}>
+                  <Form
+                    {...configEmailConfirmForm}
+                    onSubmit={(data) => {
+                      console.log("data :>> ", data);
+                      dispatch(confirmEmail(data));
+                    }}
+                  />
+                </Card>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

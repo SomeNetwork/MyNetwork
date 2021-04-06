@@ -1,16 +1,22 @@
 import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import {
+  authCheck,
   authChecked,
   AUTH_CHECK,
+  AUTH_CONFIRM_ACCAUNT,
+  AUTH_CONFIRM_EMAIL,
   AUTH_SIGN_IN,
   AUTH_SIGN_OUT,
   AUTH_SIGN_UP,
+  AUTH_USER_LOAD,
   AUTH_USER_UPDATE,
+  loadUser,
   localSaveUser,
 } from "./actions";
 import { notificationCreate } from "store/notifications/actions";
 import Router from "next/router";
 import { Auth, DB } from "src/api";
+import { gotoEmailConfirm, gotoSignIn } from "store/authForm/actions";
 
 /* SignIn */
 
@@ -27,6 +33,7 @@ function* workerSignIn({ type, payload }) {
     yield call(Router.push, "/");
   } catch (error) {
     yield put(notificationCreate({ variant: "error", text: error.message }));
+    // throw error;
   }
 }
 export function* watchSignIn() {
@@ -36,15 +43,25 @@ export function* watchSignIn() {
 function* workerSignUp({ type, payload }) {
   try {
     const data = yield call(() => Auth.SignUp(payload));
-    yield put(localSaveUser(data));
+    // yield put(localSaveUser(data));
     yield put(
       notificationCreate({
         variant: "success",
-        text: `Hello, ${data.username}. Successful registration.`,
+        text: `Hello, ${payload.username}. Successful registration.`,
       })
     );
+    yield put(
+      notificationCreate({
+        variant: "info",
+        text: `Don't forget to confirm your mail.`,
+      })
+    );
+    yield put(gotoEmailConfirm());
+
+    // yield call(Router.push, "/auth");
   } catch (error) {
     yield put(notificationCreate({ variant: "error", text: error.message }));
+    // throw error;
   }
 }
 export function* watchSignUp() {
@@ -125,12 +142,50 @@ export function* watchUserUpdate() {
   yield takeEvery(AUTH_USER_UPDATE, workerUserUpdate);
 }
 
+/* confirm */
+function* workerEmailConfirm({ type, payload }) {
+  try {
+    const username = yield select((state) => state.auth.username);
+    const user = yield call(() => Auth.EmailConfirm(username, payload.code));
+
+    yield put(
+      notificationCreate({
+        variant: "success",
+        text: `Successful confirmed.`,
+      })
+    );
+    yield put(loadUser());
+  } catch (error) {
+    debugger;
+    yield put(notificationCreate({ variant: "error", text: error.message }));
+  }
+}
+export function* watchEmailConfirm() {
+  yield takeEvery(AUTH_CONFIRM_EMAIL, workerEmailConfirm);
+}
+
+/* load */
+function* workerUserLoad({ type, payload }) {
+  try {
+    const data = yield call(() => Auth.AuthCheck());
+    yield put(localSaveUser(data));
+  } catch (error) {
+    debugger;
+    yield put(notificationCreate({ variant: "error", text: error.message }));
+  }
+}
+export function* watchUserLoad() {
+  yield takeEvery(AUTH_USER_LOAD, workerUserLoad);
+}
+
 export default function* rootSaga() {
   yield all([
     watchSignIn(),
     watchSignUp(),
     watchSignOut(),
+    watchUserLoad(),
     watchAuthCheck(),
     watchUserUpdate(),
+    watchEmailConfirm(),
   ]);
 }

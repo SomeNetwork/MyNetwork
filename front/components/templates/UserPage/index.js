@@ -1,10 +1,12 @@
 import { Button, Card, Image, Text } from "components/atoms";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 import UserNotFund from "./UserNotFund";
 import styles from "./UserPage.module.scss";
 const UserPage = (props) => {
   const { isOwner, user, isLoaded } = props;
+  const router = useRouter();
   // return <UserNotFund />;
   if (!user) return <UserNotFund />;
   return (
@@ -17,7 +19,7 @@ const UserPage = (props) => {
           />
           {isOwner ? (
             <Button
-              onClick={() => console.log("to settings")}
+              onClick={() => router.push("/me/settings")}
               fluid
               size="small"
             >

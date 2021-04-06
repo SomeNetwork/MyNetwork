@@ -3,6 +3,7 @@ const {
   AUTH_SIGN_OUT,
   AUTH_CHECK,
   AUTH_CHECKED,
+  AUTH_USER_LOAD,
 } = require("./actions");
 
 const defaultState = {
@@ -37,6 +38,12 @@ export const authReduser = (state = defaultState, action) => {
         ...defaultState,
         authChecking: false,
       };
+    // case AUTH_USER_LOAD:
+    //   return {
+    //     ...payload,
+    //     isAuth: state.isAuth,
+    //     authChecking: state.authChecking,
+    //   };
   }
   return state;
 };

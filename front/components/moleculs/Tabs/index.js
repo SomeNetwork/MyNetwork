@@ -1,10 +1,15 @@
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tab from "../../atoms/Tab";
 import styles from "./Tabs.module.scss";
 const Tabs = (props) => {
-  const { tabs, children } = props;
-  const [value, setValue] = useState(0);
+  const { tabs, children, active } = props;
+  const [value, setValue] = useState(active === undefined ? 0 : active);
+
+  // useEffect(() => {
+  //   debugger;
+  //   setValue(active);
+  // }, [active]);
 
   return (
     <div className={styles["tabs-container"]}>
@@ -13,12 +18,17 @@ const Tabs = (props) => {
           <Tab
             key={idx}
             label={tab.label}
-            active={value === idx}
-            onClick={() => setValue(idx)}
+            active={(active === undefined ? value : active) === idx}
+            onClick={() => {
+              tab.onClick && tab.onClick();
+              active === undefined && setValue(idx);
+            }}
           />
         ))}
       </div>
-      <div className={styles["content"]}>{children[value]}</div>
+      <div className={styles["content"]}>
+        {children[active === undefined ? value : active]}
+      </div>
     </div>
   );
 };
@@ -28,8 +38,10 @@ Tabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired, // id: PropTypes.number.isRequired,
+      onClick: PropTypes.func,
     })
   ),
+  active: PropTypes.number,
 };
 Tabs.defaultProps = {
   value: 0,

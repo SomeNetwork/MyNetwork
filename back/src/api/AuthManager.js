@@ -13,6 +13,9 @@ class AuthManager {
                 return this.comparePass(password, user.password).then(
                     (passwordsAreIdentical) => {
                         if (passwordsAreIdentical) {
+                            // const token = this.generateJWT(user)
+                            // return token
+
                             if (user.confirmed) {
                                 const token = this.generateJWT(user)
                                 return token
@@ -51,20 +54,31 @@ class AuthManager {
                 })
             })
             .then(async (user) => {
-                await Email.send(data.email, {
+                await Email.send(user.email, {
                     subject: 'Some Network',
-                    text: `To confirm your account, follow the link http://dev.localhost:3000/auth/emailconfirmation?id=${user._id}&code=${user.emailConfirmationCode}`,
+                    text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link http://dev.localhost:3000/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
                 })
                 return user
             })
     }
 
     sendConfirmationCodeById(id) {
-        this.findById(id).then(async (user) => {
-            await Email.send(data.email, {
+        return Users.findById(id).then(async (user) => {
+            await Email.send(user.email, {
                 subject: 'Some Network',
-                text: `To confirm your account, follow the link http://dev.localhost:3000/auth/emailconfirmation?id=${user._id}&code=${user.emailConfirmationCode}`,
+                text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link http://dev.localhost:3000/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
             })
+            return user
+        })
+    }
+    sendConfirmationCodeByUsername(username) {
+        return Users.findByUsername(username).then(async (user) => {
+            if (user)
+                await Email.send(user.email, {
+                    subject: 'Some Network',
+                    text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link http://dev.localhost:3000/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
+                })
+            else throw new Error('User not found!')
             return user
         })
     }
@@ -77,6 +91,21 @@ class AuthManager {
             }
             if (user.emailConfirmationCode === code) {
                 return Users.updateById(id, {
+                    emailConfirmationCode: null,
+                    confirmed: true,
+                })
+            } else throw new Error('The code is not correct!')
+        })
+    }
+
+    confirmEmailByUsername(username, code) {
+        return Users.findByUsername(username).then((user) => {
+            if (!user) throw new Error('User not found!')
+            if (user.emailConfirmationCode === null) {
+                throw new Error('Email alredy confirmed!')
+            }
+            if (user.emailConfirmationCode === code) {
+                return Users.updateByUsername(username, {
                     emailConfirmationCode: null,
                     confirmed: true,
                 })
