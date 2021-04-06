@@ -1,0 +1,83 @@
+@import "styles/variables/main.scss";
+
+.inp-container {
+  /*  */
+  margin: 20px;
+  /*  */
+
+  // height: 74px;
+  width: fit-content;
+  max-width: 200px;
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  position: relative;
+
+  & > input {
+    display: none;
+  }
+  & > .left,
+  & > .left2,
+  & > .right {
+    // display: none;
+    // cursor: pointer;
+    border: 2px solid black;
+    padding: 2px;
+    cursor: pointer;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    background-color: white;
+    transition: all $time-step;
+  }
+  & > .left {
+    border-color: $gray-light;
+    border-radius: 4px 0 0 4px;
+    z-index: 0;
+    // border-right-width: 1px;
+    padding-top: 4px;
+    display: block;
+    cursor: default;
+  }
+  & > .left2 {
+    width: 50%;
+    border-color: $error-dark-color;
+    border-radius: 0 4px 4px 0;
+    // border-right-width: 1px;
+
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: auto;
+    &:hover {
+      background-color: $error-color;
+    }
+  }
+  &.selected > .left {
+    border-color: $primary-color;
+  }
+  &.selected:hover > .left2 {
+    // left: 0px;
+    // right: auto;
+    border-radius: 4px 0 0 4px;
+
+    transform: translateX(-100%);
+  }
+  & > .right {
+    // border-left-width: 1px;
+
+    border-color: $primary-color;
+    border-radius: 0 4px 4px 0;
+    text-align: right;
+    z-index: 2;
+    &:hover {
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 const CRUD = require('./CRUD')
 const { UserModel } = require('../scheme')
 const { v4: uuidv4 } = require('uuid')
+const Bucket = require('../../api/Bucket')
 
 class Users extends CRUD {
     constructor() {
@@ -40,13 +41,19 @@ class Users extends CRUD {
         })
     }
     updateByUsername(username, newData) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (newData.email) {
                 newData = {
                     ...newData,
                     confirmed: false,
                     emailConfirmationCode: uuidv4(),
                 }
+            }
+            if (newData.avatar) {
+                const filename = `/bucket/users/${username}/images/avatar${uuidv4()}`
+
+                await Bucket.saveBase64(newData.avatar, '.' + filename)
+                newData.avatar = filename
             }
             UserModel.findOneAndUpdate(
                 { username },
@@ -64,21 +71,21 @@ class Users extends CRUD {
             )
         })
     }
-    updateById(id, newData) {
-        return new Promise((resolve, reject) => {
-            UserModel.findOneAndUpdate(
-                { _id: id },
-                newData,
-                function (err, user) {
-                    if (err) {
-                        // handleError(err)
-                        reject(err)
-                    }
-                    resolve(user)
-                }
-            )
-        })
-    }
+    // updateById(id, newData) {
+    //     return new Promise((resolve, reject) => {
+    //         UserModel.findOneAndUpdate(
+    //             { _id: id },
+    //             newData,
+    //             function (err, user) {
+    //                 if (err) {
+    //                     // handleError(err)
+    //                     reject(err)
+    //                 }
+    //                 resolve(user)
+    //             }
+    //         )
+    //     })
+    // }
     list(config) {
         return new Promise((resolve, reject) => {
             UserModel.find({ ...config }, function (err, user) {

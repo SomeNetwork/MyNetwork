@@ -12,6 +12,7 @@ import {
 } from "./formsConfig";
 import { Auth } from "src/api";
 import { notificationCreate } from "store/notifications/actions";
+import { Tab0, Tab1, Tab2, Tab3 } from "./TabsScreens";
 
 const UserSettings = (props) => {
   const { user } = props;
@@ -37,77 +38,10 @@ const UserSettings = (props) => {
         </Card>
 
         <div className={styles["settings-right"]}>
-          {tab === 0 && (
-            <Card className={styles["block"]}>
-              <Form
-                {...configPersonalDataForm}
-                fields={configPersonalDataForm.fields.map((field) => ({
-                  ...field,
-                  defaultValue: user[field.name],
-                }))}
-                onSubmit={(data) => {
-                  console.log("data :>> ", data);
-                  dispatch(updateUser(data));
-                }}
-              />
-            </Card>
-          )}
-          {tab === 1 && (
-            <>
-              <Card className={styles["block"]}>
-                <Form
-                  {...configEmailForm}
-                  fields={configEmailForm.fields.map((field) => ({
-                    ...field,
-                    defaultValue: user[field.name],
-                  }))}
-                  onSubmit={(data) => {
-                    console.log("data :>> ", data);
-                    dispatch(updateUser(data));
-                  }}
-                />
-                {!user.confirmed && (
-                  <div className={styles["email-confirmation"]}>
-                    <div className={styles["top"]}>
-                      <Text variant="body">Email not confirmed</Text>
-                      <Button
-                        text="Send code"
-                        size="small"
-                        onClick={() =>
-                          Auth.EmailConfirmationCodeResend(user.username).then(
-                            () => {
-                              dispatch(
-                                notificationCreate({
-                                  variant: "success",
-                                  text: `Code sended.`,
-                                })
-                              );
-                            }
-                          )
-                        }
-                      />
-                    </div>
-                    <Text variant="small">
-                      To confirm, you need to click on the link in the email
-                      sent to you. If you can't find the email, we can send it
-                      to you again.
-                    </Text>
-                  </div>
-                )}
-              </Card>
-              {!user.confirmed && (
-                <Card className={styles["block"]}>
-                  <Form
-                    {...configEmailConfirmForm}
-                    onSubmit={(data) => {
-                      console.log("data :>> ", data);
-                      dispatch(confirmEmail(data));
-                    }}
-                  />
-                </Card>
-              )}
-            </>
-          )}
+          {tab === 0 && <Tab0 user={user} />}
+          {tab === 1 && <Tab1 user={user} />}
+          {tab === 2 && <Tab2 user={user} />}
+          {tab === 3 && <Tab3 user={user} />}
         </div>
       </div>
     </div>

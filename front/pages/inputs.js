@@ -1,20 +1,34 @@
+import { InputImage } from "components/atoms";
 import Input from "components/atoms/Input";
 import { useState } from "react";
+import { Bucket } from "src/api";
 
 export default function Home() {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState({ loading: false });
+  const handleChange = (file) => {
+    setValue({ loading: true, file });
+    Bucket.localSave(file)
+      .then((src) =>
+        setValue((prevState) => ({ ...prevState, src, loading: false }))
+      )
+      .catch((err) => setValue({ loading: false }));
+  };
+
   return (
     <>
-      <Input
-        label="gggg"
-        value={value}
-        onChange={setValue}
-        type="text"
-        // error="Текст какой-то ошибки"
-        error={value == 1 && "qwertyui"}
-      />
-      {/* <br /> */}
-      <p>Результат: {value || "empty"}</p>
+      <br />
+      <br />
+      <img src={value.src} />
+      <br />
+      <br />
+      <InputImage name="photoinp" file={value.file} onChange={handleChange} />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <Input name="fff" label="fdghj" error="fghgfd" value="fffff"></Input>
     </>
   );
 }

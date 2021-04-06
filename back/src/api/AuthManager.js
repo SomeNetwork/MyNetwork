@@ -83,20 +83,20 @@ class AuthManager {
         })
     }
 
-    confirmEmail(id, code) {
-        return Users.findById(id).then((user) => {
-            if (!user) throw new Error('User not found!')
-            if (user.emailConfirmationCode === null) {
-                throw new Error('Email alredy confirmed!')
-            }
-            if (user.emailConfirmationCode === code) {
-                return Users.updateById(id, {
-                    emailConfirmationCode: null,
-                    confirmed: true,
-                })
-            } else throw new Error('The code is not correct!')
-        })
-    }
+    // confirmEmail(id, code) {
+    //     return Users.findById(id).then((user) => {
+    //         if (!user) throw new Error('User not found!')
+    //         if (user.emailConfirmationCode === null) {
+    //             throw new Error('Email alredy confirmed!')
+    //         }
+    //         if (user.emailConfirmationCode === code) {
+    //             return Users.updateById(id, {
+    //                 emailConfirmationCode: null,
+    //                 confirmed: true,
+    //             })
+    //         } else throw new Error('The code is not correct!')
+    //     })
+    // }
 
     confirmEmailByUsername(username, code) {
         return Users.findByUsername(username).then((user) => {

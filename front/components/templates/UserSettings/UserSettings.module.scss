@@ -46,3 +46,32 @@
     }
   }
 }
+
+.img-container {
+  overflow: hidden;
+  width: auto;
+  max-width: 100%;
+  // min-height: 300px;
+  max-height: 500px;
+  // background-color: lawngreen;
+  text-align: center;
+  border-radius: 1px;
+  border: 1px solid $gray-light; // display: flex;
+  padding: 4px 3px 0 4px;
+  // justify-content: center;
+  img {
+    // border-radius: 8px;
+    height: auto;
+    max-height: 500px;
+    // width: auto;
+    max-width: inherit;
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+.img-inp-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
