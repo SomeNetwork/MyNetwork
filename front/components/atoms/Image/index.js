@@ -5,6 +5,9 @@ import styles from "./Image.module.scss";
 const Image = (props) => {
   const { src, className } = props;
   const [error, setError] = useState(src ? false : true);
+  useState(() => {
+    setError(src ? false : true);
+  }, [src]);
   return (
     <div className={`${styles["image"]}`}>
       {error ? (

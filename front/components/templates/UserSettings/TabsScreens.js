@@ -5,6 +5,7 @@ import {
   configPersonalDataForm,
   configEmailForm,
   configEmailConfirmForm,
+  configUsernameForm,
 } from "./formsConfig";
 import { Auth, Bucket } from "src/api";
 import { notificationCreate } from "store/notifications/actions";
@@ -95,9 +96,26 @@ export const Tab1 = (props) => {
 
 export const Tab2 = (props) => {
   const { user } = props;
+  const dispatch = useDispatch();
 
-  return <div></div>;
+  return (
+    <Card className={styles["block"]}>
+      <Form
+        {...configUsernameForm}
+        // submitButton={{ ...configUsernameForm.submitButton, disabled: true }}
+        fields={configUsernameForm.fields.map((field) => ({
+          ...field,
+          defaultValue: user[field.name],
+        }))}
+        onSubmit={(data) => {
+          console.log("data :>> ", data);
+          dispatch(updateUser(data));
+        }}
+      />
+    </Card>
+  );
 };
+
 export const Tab3 = (props) => {
   const { user } = props;
   const [state, setState] = useState({

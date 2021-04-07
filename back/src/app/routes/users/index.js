@@ -31,23 +31,31 @@ router.get('/:username', (req, res) => {
 router.post('/update/:username', (req, res) => {
     const username = req.params.username
     const data = req.body
-    DB.Users.updateByUsername(username, data).then((user) => {
-        console.log('user', user)
-        if (user) {
-            user.password = undefined
-            res.send({
-                success: true,
-                data: {
-                    user,
-                    isOwner: req.user?._id.toString() === user._id.toString(),
-                },
-            })
-        } else
+    DB.Users.updateByUsername(username, data)
+        .then((user) => {
+            console.log('user', user)
+            if (user) {
+                user.password = undefined
+                res.send({
+                    success: true,
+                    data: {
+                        user,
+                        isOwner:
+                            req.user?._id.toString() === user._id.toString(),
+                    },
+                })
+            } else
+                res.send({
+                    success: false,
+                    error: 'User not found!',
+                })
+        })
+        .catch((error) => {
             res.send({
                 success: false,
-                error: 'User not found!',
+                error: error.message,
             })
-    })
+        })
 })
 
 module.exports = router

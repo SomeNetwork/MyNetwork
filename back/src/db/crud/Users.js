@@ -9,14 +9,30 @@ class Users extends CRUD {
     }
     create(user) {
         return new Promise((resolve, reject) => {
-            UserModel.create(user, function (err, user) {
-                if (err) {
-                    // handleError(err)
-                    reject(err)
+            UserModel.exists(
+                { username: user.username },
+                function (err, userExists) {
+                    if (err) reject(err)
+                    resolve(userExists)
                 }
-                resolve(user)
-            })
+            )
         })
+            .then((isExist) => {
+                if (isExist === true)
+                    throw new Error('Username is udeb by other user')
+            })
+            .then(
+                () =>
+                    new Promise((resolve, reject) => {
+                        UserModel.create(user, function (err, user) {
+                            if (err) {
+                                // handleError(err)
+                                reject(err)
+                            }
+                            resolve(user)
+                        })
+                    })
+            )
     }
     findById(id) {
         return new Promise((resolve, reject) => {
@@ -40,7 +56,7 @@ class Users extends CRUD {
             })
         })
     }
-    updateByUsername(username, newData) {
+    async updateByUsername(username, newData) {
         return new Promise(async (resolve, reject) => {
             if (newData.email) {
                 newData = {
@@ -54,6 +70,23 @@ class Users extends CRUD {
 
                 await Bucket.saveBase64(newData.avatar, '.' + filename)
                 newData.avatar = filename
+            }
+            if (newData.username) {
+                if (newData.username !== username) {
+                    const isExist = await new Promise((resolve, reject) => {
+                        UserModel.exists(
+                            { username: newData.username },
+                            function (err, userExists) {
+                                if (err) reject(err)
+                                resolve(userExists)
+                            }
+                        )
+                    })
+                    if (isExist === true) {
+                        reject(new Error('Username is useb by other user'))
+                        return
+                    }
+                }
             }
             UserModel.findOneAndUpdate(
                 { username },

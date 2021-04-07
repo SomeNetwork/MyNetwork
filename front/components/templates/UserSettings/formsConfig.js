@@ -99,3 +99,28 @@ export const configEmailConfirmForm = {
     animated: true,
   },
 };
+
+export const configUsernameForm = {
+  title: "Username",
+  fields: [
+    {
+      label: "Username",
+      name: "username",
+      type: "text",
+      // defaultValue: "def val",
+      rules: [
+        (v) => v !== "" || "Required field",
+        (v) => v.length > 5 || "Must be longer than 5 characters",
+        (v) => /^\w*$/.test(v) || "Username can only contain a-z,A-Z,0-9,_",
+      ],
+      required: true,
+      fluid: true,
+    },
+  ],
+  submitButton: {
+    variant: "primary",
+    text: "Save username",
+    fluid: true,
+    animated: true,
+  },
+};

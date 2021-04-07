@@ -73,12 +73,14 @@ class AuthManager {
     }
     sendConfirmationCodeByUsername(username) {
         return Users.findByUsername(username).then(async (user) => {
-            if (user)
+            if (user) {
+                if (user.emailConfirmationCode === null)
+                    throw new Error('Email is confirmed!')
                 await Email.send(user.email, {
                     subject: 'Some Network',
                     text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link http://dev.localhost:3000/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
                 })
-            else throw new Error('User not found!')
+            } else throw new Error('User not found!')
             return user
         })
     }

@@ -4,6 +4,7 @@ export const AUTHFORM_GOTO_EMAIL_CONFIRM = "AUTHFORM_GOTO_EMAIL_CONFIRM";
 export const AUTHFORM_SUBMIT_SIGN_IN = "AUTHFORM_SUBMIT_SIGN_IN";
 export const AUTHFORM_SUBMIT_SIGN_UP = "AUTHFORM_SUBMIT_SIGN_UP";
 export const AUTHFORM_SUBMIT_EMAIL_CONFIRM = "AUTHFORM_SUBMIT_EMAIL_CONFIRM";
+export const AUTHFORM_SUBMIT_SEND_CODE = "AUTHFORM_SUBMIT_SEND_CODE";
 
 export const gotoSignIn = (payload) => ({
   type: AUTHFORM_GOTO_SIGN_IN,
@@ -17,6 +18,10 @@ export const gotoEmailConfirm = (payload) => ({
   type: AUTHFORM_GOTO_EMAIL_CONFIRM,
   payload,
 });
+export const gotoCodeSend = (payload) => ({
+  type: AUTHFORM_SUBMIT_SEND_CODE,
+  payload,
+});
 
 export const submitSignIn = (payload) => ({
   type: AUTHFORM_SUBMIT_SIGN_IN,
@@ -28,5 +33,9 @@ export const submitSignUp = (payload) => ({
 });
 export const submitEmailConfirm = (payload) => ({
   type: AUTHFORM_SUBMIT_EMAIL_CONFIRM,
+  payload,
+});
+export const submitSendCode = (payload) => ({
+  type: AUTHFORM_SUBMIT_SEND_CODE,
   payload,
 });

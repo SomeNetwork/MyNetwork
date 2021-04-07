@@ -15,7 +15,7 @@ const UserPage = (props) => {
         <Card className={styles["info-left"]}>
           <Image
             // src={"/users/fox1209/images/3.jpg"}
-            src={user.avatar || "/users/fox1209/images/3.jpg"}
+            src={user.avatar}
             className={styles["ava"]}
           />
           {isOwner ? (

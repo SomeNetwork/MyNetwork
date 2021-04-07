@@ -75,7 +75,7 @@ const Bar = () => {
       <div className={styles["auth"]}>
         {isAuth ? (
           <>
-            <Text className={styles["username"]}>{username}</Text>
+            <NavTab to={`/user/${username}`}>{username}</NavTab>
             <NavTab to="/auth" onClick={handleSignOut}>
               SignOut
             </NavTab>

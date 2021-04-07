@@ -1,17 +1,9 @@
-import { Button, Card, Form, Input, NavTab, Text } from "components/atoms";
+import { Card, NavTab } from "components/atoms";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { confirmEmail, updateUser } from "store/auth/actions";
 import styles from "./UserSettings.module.scss";
-import {
-  tabs,
-  configPersonalDataForm,
-  configEmailForm,
-  configEmailConfirmForm,
-} from "./formsConfig";
-import { Auth } from "src/api";
-import { notificationCreate } from "store/notifications/actions";
+import { tabs } from "./formsConfig";
 import { Tab0, Tab1, Tab2, Tab3 } from "./TabsScreens";
 
 const UserSettings = (props) => {
