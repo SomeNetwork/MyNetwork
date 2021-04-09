@@ -9,7 +9,7 @@ import {
 } from "./formsConfig";
 import { Auth, Bucket } from "src/api";
 import { notificationCreate } from "store/notifications/actions";
-import { Button, Card, Form, InputImage, Text } from "components/atoms";
+import { Button, Card, Form, Image, InputImage, Text } from "components/atoms";
 import { useDispatch } from "react-redux";
 
 export const Tab0 = (props) => {
@@ -137,19 +137,18 @@ export const Tab3 = (props) => {
     if (user.avatar)
       setState({
         loading: false,
-        src: user.avatar ? `${process.env.API_PATH}${user.avatar}` : null,
+        src: null,
+        // src: user.avatar ? `${process.env.API_PATH}${user.avatar}` : null,
       });
   }, [user.avatar]);
 
   return (
     <Card className={styles["block"]}>
-      <div className={styles["img-container"]}>
-        {state.src ? (
-          <img src={state.src} />
-        ) : (
-          <img src={"/images/emptyImage.jpeg"} />
-        )}
-      </div>
+      <Image
+        src={state.src}
+        url={state.src ? null : user.avatar}
+        variant="avatar"
+      />
       <div className={styles["img-inp-container"]}>
         <InputImage name="avatar" file={state.file} onChange={handleChange} />
       </div>

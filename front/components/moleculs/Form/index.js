@@ -64,7 +64,6 @@ const Form = (props) => {
     setState(newState);
     return valid;
   };
-  // debugger;
   return (
     <div>
       {title && <Text variant="title">{title}</Text>}

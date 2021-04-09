@@ -1,4 +1,5 @@
 import { Button, Card, Image, Text } from "components/atoms";
+import UserCard from "components/moleculs/UserCard";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
@@ -10,43 +11,51 @@ const UserPage = (props) => {
   // return <UserNotFund />;
   if (!user) return <UserNotFund />;
   return (
-    <div className={styles["container"]}>
-      <div className={styles["info-container"]}>
-        <Card className={styles["info-left"]}>
-          <Image
-            // src={"/users/fox1209/images/3.jpg"}
-            src={user.avatar}
-            className={styles["ava"]}
-          />
-          {isOwner ? (
-            <Button
-              onClick={() => router.push("/me/settings")}
-              fluid
-              size="small"
-            >
-              Edit
-            </Button>
-          ) : (
-            ""
-          )}
-        </Card>
-        <Card className={styles["info-right"]}>
-          <div className={styles["top"]}>
-            <div className={styles["username"]}>
-              <Text variant="body">{`${user.name} ${user.family_name}`}</Text>
-              <Text variant="body2">{user.email}</Text>
+    <>
+      <div className={styles["container"]}>
+        <div className={styles["info-container"]}>
+          <Card className={styles["info-left"]}>
+            <div className={styles["avatar-container"]}>
+              <Image
+                // src={"/users/fox1209/images/3.jpg"}
+                url={user.avatar}
+                // className={styles["ava"]}
+                variant="avatar"
+              />
             </div>
-            <div className={styles["online"]}>
-              <Text variant="body2">{"online"}</Text>
-              {/* <Text variant="body2">{user.online ? "online" : "offline"}</Text> */}
+            {isOwner ? (
+              <Button
+                onClick={() => router.push("/me/settings")}
+                fluid
+                size="small"
+              >
+                Edit
+              </Button>
+            ) : (
+              ""
+            )}
+          </Card>
+          <Card className={styles["info-right"]}>
+            <div className={styles["top"]}>
+              <div className={styles["username"]}>
+                <Text variant="body">{`${user.name} ${user.family_name}`}</Text>
+                <Text variant="body2">{user.email}</Text>
+              </div>
+              <div className={styles["online"]}>
+                <Text variant="body2">{"online"}</Text>
+                {/* <Text variant="body2">{user.online ? "online" : "offline"}</Text> */}
+              </div>
             </div>
-          </div>
-          <div className={styles["down"]}>
-            <Text>Any other information.</Text>
-          </div>
-        </Card>
+            <div className={styles["down"]}>
+              <Text>Any other information.</Text>
+            </div>
+          </Card>
+        </div>
       </div>
-    </div>
+      <div className={styles["container"]}>
+        <UserCard user={user} />
+      </div>
+    </>
   );
 };
 UserPage.propTypes = {

@@ -18,7 +18,6 @@ export function EmailConfirm(username, code) {
   return Api.req.get(`auth/emailconfirmation/${username}/${code}`);
 }
 export function EmailConfirmationCodeResend(username) {
-  debugger;
   return Api.req.get(`auth/emailconfirmation/resend/${username}`);
 }
 

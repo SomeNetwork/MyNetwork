@@ -24,65 +24,51 @@ const Bar = () => {
   const handleSignOut = () => dispatch(signOut({ username }));
   return (
     <div className={styles["bar-top"]}>
-      <Text variant="title" className={styles["title"]}>
+      {/* <Text variant="title" className={styles["title"]}>
         Some Network
-      </Text>
+      </Text> */}
+      <NavTab to={"/"}>
+        <Text variant="title" className={styles["title"]}>
+          Some Network
+        </Text>
+      </NavTab>
       <div className={styles["navs"]}>
         {isAuth ? (
           <>
-            <NavTab to={"/"} active={router.pathname === "/"}>
-              MainPage
-            </NavTab>
-            <NavTab
-              to={"/me/settings"}
-              active={router.pathname === "/me/settings"}
-            >
-              Settings
-            </NavTab>
-            <NavTab
-              to={"/user/Fox1209"}
-              active={router.pathname === "/user/Fox1209"}
-            >
-              Fox1209
-            </NavTab>
-            <NavTab
-              to={"/user/fox1209"}
-              active={router.pathname === "/user/fox1209"}
-            >
-              fox1209
-            </NavTab>
-            <NavTab to={"/forms"} active={router.pathname === "/forms"}>
-              forms
-            </NavTab>
-            <NavTab to={"/inputs"} active={router.pathname === "/inputs"}>
-              inputs
+            <NavTab to={"/users"} active={router.asPath === "/users"}>
+              Users
             </NavTab>
           </>
         ) : (
           <>
-            <NavTab to={"/auth"} active={router.pathname === "/auth"}>
+            <NavTab to={"/auth"} active={router.asPath === "/auth"}>
               Auth
             </NavTab>
           </>
         )}
-
-        {/* {navList.map(({ to, label }, idx) => (
-          <NavTab key={idx} to={to} active={to === router.pathname}>
-            {label}
-          </NavTab>
-        ))} */}
       </div>
       <div className={styles["auth"]}>
         {isAuth ? (
           <>
-            <NavTab to={`/user/${username}`}>{username}</NavTab>
+            <NavTab
+              to={`/users/${username}`}
+              active={router.asPath === `/users/${username}`}
+            >
+              {username}
+            </NavTab>
+            <NavTab
+              to={"/me/settings"}
+              active={router.asPath === "/me/settings"}
+            >
+              Settings
+            </NavTab>
             <NavTab to="/auth" onClick={handleSignOut}>
               SignOut
             </NavTab>
           </>
         ) : (
           <>
-            <NavTab to="/auth" active={router.pathname === "/auth"}>
+            <NavTab to="/auth" active={router.asPath === "/auth"}>
               SignIn/SignUp
             </NavTab>
           </>

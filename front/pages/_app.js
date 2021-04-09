@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 // export async function getServerSideProps(route) {
-//   debugger;
+//   ;
 //   console.log("route :>> ", route);
 //   return {
 //     props: {},

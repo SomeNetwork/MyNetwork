@@ -7,7 +7,7 @@ const Tabs = (props) => {
   const [value, setValue] = useState(active === undefined ? 0 : active);
 
   // useEffect(() => {
-  //   debugger;
+  //   ;
   //   setValue(active);
   // }, [active]);
 

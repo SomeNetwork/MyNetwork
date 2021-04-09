@@ -123,7 +123,6 @@ function* workerUserUpdate({ type, payload }) {
     const { user } = yield call(() =>
       DB.User.update({ username }, { ...payload })
     );
-    debugger;
     yield put(localSaveUser(user));
     yield put(
       notificationCreate({
@@ -156,7 +155,6 @@ function* workerEmailConfirm({ type, payload }) {
     );
     yield put(loadUser());
   } catch (error) {
-    debugger;
     yield put(notificationCreate({ variant: "error", text: error.message }));
   }
 }
@@ -170,7 +168,6 @@ function* workerUserLoad({ type, payload }) {
     const data = yield call(() => Auth.AuthCheck());
     yield put(localSaveUser(data));
   } catch (error) {
-    debugger;
     yield put(notificationCreate({ variant: "error", text: error.message }));
   }
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 
 const NavTab = (props) => {
   const { children, label, type, active, to, onClick, variant } = props;
+
   const tab = (
     <div
       className={`${styles["nav-tab"]} ${active ? styles["active"] : ""} ${
@@ -13,9 +14,13 @@ const NavTab = (props) => {
       }`}
       onClick={onClick}
     >
-      <Text variant="body" className={`${styles["label"]}`}>
-        {children || label}
-      </Text>
+      {React.isValidElement(children) ? (
+        children
+      ) : (
+        <Text variant="body" className={`${styles["label"]}`}>
+          {children || label}
+        </Text>
+      )}
     </div>
   );
   if (type === "link") return <Link href={to}>{tab}</Link>;
@@ -23,7 +28,7 @@ const NavTab = (props) => {
 };
 
 NavTab.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   label: PropTypes.string,
   active: PropTypes.bool,
   type: PropTypes.oneOf(["link", "tab"]),

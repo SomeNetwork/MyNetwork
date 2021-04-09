@@ -18,9 +18,11 @@
     .info-left {
       max-width: 400px;
       width: 30%;
-      // height: 100%;
-      .avatar {
+      display: block;
+      .avatar-container {
+        margin-bottom: 8px;
       }
+
       .btn-settings {
       }
     }
