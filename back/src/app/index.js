@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser')
 var corsOptions = {
     credentials: true,
     // origin: true,
-    origin: 'http://dev.localhost:3000',
+    origin: '*',
     body: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders:
@@ -26,9 +26,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(process.env.PORT_HTTP || 3030, () => {
-    console.log(
-        `Server started http://dev.localhost:${process.env.PORT_HTTP || 3030}`
-    )
+    console.log(`Server started on port: ${process.env.PORT_HTTP || 3030}`)
 })
 
 module.exports = app

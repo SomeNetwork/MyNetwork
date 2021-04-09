@@ -1,7 +1,7 @@
 import _axios from "./axios";
 import _Auth from "./auth";
 import _Bucket from "./bucket";
-import _DB from "./DB";
+import _DB from "./db";
 
 export const Auth = _Auth;
 export const Bucket = _Bucket;
