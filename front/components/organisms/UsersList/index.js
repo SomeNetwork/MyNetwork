@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import ReactDOM from "react-dom";
 import { List as VirtualizedList } from "react-virtualized";
@@ -44,7 +45,7 @@ function rowRenderer({
   );
 }
 
-const List = (props) => {
+const UsersList = (props) => {
   return (
     <VirtualizedList
       width={300}
@@ -56,8 +57,8 @@ const List = (props) => {
   );
 };
 
-List.propTypes = {
+UsersList.propTypes = {
   rowRenderer: PropTypes.node,
 };
 
-export default List;
+export default UsersList;

@@ -27,7 +27,9 @@ const AuthManager = (props) => {
         if (router.pathname === "/auth") router.push("/");
         else if (canView !== true) setCanView(true);
       } else if (isAuth === false) {
-        if (router.pathname !== "/auth") router.push("/auth");
+        // debugger;
+        if (!/^\/auth((\/)?[\w])*$/.test(router.pathname)) router.push("/auth");
+        // if (router.pathname !== "/auth") router.push("/auth");
         else if (canView !== true) setCanView(true);
       }
     }

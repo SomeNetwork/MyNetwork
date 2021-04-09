@@ -2,6 +2,7 @@ import { Toast } from "components/atoms";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  notificationClose,
   notificationDelete,
   notificationUpdate,
 } from "store/notifications/actions";
@@ -11,11 +12,13 @@ const ToastManager = () => {
   const dispatch = useDispatch();
 
   const onClose = (id) => {
-    dispatch(notificationUpdate({ id, hidden: true }));
-    let timer = setTimeout(() => {
-      dispatch(notificationDelete({ id }));
-      clearTimeout(timer);
-    }, 1000);
+    dispatch(notificationClose({ id }));
+
+    // dispatch(notificationUpdate({ id, hidden: true }));
+    // let timer = setTimeout(() => {
+    //   dispatch(notificationDelete({ id }));
+    //   clearTimeout(timer);
+    // }, 1000);
   };
 
   return (

@@ -7,6 +7,7 @@ import { ButtonPropTypes } from "components/atoms/Button";
 // const requiredFieldRule = (v) => !!v || "Required field.";
 
 const Form = (props) => {
+  debugger;
   const { title, fields, submitButton } = props;
   const [state, setState] = useState(
     Object.fromEntries(
@@ -68,26 +69,37 @@ const Form = (props) => {
     <div>
       {title && <Text variant="title">{title}</Text>}
       <form onSubmit={submit}>
-        {fields.map((field, idx) => (
-          <Input
-            key={idx}
-            name={field.name}
-            value={state[field.name].value}
-            error={state[field.name].error}
-            label={field.label}
-            type={field.type}
-            variant={field.variant}
-            onChange={(value) =>
-              setState((prevState) => ({
-                ...prevState,
-                [field.name]: { value, error: false },
-              }))
-            }
-            htmlProps={field.htmlProps}
-            required={field.required}
-            fluid={field.fluid}
-          />
-        ))}
+        {fields.map((field, idx) => {
+          debugger;
+          return (
+            <Input
+              key={idx}
+              name={field.name}
+              value={state[field.name].value}
+              error={state[field.name].error}
+              label={field.label}
+              type={field.type}
+              variant={field.variant}
+              onChange={
+                (value) =>
+                  setState((prevState) => {
+                    debugger;
+                    return {
+                      ...prevState,
+                      [field.name]: { value, error: false },
+                    };
+                  })
+                // setState((prevState) => ({
+                //   ...prevState,
+                //   [field.name]: { value, error: false },
+                // }))
+              }
+              htmlProps={field.htmlProps}
+              required={field.required}
+              fluid={field.fluid}
+            />
+          );
+        })}
         <Button
           /* variant={submitButton.variant}  */ {...submitButton}
           onClick={submit}

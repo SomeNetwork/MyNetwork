@@ -1,6 +1,7 @@
 export const AUTHFORM_GOTO_SIGN_IN = "AUTHFORM_GOTO_SIGN_IN";
 export const AUTHFORM_GOTO_SIGN_UP = "AUTHFORM_GOTO_SIGN_UP";
 export const AUTHFORM_GOTO_EMAIL_CONFIRM = "AUTHFORM_GOTO_EMAIL_CONFIRM";
+export const AUTHFORM_GOTO_SEND_CODE = "AUTHFORM_GOTO_SEND_CODE";
 export const AUTHFORM_SUBMIT_SIGN_IN = "AUTHFORM_SUBMIT_SIGN_IN";
 export const AUTHFORM_SUBMIT_SIGN_UP = "AUTHFORM_SUBMIT_SIGN_UP";
 export const AUTHFORM_SUBMIT_EMAIL_CONFIRM = "AUTHFORM_SUBMIT_EMAIL_CONFIRM";
@@ -19,7 +20,7 @@ export const gotoEmailConfirm = (payload) => ({
   payload,
 });
 export const gotoCodeSend = (payload) => ({
-  type: AUTHFORM_SUBMIT_SEND_CODE,
+  type: AUTHFORM_GOTO_SEND_CODE,
   payload,
 });
 

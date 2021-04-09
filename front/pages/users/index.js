@@ -1,7 +1,8 @@
-import ReactVirtualizedTable from "components/moleculs/List";
+import { UsersList } from "components/organisms";
 
 const User = () => {
-  return <ReactVirtualizedTable />;
+  // return <ReactVirtualizedTable />;
+  return <UsersList />;
 };
 
 User.propTypes = {};

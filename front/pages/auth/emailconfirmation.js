@@ -32,7 +32,7 @@ const EmailConfirmation = () => {
             })
           );
         })
-        .finally(() => router.push("/"));
+        .finally(() => router.push("/auth"));
     }
   }, [router]);
   return (
