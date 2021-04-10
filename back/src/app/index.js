@@ -7,8 +7,8 @@ const routes = require('./routes')
 const cookieParser = require('cookie-parser')
 
 const httpsConfig = {
-    key: fs.readFileSync('../ssl/dev.localhost.key'),
-    cert: fs.readFileSync('../ssl/dev.localhost.crt'),
+    key: fs.readFileSync(process.env.SSL_KEY),
+    cert: fs.readFileSync(process.env.SSL_CRT),
 }
 
 const corsOptions = {

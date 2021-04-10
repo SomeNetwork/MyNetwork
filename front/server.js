@@ -21,8 +21,10 @@ app.prepare().then(() => {
   createServer(httpsConfig, (req, res) => {
     const parsedUrl = parse(req.url, true);
     handle(req, res, parsedUrl);
-  }).listen(port, (err) => {
+  }).listen(process.env.HTTPS_PORT || port, (err) => {
     if (err) throw err;
-    console.log("ready - started server on port:" + port);
+    console.log(
+      "ready - started server on port:" + process.env.HTTPS_PORT || port
+    );
   });
 });
