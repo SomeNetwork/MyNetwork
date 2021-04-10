@@ -28,13 +28,13 @@ router.post('/signin', (req, res) => {
         .then((token) => {
             res.cookie('token', token, {
                 maxAge: 12 * 60 * 60 * 1000,
-                httpOnly: true,
+                // httpsOnly: true,
             })
             res.redirect('/auth/me')
-            // res.send({
-            //     success: true,
-            //     me: req.user,
-            // })
+            //     res.send({
+            //         success: true,
+            //         me: req.user,
+            //     })
         })
         .catch((error) => {
             res.send({ success: false, error: error.message })

@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL: process.env.API_PATH,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": process.env.API_PATH,
     "Access-Control-Allow-Credentials": true,
     "Access-Control-Allow-Headers": "access-control-allow-headers",
   },

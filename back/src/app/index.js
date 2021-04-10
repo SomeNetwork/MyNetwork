@@ -1,13 +1,20 @@
 const express = require('express')
 const app = express()
+const https = require('https')
+const fs = require('fs')
 const cors = require('cors')
 const routes = require('./routes')
 const cookieParser = require('cookie-parser')
 
-var corsOptions = {
+const httpsConfig = {
+    key: fs.readFileSync('../ssl/dev.localhost.key'),
+    cert: fs.readFileSync('../ssl/dev.localhost.crt'),
+}
+
+const corsOptions = {
     credentials: true,
     // origin: true,
-    origin: '*',
+    origin: process.env.FRONT_URL,
     body: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders:
@@ -25,8 +32,13 @@ app.get('/', (req, res) => {
     res.send(`Hello, ${req.user?.username || 'stranger'}`)
 })
 
+const apps = https.createServer(httpsConfig, app)
+
 app.listen(process.env.PORT_HTTP || 3030, () => {
     console.log(`Server started on port: ${process.env.PORT_HTTP || 3030}`)
+})
+apps.listen(process.env.PORT_HTTPS || 3031, () => {
+    console.log(`Server started on port: ${process.env.PORT_HTTPS || 3031}`)
 })
 
 module.exports = app
