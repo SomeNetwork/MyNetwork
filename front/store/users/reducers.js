@@ -10,6 +10,11 @@ const defaultState = {
 export const usersReduser = (state = defaultState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case USERS_LOAD:
+      return {
+        ...state,
+        isLoaded: false,
+      };
     case USERS_LOCAL_SAVE:
       return {
         ...state,

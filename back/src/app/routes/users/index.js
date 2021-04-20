@@ -58,4 +58,17 @@ router.post('/update/:username', (req, res) => {
         })
 })
 
+router.post('', (req, res) => {
+    const data = req.body
+    const { config } = data
+    DB.Users.list(config).then((users) => {
+        res.send({
+            success: true,
+            data: {
+                users,
+            },
+        })
+    })
+})
+
 module.exports = router

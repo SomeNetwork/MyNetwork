@@ -1,24 +1,26 @@
 import { all, call, put, takeEvery } from "redux-saga/effects";
-import { USER_PAGE_LOAD, localSaveUserPage } from "./actions";
+import { usersLocalSave, USERS_LOAD } from "./actions";
 // import Router from "next/router";
 import { DB } from "src/api";
+import { notificationCreate } from "store/notifications/actions";
 
 /* LoadUser */
 
-function* workerLoadUserPage({ type, payload }) {
+function* workerUsersLoad({ type, payload }) {
   try {
-    // ;
     // const data = yield call(DB.User.read, payload);
-    const data = yield call(() => DB.User.read(payload).then((res) => res));
-    yield put(localSaveUserPage(data));
+    const data = yield call(() => DB.User.list(payload).then((res) => res));
+
+    yield put(usersLocalSave(data));
+    yield put(notificationCreate({ variant: "info", text: "users loaded" }));
   } catch (error) {
-    // yield put(notificationCreate({ variant: "error", text: error.message }));
+    yield put(notificationCreate({ variant: "error", text: error.message }));
   }
 }
-export function* watchLoadUser() {
-  yield takeEvery(USER_PAGE_LOAD, workerLoadUserPage);
+export function* watchUsersLoad() {
+  yield takeEvery(USERS_LOAD, workerUsersLoad);
 }
 
 export default function* rootSaga() {
-  yield all([watchLoadUser()]);
+  yield all([watchUsersLoad()]);
 }

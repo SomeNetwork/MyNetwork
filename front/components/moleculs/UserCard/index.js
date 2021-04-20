@@ -3,6 +3,7 @@ import { ArrowForwardIosRounded, Sms } from "@material-ui/icons";
 import { Button, Card, Image, Text } from "components/atoms";
 import React from "react";
 import styles from "./UserCard.module.scss";
+import Link from "next/link";
 
 const UserCard = (props) => {
   const { user } = props;
@@ -24,7 +25,14 @@ const UserCard = (props) => {
       </div>
       <div className={styles["actions-container"]}>
         <Sms />
-        <ArrowForwardIosRounded />
+        <Link
+          href={{
+            pathname: "/users/[username]",
+            query: { username: user.username },
+          }}
+        >
+          <ArrowForwardIosRounded />
+        </Link>
       </div>
     </Card>
   );
@@ -37,6 +45,15 @@ UserCard.propTypes = {
     name: PropTypes.string,
     username: PropTypes.string,
   }),
+};
+
+UserCard.defaultProps = {
+  user: {
+    avatar: undefined,
+    family_name: "Фамилия",
+    name: "Имя",
+    username: "usename",
+  },
 };
 
 export default UserCard;

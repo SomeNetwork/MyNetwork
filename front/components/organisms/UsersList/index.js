@@ -1,59 +1,50 @@
+import { UserCard } from "components/moleculs";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { List as VirtualizedList } from "react-virtualized";
-
-// List data as an array of strings
-const list = [
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  "Brian Vaughn",
-  // And so on...
-];
-
-function rowRenderer({
-  key, // Unique key within array of rows
-  index, // Index of row within collection
-  isScrolling, // The List is currently being scrolled
-  isVisible, // This row is visible within the List (eg it is not an overscanned row)
-  style, // Style object to be applied to row (to position it)
-}) {
-  return (
-    <div key={key} style={style}>
-      {list[index]}
-    </div>
-  );
-}
+import { useDispatch, useSelector } from "react-redux";
+import { AutoSizer, List as VirtualizedList } from "react-virtualized";
+import { usersLoadUsers } from "store/users/actions";
+import styles from "./UsersList.module.scss";
 
 const UsersList = (props) => {
+  const state = useSelector((state) => state.users);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(usersLoadUsers());
+  }, []);
+
+  const rowRenderer = ({ key, index, isScrolling, isVisible, style }) => {
+    return (
+      <div key={key} style={style}>
+        <UserCard user={state.users[index]} />
+      </div>
+    );
+  };
+
   return (
-    <VirtualizedList
-      width={300}
-      height={300}
-      rowCount={list.length}
-      rowHeight={20}
-      rowRenderer={rowRenderer}
-    />
+    <div className={styles["container"]}>
+      <AutoSizer>
+        {({ height, width }) => {
+          console.log(`height`, height);
+          console.log(`width`, width);
+          return (
+            <VirtualizedList
+              // width={800}
+              // height={300}
+              width={width}
+              height={height}
+              rowCount={state.users.length}
+              rowHeight={100}
+              rowRenderer={rowRenderer}
+              style={{ outline: "none" }}
+            />
+          );
+        }}
+      </AutoSizer>
+    </div>
   );
 };
 

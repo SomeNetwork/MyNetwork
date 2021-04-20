@@ -3,6 +3,7 @@ import watchAuth from "./auth/sagas";
 import watchAuthForm from "./authForm/sagas";
 import watchNotification from "./notifications/sagas";
 import watchUserPage from "./userPage/sagas";
+import watchUsers from "./users/sagas";
 
 export default function* rootSaga() {
   yield all([
@@ -10,5 +11,6 @@ export default function* rootSaga() {
     watchAuthForm(),
     watchNotification(),
     watchUserPage(),
+    watchUsers(),
   ]);
 }

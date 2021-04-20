@@ -1,5 +1,5 @@
 // const { USER_PAGE_SAVE } = require("./actions");
-import { USER_PAGE_SAVE } from "./actions";
+import { USER_PAGE_LOAD, USER_PAGE_SAVE } from "./actions";
 
 const defaultState = {
   user: {},
@@ -10,10 +10,11 @@ const defaultState = {
 export const userPageReduser = (state = defaultState, action) => {
   const { type, payload } = action;
   switch (type) {
-    // case USER_PAGE_LOAD:
-    //   return {
-    //     ...sate,
-    //   };
+    case USER_PAGE_LOAD:
+      return {
+        ...state,
+        isLoaded: false,
+      };
     case USER_PAGE_SAVE:
       return {
         ...state,

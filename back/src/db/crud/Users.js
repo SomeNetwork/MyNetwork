@@ -121,12 +121,12 @@ class Users extends CRUD {
     // }
     list(config) {
         return new Promise((resolve, reject) => {
-            UserModel.find({ ...config }, function (err, user) {
+            UserModel.find({ ...config }, function (err, users) {
                 if (err) {
                     // handleError(err)
                     reject(err)
                 }
-                resolve(user)
+                resolve(users)
             })
         })
     }

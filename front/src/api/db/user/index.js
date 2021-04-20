@@ -18,7 +18,15 @@ export function update(oldData, newData) {
     }
   });
 }
+export function list(config) {
+  return API.req.post(`/users`, { config }).then((data) => {
+    console.log("data :>> ", data);
+    if (data.success) {
+      return data.data;
+    }
+  });
+}
 
-const User = { read, update };
+const User = { read, update, list };
 
 export default User;
