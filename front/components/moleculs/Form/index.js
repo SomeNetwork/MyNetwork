@@ -7,7 +7,7 @@ import { ButtonPropTypes } from "components/atoms/Button";
 // const requiredFieldRule = (v) => !!v || "Required field.";
 
 const Form = (props) => {
-  debugger;
+  // debugger;
   const { title, fields, submitButton } = props;
   const [state, setState] = useState(
     Object.fromEntries(
@@ -70,7 +70,7 @@ const Form = (props) => {
       {title && <Text variant="title">{title}</Text>}
       <form onSubmit={submit}>
         {fields.map((field, idx) => {
-          debugger;
+          // debugger;
           return (
             <Input
               key={idx}
@@ -83,7 +83,7 @@ const Form = (props) => {
               onChange={
                 (value) =>
                   setState((prevState) => {
-                    debugger;
+                    // debugger;
                     return {
                       ...prevState,
                       [field.name]: { value, error: false },

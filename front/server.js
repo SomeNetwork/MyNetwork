@@ -6,7 +6,8 @@ const next = require("next");
 const fs = require("fs");
 const port = 3000;
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev: false });
+// const app = next({ dev: false });
+const app = next({ dev: true });
 const handle = app.getRequestHandler();
 
 console.log(`process.env`, process.env);
