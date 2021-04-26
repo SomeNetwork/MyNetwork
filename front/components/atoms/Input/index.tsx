@@ -2,7 +2,22 @@ import React from "react";
 import styles from "./Input.module.scss";
 import PropTypes from "prop-types";
 
-const Input = (props) => {
+export type InputProps = {
+  children: null | undefined;
+  error: string | false;
+  label: string;
+  name: string;
+  onChange: (value: string | number) => void;
+  type: "text" | "number" | "email" | "password";
+  value: string | number;
+  variant: "outlined";
+  htmlProps: React.HTMLProps<HTMLInputElement>;
+  // htmlProps: any;
+  required: boolean;
+  fluid: boolean;
+};
+
+const Input = (props: InputProps) => {
   const {
     variant,
     label,
@@ -27,6 +42,11 @@ const Input = (props) => {
   //       break;
   //   }
   // };
+
+  const handleChange = (oEvent: React.ChangeEvent<HTMLInputElement>): void => {
+    if (onChange) onChange(oEvent.target.value);
+  };
+
   return (
     <div
       className={`${styles["inp-container"]} ${error ? styles["error"] : ""} ${
@@ -39,7 +59,7 @@ const Input = (props) => {
           error ? styles["error"] : ""
         } ${fluid ? styles["fluid"] : ""}`}
         type={type || "text"}
-        onChange={(oEvent) => onChange && onChange(oEvent.target.value)}
+        onChange={handleChange}
         {...htmlProps}
         autoComplete={"false"}
         // onKeyDown={onKeyDown}
@@ -60,6 +80,7 @@ const Input = (props) => {
   );
 };
 
+// FIXME: Delete after ts refactoring
 export const InputPropTypes = {
   children: PropTypes.oneOf([null]),
   error: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([false])]),

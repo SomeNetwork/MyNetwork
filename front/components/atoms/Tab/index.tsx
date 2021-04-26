@@ -2,8 +2,15 @@ import { Card, Text } from "components/atoms";
 import PropTypes from "prop-types";
 import React from "react";
 import styles from "./Tab.module.scss";
+import { CardProps } from "components/atoms/Card";
 
-const Tab = (props) => {
+type TabProps = {
+  label: string;
+  active: false;
+  onClick: CardProps["onClick"];
+};
+
+const Tab = (props: TabProps) => {
   const { label, active, onClick } = props;
   return (
     <Card
@@ -18,7 +25,6 @@ const Tab = (props) => {
 Tab.propTypes = {
   label: PropTypes.string.isRequired,
   active: PropTypes.bool,
-  // id: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 Tab.defaultProps = {

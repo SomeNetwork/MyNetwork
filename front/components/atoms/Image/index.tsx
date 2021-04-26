@@ -1,33 +1,36 @@
-import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Image.module.scss";
 
-const Image = (props) => {
+type ImageProps = {
+  className: string;
+  src: string;
+  url: string;
+  variant: "avatar";
+};
+
+const Image = (props: ImageProps) => {
   const { src, url, className, variant } = props;
   const [error, setError] = useState(src ? false : true);
+
   const imgSrc = url ? process.env.API_PATH + url : src;
-  console.log("imgSrc1 :>> ", !!imgSrc, !!url, !!src);
-  useState(() => {
-    console.log("22222222 :>> ", !!imgSrc);
+
+  useEffect(() => {
     setError(imgSrc ? false : true);
-  }, [url, src]);
+  }, [url, src, imgSrc]);
 
   return (
     <div className={`${styles["image"]} ${variant ? styles[variant] : ""}`}>
       {error ? (
-        <img src="/images/loadingFailed.svg" className={` ${className}`} />
+        <img
+          src="/images/loadingFailed.svg"
+          className={` ${className}`}
+          alt="Ooops"
+        />
       ) : (
         <img src={imgSrc} alt="alt" onError={() => setError(true)} />
       )}
     </div>
   );
-};
-
-Image.propTypes = {
-  className: PropTypes.any,
-  src: PropTypes.string,
-  url: PropTypes.string,
-  variant: PropTypes.oneOf(["avatar"]),
 };
 
 export default Image;

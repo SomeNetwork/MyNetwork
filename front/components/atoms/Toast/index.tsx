@@ -10,18 +10,29 @@ import {
   HighlightOff as HighlightOffIcon,
 } from "@material-ui/icons";
 
-const Toast = (props) => {
+import { CardProps } from "components/atoms/Card";
+
+type ToastProps = {
+  text: string;
+  variant: "success" | "info" | "warning" | "error";
+  onClose?: () => void;
+  onClick?: () => void;
+  hidden: boolean;
+};
+
+const Toast = (props: ToastProps) => {
   const { variant, text, onClick, onClose, hidden } = props;
 
-  const handleClose = (event) => {
-    onClose();
-    event.stopPropagation();
-    event.preventDefault();
+  const handleClose = (oEvent: React.MouseEvent<HTMLSpanElement>): void => {
+    if (onClick) return;
+    if (onClose) onClose();
+    oEvent.stopPropagation();
+    oEvent.preventDefault();
   };
-  const handleClick = (event) => {
-    onClick();
-    onClose();
-    event.preventDefault();
+  const handleClick: CardProps["onClick"] = (oEvent) => {
+    if (onClick) onClick();
+    if (onClose) onClose();
+    oEvent.preventDefault();
   };
 
   const iconVariant =
@@ -42,11 +53,11 @@ const Toast = (props) => {
         className={`${styles[`em-${variant}`]} ${
           onClick ? styles["clickable"] : ""
         } ${hidden ? styles["hidden"] : ""}`}
-        onClick={onClick && handleClick}
+        onClick={handleClick}
       >
         {iconVariant}
         <Text variant="body2">{text}</Text>
-        <span onClick={handleClose}>
+        <span role="button" tabIndex={0} onMouseDown={handleClose}>
           <HighlightOffIcon />
         </span>
       </Card>

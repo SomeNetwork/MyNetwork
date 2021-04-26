@@ -1,10 +1,9 @@
 import { Provider } from "react-redux";
-
 import { AuthManager, Bar, ToastManager } from "components/organisms";
 import { useStore } from "store";
 import "../styles/globals.scss";
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
 
   return (
@@ -26,4 +25,4 @@ function MyApp({ Component, pageProps }) {
 //   };
 // }
 
-export default MyApp;
+export default App;
