@@ -14,7 +14,7 @@ const httpsConfig = {
 const corsOptions = {
     credentials: true,
     // origin: true,
-    origin: process.env.FRONT_URL,
+    origin: process.env.FRONT_URL||true,
     body: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders:
