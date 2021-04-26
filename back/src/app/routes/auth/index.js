@@ -28,7 +28,9 @@ router.post('/signin', (req, res) => {
         .then((token) => {
             res.cookie('token', token, {
                 maxAge: 12 * 60 * 60 * 1000,
-                // httpsOnly: true,
+                httpsOnly: true,
+                sameSite: 'None',
+                secure: true,
             })
             res.redirect('/auth/me')
             //     res.send({
@@ -44,7 +46,11 @@ router.post('/signout', (req, res) => {
     const body = req.body
     console.log('signout :>> ', body)
 
-    res.clearCookie('token')
+    res.clearCookie('token', {
+        httpsOnly: true,
+        sameSite: 'None',
+        secure: true,
+    })
     res.send({ success: true })
 })
 
