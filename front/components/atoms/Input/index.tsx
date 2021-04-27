@@ -2,20 +2,20 @@ import React from "react";
 import styles from "./Input.module.scss";
 import PropTypes from "prop-types";
 
-export type InputProps = {
-  children: null | undefined;
-  error: string | false;
+export interface InputProps {
+  // children: null | undefined;
+  error?: string | false;
   label: string;
   name: string;
   onChange: (value: string | number) => void;
   type: "text" | "number" | "email" | "password";
   value: string | number;
-  variant: "outlined";
-  htmlProps: React.HTMLProps<HTMLInputElement>;
+  variant?: "outlined";
+  htmlProps?: React.HTMLProps<HTMLInputElement>;
   // htmlProps: any;
   required: boolean;
   fluid: boolean;
-};
+}
 
 const Input = (props: InputProps) => {
   const {
@@ -82,7 +82,6 @@ const Input = (props: InputProps) => {
 
 // FIXME: Delete after ts refactoring
 export const InputPropTypes = {
-  children: PropTypes.oneOf([null]),
   error: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([false])]),
   label: PropTypes.string,
   name: PropTypes.string.isRequired,

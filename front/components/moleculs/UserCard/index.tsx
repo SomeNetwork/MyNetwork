@@ -1,11 +1,22 @@
-import PropTypes from "prop-types";
 import { ArrowForwardIosRounded, Sms } from "@material-ui/icons";
-import { Button, Card, Image, Text } from "components/atoms";
+import { Card, Image, Text } from "components/atoms";
 import React from "react";
 import styles from "./UserCard.module.scss";
 import Link from "next/link";
 
-const UserCard = (props) => {
+// FIXME: to global file
+export interface IUser {
+  avatar: string;
+  family_name: string;
+  name: string;
+  username: string;
+}
+
+export interface UserCardProps {
+  user: IUser;
+}
+
+const UserCard = (props: UserCardProps) => {
   const { user } = props;
   return (
     <Card className={styles["container"]}>
@@ -36,15 +47,6 @@ const UserCard = (props) => {
       </div>
     </Card>
   );
-};
-
-UserCard.propTypes = {
-  user: PropTypes.shape({
-    avatar: PropTypes.string,
-    family_name: PropTypes.string,
-    name: PropTypes.string,
-    username: PropTypes.string,
-  }),
 };
 
 UserCard.defaultProps = {

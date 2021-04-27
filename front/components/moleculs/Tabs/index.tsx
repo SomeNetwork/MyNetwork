@@ -1,15 +1,16 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import Tab from "../../atoms/Tab";
+import React, { useState } from "react";
+import Tab, { TabProps } from "components/atoms/Tab";
 import styles from "./Tabs.module.scss";
-const Tabs = (props) => {
-  const { tabs, children, active } = props;
-  const [value, setValue] = useState(active === undefined ? 0 : active);
 
-  // useEffect(() => {
-  //   ;
-  //   setValue(active);
-  // }, [active]);
+export interface TabsProps {
+  children: React.ReactChild[];
+  tabs: TabProps[];
+  active: number;
+}
+
+const Tabs = (props: TabsProps) => {
+  const { tabs, children, active } = props;
+  const [value, setValue] = useState(active);
 
   return (
     <div className={styles["tabs-container"]}>
@@ -33,18 +34,8 @@ const Tabs = (props) => {
   );
 };
 
-Tabs.propTypes = {
-  children: PropTypes.any,
-  tabs: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired, // id: PropTypes.number.isRequired,
-      onClick: PropTypes.func,
-    })
-  ),
-  active: PropTypes.number,
-};
 Tabs.defaultProps = {
-  value: 0,
+  active: 0,
 };
 
 export default Tabs;

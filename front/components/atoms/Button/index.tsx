@@ -2,18 +2,18 @@ import React from "react";
 import styles from "./Button.module.scss";
 import PropTypes from "prop-types";
 
-export type ButtonProps = {
-  variant: "primary" | "secondary" | "success" | "warning" | "error";
+export interface ButtonProps {
+  variant?: "primary" | "secondary" | "success" | "warning" | "error";
   // children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  children: string | React.ReactNode;
+  children?: string | React.ReactNode;
   // children: any,
   text: string;
   onClick: () => void;
-  fluid: boolean;
-  animated: boolean;
-  size: "small" | "normal" | "huge";
-  disabled: boolean;
-};
+  fluid?: boolean;
+  animated?: boolean;
+  size?: "small" | "normal" | "huge";
+  disabled?: boolean;
+}
 
 const Button = (props: ButtonProps) => {
   const {

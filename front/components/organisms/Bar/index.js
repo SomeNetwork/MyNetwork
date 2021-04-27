@@ -5,6 +5,7 @@ import { Text, NavTab } from "components/atoms";
 import styles from "./Bar.module.scss";
 import { signOut } from "store/auth/actions";
 
+
 const navList = [
   {
     to: "/",

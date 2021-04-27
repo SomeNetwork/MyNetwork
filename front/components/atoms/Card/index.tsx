@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./Card.module.scss";
 
-export type CardProps = {
+export interface CardProps {
   children: React.ReactNode;
   className: string;
-  onClick?: (oEvent: React.MouseEvent<HTMLDivElement>) => void;
-};
+  onClick?: (oEvent?: React.MouseEvent<HTMLDivElement>) => void;
+}
 
 const Card = (props: CardProps) => {
   const { children, className, onClick } = props;

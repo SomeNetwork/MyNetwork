@@ -12,13 +12,13 @@ import {
 
 import { CardProps } from "components/atoms/Card";
 
-type ToastProps = {
+export interface ToastProps {
   text: string;
   variant: "success" | "info" | "warning" | "error";
   onClose?: () => void;
   onClick?: () => void;
   hidden: boolean;
-};
+}
 
 const Toast = (props: ToastProps) => {
   const { variant, text, onClick, onClose, hidden } = props;

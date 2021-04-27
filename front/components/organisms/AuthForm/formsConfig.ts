@@ -1,3 +1,4 @@
+
 export const configSignIn = {
   title: "",
   fields: [
@@ -7,9 +8,9 @@ export const configSignIn = {
       type: "text",
       // defaultValue: "def val",
       rules: [
-        (v) => v.length > 5 || "Must be longer than 5 characters",
+        (v) => typeof v === 'string' && v.length > 5 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
-        (v) => /^\w*$/.test(v) || "Username can only contain a-z,A-Z,0-9,_",
+        (v) => typeof v === 'string' && /^\w*$/.test(v) || "Username can only contain a-z,A-Z,0-9,_",
       ],
       required: true,
       fluid: true,
@@ -20,14 +21,14 @@ export const configSignIn = {
       type: "password",
       // defaultValue: "def val",
       rules: [
-        (v) => v.length >= 8 || "Must be longer than 8 characters",
+        (v) => typeof v === 'string' && v.length >= 8 || "Must be longer than 8 characters",
         (v) => v !== "" || "Required field",
-        (v) => /(?=.*[0-9])/.test(v) || "Must contain number",
+        (v) => typeof v === 'string' && /(?=.*[0-9])/.test(v) || "Must contain number",
         // (v) => /(?=.*[!@#$%^&*])/.test(v) || "Must contain special character",
-        (v) => /(?=.*[a-z])/.test(v) || "Must contain lowercase latin letter",
-        (v) => /(?=.*[A-Z])/.test(v) || "Must contain uppercase latin letter",
+        (v) => typeof v === 'string' && /(?=.*[a-z])/.test(v) || "Must contain lowercase latin letter",
+        (v) => typeof v === 'string' && /(?=.*[A-Z])/.test(v) || "Must contain uppercase latin letter",
         (v) =>
-          /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g.test(v) ||
+          typeof v === 'string' && /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}/g.test(v) ||
           "Wrong format",
       ],
       required: true,

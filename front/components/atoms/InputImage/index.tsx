@@ -2,12 +2,12 @@ import React from "react";
 import styles from "./InputImage.module.scss";
 import { Delete, ImageSearch } from "@material-ui/icons";
 
-type InputImageProps = {
+export interface InputImageProps {
   error: string | false;
   onChange: (file: File | null) => void;
   file: File;
   htmlProps: React.HTMLProps<HTMLInputElement>;
-};
+}
 
 const InputImage = (props: InputImageProps) => {
   const { file, onChange, error, htmlProps } = props;

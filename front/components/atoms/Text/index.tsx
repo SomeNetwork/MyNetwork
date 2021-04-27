@@ -1,7 +1,9 @@
 import styles from "./Text.module.scss";
 
-type TextProps = {
-  children: string;
+export interface TextProps {
+  children: string | string[];
+  // children: any;
+  // children: string | React.ReactChildren;
   variant:
     | "header"
     | "title"
@@ -11,7 +13,7 @@ type TextProps = {
     | "small"
     | "button";
   className?: string;
-};
+}
 
 const Text = (props: TextProps) => {
   const { children, variant, className } = props;

@@ -3,15 +3,17 @@ import { Text } from "components/atoms";
 import styles from "./NavTab.module.scss";
 import Link from "next/link";
 
-type NavTabProps = {
-  children: React.ReactNode | string;
-  label: string;
+export interface NavTabProps {
+  // children: string | string[] | React.ReactChildren;
+
+  children?: React.ReactNode | string;
+  label?: string;
   active: boolean;
   type: "link" | "tab";
   to: string;
   onClick: () => void;
   variant: "left" | "right" | "bottom";
-};
+}
 
 const NavTab = (props: NavTabProps) => {
   const { children, label, type, active, to, onClick, variant } = props;
@@ -34,7 +36,7 @@ const NavTab = (props: NavTabProps) => {
           {children}
         </Text>
       ) : (
-        { children }
+        children
       )}
     </div>
   );

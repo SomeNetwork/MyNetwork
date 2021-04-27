@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Image.module.scss";
 
-type ImageProps = {
-  className: string;
-  src: string;
+export interface ImageProps {
+  className?: string;
+  src?: string;
   url: string;
   variant: "avatar";
-};
+}
 
 const Image = (props: ImageProps) => {
   const { src, url, className, variant } = props;
