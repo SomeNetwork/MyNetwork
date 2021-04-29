@@ -15,10 +15,20 @@
   // justify-content: center;
   align-items: center;
   .title {
-    margin: 0;
-    margin-bottom: 6px;
-    // width: 10%;
-    float: left;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    .title-icon {
+      width: 24px;
+      height: 24px;
+    }
+    .title-text {
+      margin: 0;
+      margin-bottom: 6px;
+      // width: 10%;
+      float: left;
+    }
   }
   .navs {
     margin-left: 56px;

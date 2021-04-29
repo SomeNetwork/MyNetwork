@@ -4,7 +4,7 @@ import styles from "./Tabs.module.scss";
 
 export interface TabsProps {
   children: React.ReactChild[];
-  tabs: TabProps[];
+  tabs: Omit<TabProps, "active">[];
   active: number;
 }
 

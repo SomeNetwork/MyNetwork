@@ -17,7 +17,7 @@ export interface FormStateType {
 }
 export type RuleType = (
   v: InputProps["value"],
-  state: FormStateType
+  state?: FormStateType
 ) => FieldErrorType;
 
 export interface FormFieldType extends Omit<InputProps, "onChange" | "value"> {
@@ -27,9 +27,9 @@ export interface FormFieldType extends Omit<InputProps, "onChange" | "value"> {
 
 export interface FormProps {
   fields: FormFieldType[];
-  onSubmit: (data: { [key: string]: InputProps["value"] }) => void;
+  onSubmit: (data: { [key: string]: InputProps["value"] | null }) => void;
   title?: string;
-  submitButton: ButtonProps;
+  submitButton: Omit<ButtonProps, "onClick">;
 }
 
 const Form = (props: FormProps) => {

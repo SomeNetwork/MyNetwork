@@ -4,7 +4,7 @@ import styles from "./Image.module.scss";
 export interface ImageProps {
   className?: string;
   src?: string;
-  url: string;
+  url?: string | null;
   variant: "avatar";
 }
 
@@ -19,7 +19,11 @@ const Image = (props: ImageProps) => {
   }, [url, src, imgSrc]);
 
   return (
-    <div className={`${styles["image"]} ${variant ? styles[variant] : ""}`}>
+    <div
+      className={`${styles["image"]} ${
+        variant ? styles[variant] : ""
+      } ${className}`}
+    >
       {error ? (
         <img
           src="/images/loadingFailed.svg"

@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Input.module.scss";
-import PropTypes from "prop-types";
 
 export interface InputProps {
   // children: null | undefined;
@@ -9,7 +8,7 @@ export interface InputProps {
   name: string;
   onChange: (value: string | number) => void;
   type: "text" | "number" | "email" | "password";
-  value: string | number;
+  value: string | number | undefined;
   variant?: "outlined";
   htmlProps?: React.HTMLProps<HTMLInputElement>;
   // htmlProps: any;
@@ -79,24 +78,6 @@ const Input = (props: InputProps) => {
     </div>
   );
 };
-
-// FIXME: Delete after ts refactoring
-export const InputPropTypes = {
-  error: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([false])]),
-  label: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  type: PropTypes.oneOf(["text", "number", "email", "password", null]),
-  value: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.number.isRequired,
-  ]),
-  variant: PropTypes.oneOf(["outlined"]),
-  htmlProps: PropTypes.object,
-  required: PropTypes.bool,
-  fluid: PropTypes.bool,
-};
-Input.propTypes = InputPropTypes;
 
 Input.defaultProps = {
   value: "",

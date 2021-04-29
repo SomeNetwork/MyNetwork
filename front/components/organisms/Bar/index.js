@@ -1,10 +1,9 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { Text, NavTab } from "components/atoms";
+import { Text, NavTab, Image } from "components/atoms";
 import styles from "./Bar.module.scss";
 import { signOut } from "store/auth/actions";
-
 
 const navList = [
   {
@@ -20,7 +19,10 @@ const navList = [
 const Bar = () => {
   const router = useRouter();
   const authUser = useSelector((store) => store.auth);
-  const { isAuth, username } = authUser;
+  const {
+    isAuth,
+    user: { username },
+  } = authUser;
   const dispatch = useDispatch();
   const handleSignOut = () => dispatch(signOut({ username }));
   return (
@@ -29,10 +31,24 @@ const Bar = () => {
         Some Network
       </Text> */}
       <NavTab to={"/"}>
-        <Text variant="title" className={styles["title"]}>
-          Some Network
-        </Text>
+        <div className={styles["title"]}>
+          <Text variant="title" className={styles["title-text"]}>
+            Some
+          </Text>
+          <Image src="/logo-128.png" className={styles["title-icon"]}></Image>
+          <Text variant="title" className={styles["title-text"]}>
+            net
+          </Text>
+        </div>
       </NavTab>
+      {/* <NavTab to={"/"}>
+        <div className={styles["title"]}>
+          <Image src="/logo-128.png" className={styles["title-icon"]}></Image>
+          <Text variant="title" className={styles["title-text"]}>
+            Some Net
+          </Text>
+        </div>
+      </NavTab> */}
       <div className={styles["navs"]}>
         {isAuth ? (
           <>
@@ -63,7 +79,7 @@ const Bar = () => {
             >
               Settings
             </NavTab>
-            <NavTab to="/auth" onClick={handleSignOut}>
+            <NavTab type="tab" onClick={handleSignOut}>
               SignOut
             </NavTab>
           </>

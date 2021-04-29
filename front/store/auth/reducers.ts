@@ -1,39 +1,35 @@
-const {
-  AUTH_SAVE_USER,
-  AUTH_SIGN_OUT,
-  AUTH_CHECK,
-  AUTH_CHECKED,
-  AUTH_USER_LOAD,
-} = require("./actions");
+import TAuthActions, { AuthActionType, IAuthState } from './types';
 
-const defaultState = {
-  username: "",
-  _id: "",
+
+const defaultState: IAuthState = {
+  user: {} as IAuthState["user"],
   isAuth: false,
   authChecking: null,
 };
 
-export const authReduser = (state = defaultState, action) => {
-  const { type, payload } = action;
+export const authReduser = (state = defaultState, action: TAuthActions): IAuthState => {
+  // FIXME: fix me plz
+  const { type, payload } = { payload: undefined, ...action };
   switch (type) {
-    case AUTH_SAVE_USER:
+    case AuthActionType.AUTH_SAVE_USER:
       return {
         // ...state,
-        ...payload,
+        // FIXME: fix me too plz
+        user: payload as IAuthState["user"],
         isAuth: true,
         authChecking: false,
       };
-    case AUTH_CHECK:
+    case AuthActionType.AUTH_CHECK:
       return {
         ...state,
         authChecking: true,
       };
-    case AUTH_CHECKED:
+    case AuthActionType.AUTH_CHECKED:
       return {
         ...state,
         authChecking: false,
       };
-    case AUTH_SIGN_OUT:
+    case AuthActionType.AUTH_SIGN_OUT:
       return {
         ...defaultState,
         authChecking: false,

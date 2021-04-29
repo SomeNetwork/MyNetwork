@@ -1,10 +1,8 @@
 import React from "react";
 import styles from "./Button.module.scss";
-import PropTypes from "prop-types";
 
 export interface ButtonProps {
   variant?: "primary" | "secondary" | "success" | "warning" | "error";
-  // children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   children?: string | React.ReactNode;
   // children: any,
   text: string;
@@ -39,24 +37,6 @@ const Button = (props: ButtonProps) => {
       {text || children}
     </button>
   );
-};
-
-// FIXME: Delete after ts refactoring
-export const ButtonPropTypes = {
-  variant: PropTypes.oneOf([
-    "primary",
-    "secondary",
-    "success",
-    "warning",
-    "error",
-  ]),
-  children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  text: PropTypes.string,
-  onClick: PropTypes.func,
-  fluid: PropTypes.bool,
-  animated: PropTypes.bool,
-  size: PropTypes.oneOf(["small", "normal", "huge"]),
-  disabled: PropTypes.bool.isRequired,
 };
 
 Button.defaultProps = {

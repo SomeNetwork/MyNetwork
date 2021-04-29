@@ -3,14 +3,7 @@ import { Card, Image, Text } from "components/atoms";
 import React from "react";
 import styles from "./UserCard.module.scss";
 import Link from "next/link";
-
-// FIXME: to global file
-export interface IUser {
-  avatar: string;
-  family_name: string;
-  name: string;
-  username: string;
-}
+import IUser from "src/types/User";
 
 export interface UserCardProps {
   user: IUser;

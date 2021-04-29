@@ -5,14 +5,14 @@ import { useSelector } from "react-redux";
 
 const User = () => {
   // const user = useSelector((state) => state.userPage);
-  const user = useSelector((state) => state.auth);
+  const { isAuth, user } = useSelector((state) => state.auth);
   // const dispatch = useDispatch();
   // useEffect(() => {
   //   if (auth.isAuth) dispatch(loadUserPage({ username: auth.username }));
   // }, [auth]);
   return (
     <>
-      {user.isAuth ? (
+      {isAuth ? (
         <UserSettings user={user} />
       ) : (
         <FullPageLoader label={"Waiting"} />

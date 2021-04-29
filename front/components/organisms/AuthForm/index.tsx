@@ -1,8 +1,7 @@
-import { Card, Form } from "components/atoms";
+import { Form } from "components/atoms";
 import Tabs from "components/moleculs/Tabs";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Auth } from "src/api";
+import React from "react";
+import { useAppDispatch, useAppSelector } from "store";
 // import { signIn, signUp } from "store/auth/actions";
 import {
   gotoCodeSend,
@@ -14,6 +13,12 @@ import {
   submitSignIn,
   submitSignUp,
 } from "store/authForm/actions";
+import {
+  IActionSubmitEmailConfirm,
+  IActionSubmitSendCode,
+  IActionSubmitSignIn,
+  IActionSubmitSignUp,
+} from "store/authForm/types";
 import styles from "./AuthForm.module.scss";
 import {
   configCodeSend,
@@ -23,8 +28,9 @@ import {
 } from "./formsConfig";
 
 const AuthForm = () => {
-  const state = useSelector((store) => store.authForm);
-  const dispatch = useDispatch();
+  const state = useAppSelector((store) => store.authForm);
+  // const state = useSelector((store) => store.authForm);
+  const dispatch = useAppDispatch();
   // const [state, setState] = useState(0);
   return (
     <>
@@ -41,25 +47,47 @@ const AuthForm = () => {
           <div className={styles["form-container"]} key={1}>
             <Form
               {...configSignIn}
-              onSubmit={(data) => dispatch(submitSignIn(data))}
+              onSubmit={(data) =>
+                // FIXME: fix type
+                dispatch(submitSignIn(data as IActionSubmitSignIn["payload"]))
+              }
             />
           </div>
           <div className={styles["form-container"]} key={2}>
             <Form
               {...configSignUp}
-              onSubmit={(data) => dispatch(submitSignUp(data))}
+              onSubmit={(data) =>
+                dispatch(
+                  submitSignUp(
+                    // FIXME: fix type
+                    (data as unknown) as IActionSubmitSignUp["payload"]
+                  )
+                )
+              }
             />
           </div>
           <div className={styles["form-container"]} key={3}>
             <Form
               {...configEmailConfirm}
-              onSubmit={(data) => dispatch(submitEmailConfirm(data))}
+              onSubmit={(data) =>
+                dispatch(
+                  submitEmailConfirm(
+                    // FIXME: fix type
+                    data as IActionSubmitEmailConfirm["payload"]
+                  )
+                )
+              }
             />
           </div>
           <div className={styles["form-container"]} key={4}>
             <Form
               {...configCodeSend}
-              onSubmit={(data) => dispatch(submitSendCode(data))}
+              onSubmit={(data) =>
+                dispatch(
+                  // FIXME: fix type
+                  submitSendCode(data as IActionSubmitSendCode["payload"])
+                )
+              }
             />
           </div>
         </Tabs>

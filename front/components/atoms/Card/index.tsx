@@ -21,10 +21,5 @@ const Card = (props: CardProps) => {
   );
 };
 
-// Card.propTypes = {
-//   children: PropTypes.any,
-//   className: PropTypes.any,
-//   onClick: PropTypes.func,
-// };
 
 export default Card;

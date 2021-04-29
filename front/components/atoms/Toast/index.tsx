@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from "react";
 import { Card, Text } from "..";
 import styles from "./Toast.module.scss";
@@ -32,7 +31,7 @@ const Toast = (props: ToastProps) => {
   const handleClick: CardProps["onClick"] = (oEvent) => {
     if (onClick) onClick();
     if (onClose) onClose();
-    oEvent.preventDefault();
+    oEvent?.preventDefault();
   };
 
   const iconVariant =
@@ -64,14 +63,6 @@ const Toast = (props: ToastProps) => {
     </>
   );
   // return <div className={`${styles[`em-${variant}`]}`}>{text}</div>;
-};
-
-Toast.propTypes = {
-  text: PropTypes.string,
-  variant: PropTypes.oneOf(["success", "info", "warning", "error"]),
-  onClose: PropTypes.func.isRequired,
-  onClick: PropTypes.func,
-  hidden: PropTypes.bool,
 };
 
 Toast.defaultProps = {
