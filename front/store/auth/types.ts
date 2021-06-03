@@ -1,4 +1,4 @@
-import IUser from "src/types/User";
+import IUser, { IUserOptional } from "src/interfaces/User";
 import { IAction, IActionWithoutPayload } from "store/types";
 
 export interface IAuthState {
@@ -22,7 +22,7 @@ export enum AuthActionType {
 
 export interface IActionUpdateUser extends IAction {
     type: AuthActionType.AUTH_USER_UPDATE,
-    payload: IUser
+    payload: IUserOptional,
 }
 
 export interface IActionLoadUser extends IActionWithoutPayload {
@@ -46,7 +46,8 @@ export interface IActionSignIn extends IAction {
 }
 export interface IActionSignUp extends IAction {
     type: AuthActionType.AUTH_SIGN_UP,
-    payload: IUser
+    payload: IUserOptional
+    // payload: IUser
 }
 export interface IActionSignOut extends IAction {
     type: AuthActionType.AUTH_SIGN_OUT,

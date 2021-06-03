@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
 import { authCheck } from "store/auth/actions";
 import { FullPageLoader } from "components/moleculs";
+import { useAppDispatch, useAppSelector } from "store";
 
-const AuthManager = (props) => {
+export interface AuthManagerProps {
+  children: React.ReactChild | React.ReactChild[];
+}
+
+const AuthManager = (props: AuthManagerProps) => {
   const { children } = props;
   const [canView, setCanView] = useState(false);
   const router = useRouter();
 
-  const authStore = useSelector((store) => store.auth);
+  const authStore = useAppSelector((store) => store.auth);
   const { isAuth, authChecking } = authStore;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(authCheck());
@@ -33,7 +36,7 @@ const AuthManager = (props) => {
         else if (canView !== true) setCanView(true);
       }
     }
-  }, [isAuth, authChecking, router.pathname]);
+  }, [canView, isAuth, authChecking, router]);
   return (
     <div>
       {canView ? children : <FullPageLoader label="Authorization check." />}
@@ -41,7 +44,5 @@ const AuthManager = (props) => {
     </div>
   );
 };
-AuthManager.propTypes = {
-  children: PropTypes.any,
-};
+
 export default AuthManager;

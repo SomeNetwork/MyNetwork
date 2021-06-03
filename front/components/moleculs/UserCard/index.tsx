@@ -3,7 +3,7 @@ import { Card, Image, Text } from "components/atoms";
 import React from "react";
 import styles from "./UserCard.module.scss";
 import Link from "next/link";
-import IUser from "src/types/User";
+import IUser from "src/interfaces/User";
 
 export interface UserCardProps {
   user: IUser;

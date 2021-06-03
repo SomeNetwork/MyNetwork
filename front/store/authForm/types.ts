@@ -1,4 +1,4 @@
-import IUser from "src/types/User";
+import IUser, { IUserOptional } from "src/interfaces/User";
 import { IAction, IActionWithoutPayload } from "store/types";
 
 export enum Tabs {
@@ -45,7 +45,8 @@ export interface IActionSubmitSignIn extends IAction {
 
 export interface IActionSubmitSignUp extends IAction {
   type: AuthFormActionType.AUTHFORM_SUBMIT_SIGN_UP,
-  payload: IUser
+  payload: IUserOptional
+  // payload: IUser
 }
 export interface IActionSubmitEmailConfirm extends IAction {
   type: AuthFormActionType.AUTHFORM_SUBMIT_EMAIL_CONFIRM,

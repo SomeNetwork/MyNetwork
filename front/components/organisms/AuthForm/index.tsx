@@ -60,7 +60,8 @@ const AuthForm = () => {
                 dispatch(
                   submitSignUp(
                     // FIXME: fix type
-                    (data as unknown) as IActionSubmitSignUp["payload"]
+                    data
+                    // (data as unknown) as IActionSubmitSignUp["payload"]
                   )
                 )
               }
@@ -96,5 +97,4 @@ const AuthForm = () => {
   );
 };
 
-AuthForm.propTypes = {};
 export default AuthForm;

@@ -1,6 +1,6 @@
 import { all, call, put, takeEvery } from "redux-saga/effects";
 import { DB } from "src/api";
-import IUser from "src/types/User";
+import IUser from "src/interfaces/User";
 import { localSaveUserPage } from "./actions";
 // import { localSaveUser } from "store/auth/actions";
 import { IActionLoad, UserPageActionType } from "./types";

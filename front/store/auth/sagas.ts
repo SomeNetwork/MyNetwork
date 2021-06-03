@@ -2,11 +2,11 @@ import { all, call, put, select, takeEvery } from "redux-saga/effects";
 import { notificationCreate } from "store/notifications/actions";
 import Router from "next/router";
 import { Auth, DB } from "src/api";
-import IUser from "src/types/User";
+import IUser from "src/interfaces/User";
 import { AuthActionType, IActionConfirmEmail, IActionSignIn, IActionSignOut, IActionSignUp, IActionUpdateUser } from "./types";
 import { authChecked, loadUser, localSaveUser } from "./actions";
 import { gotoEmailConfirm } from "store/authForm/actions";
-import { NotificationVariants } from "store/notifications/types";
+import { NotificationVariants } from "src/interfaces/Notification";
 
 /* SignIn */
 

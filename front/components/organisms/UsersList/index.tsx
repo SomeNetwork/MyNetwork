@@ -1,22 +1,28 @@
 import { UserCard } from "components/moleculs";
-import PropTypes from "prop-types";
 import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AutoSizer, List as VirtualizedList } from "react-virtualized";
+import {
+  AutoSizer,
+  List as VirtualizedList,
+  ListRowProps,
+} from "react-virtualized";
+import { useAppDispatch, useAppSelector } from "store";
 import { usersLoadUsers } from "store/users/actions";
 import styles from "./UsersList.module.scss";
 
-const UsersList = (props) => {
-  const state = useSelector((state) => state.users);
+const UsersList = () => {
+  const state = useAppSelector((state) => state.users);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(usersLoadUsers());
   }, []);
 
-  const rowRenderer = ({ key, index, isScrolling, isVisible, style }) => {
+  const rowRenderer = ({
+    key,
+    index,
+    /* isScrolling, isVisible, */ style,
+  }: ListRowProps) => {
     return (
       <div key={key} style={style}>
         <UserCard user={state.users[index]} />
@@ -27,7 +33,7 @@ const UsersList = (props) => {
   return (
     <div className={styles["container"]}>
       <AutoSizer>
-        {({ height, width }) => {
+        {({ height, width }: { height: number; width: number }) => {
           console.log(`height`, height);
           console.log(`width`, width);
           return (
@@ -46,10 +52,6 @@ const UsersList = (props) => {
       </AutoSizer>
     </div>
   );
-};
-
-UsersList.propTypes = {
-  rowRenderer: PropTypes.node,
 };
 
 export default UsersList;

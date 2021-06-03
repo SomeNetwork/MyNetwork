@@ -1,3 +1,4 @@
+import INotification from "src/interfaces/Notification";
 import { IAction } from "store/types";
 
 export enum NotificationsActionType {
@@ -7,23 +8,7 @@ export enum NotificationsActionType {
     NOTIFICATION_DELETE = "NOTIFICATION_DELETE",
 }
 
-export enum NotificationVariants {
-    success = "success",
-    info = "info",
-    warning = "warning",
-    error = "error",
-}
-
-export interface INotification {
-    variant: NotificationVariants,
-    text: string,
-    id: string,
-    hidden?: boolean | undefined
-}
-
 export interface INotificationWithoutId extends Omit<INotification, "id"> { id?: string }
-
-
 
 export interface IActionCreate extends IAction {
     type: NotificationsActionType.NOTIFICATION_CREATE,

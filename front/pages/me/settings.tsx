@@ -1,11 +1,11 @@
 import FullPageLoader from "components/moleculs/FullPageLoader";
 import { UserSettings } from "components/templates";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "store";
 
 const User = () => {
   // const user = useSelector((state) => state.userPage);
-  const { isAuth, user } = useSelector((state) => state.auth);
+  const { isAuth, user } = useAppSelector((state) => state.auth);
   // const dispatch = useDispatch();
   // useEffect(() => {
   //   if (auth.isAuth) dispatch(loadUserPage({ username: auth.username }));

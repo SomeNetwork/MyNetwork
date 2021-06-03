@@ -1,8 +1,8 @@
-import { Button, Card, Image, Text } from "components/atoms";
-import PropTypes from "prop-types";
+import { Card, Text } from "components/atoms";
 import React from "react";
 import styles from "./UserPage.module.scss";
-const UserNotFund = (props) => {
+
+const UserNotFund = () => {
   return (
     <div className={styles["container"]}>
       <div className={styles["info-container"]}>
@@ -13,6 +13,5 @@ const UserNotFund = (props) => {
     </div>
   );
 };
-UserNotFund.propTypes = {};
-UserNotFund.defaultProps = {};
+
 export default UserNotFund;

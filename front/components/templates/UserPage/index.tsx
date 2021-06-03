@@ -3,10 +3,17 @@ import UserCard from "components/moleculs/UserCard";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
+import IUser from "src/interfaces/User";
 import UserNotFund from "./UserNotFund";
 import styles from "./UserPage.module.scss";
-const UserPage = (props) => {
-  const { isOwner, user, isLoaded } = props;
+
+export interface UserPageProps {
+  user: IUser;
+  isOwner: boolean;
+  isLoaded?: boolean;
+}
+const UserPage = (props: UserPageProps) => {
+  const { isOwner, user } = props;
   const router = useRouter();
   // return <UserNotFund />;
   if (!user) return <UserNotFund />;

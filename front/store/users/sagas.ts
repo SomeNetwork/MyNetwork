@@ -1,9 +1,9 @@
 import { all, call, put, takeEvery } from "redux-saga/effects";
 // import Router from "next/router";
 import { DB } from "src/api";
-import IUser from "src/types/User";
+import { NotificationVariants } from "src/interfaces/Notification";
+import IUser from "src/interfaces/User";
 import { notificationCreate } from "store/notifications/actions";
-import { NotificationVariants } from "store/notifications/types";
 import { usersLocalSave } from "./actions";
 import { UsersType } from "./type";
 

@@ -1,4 +1,5 @@
-import TNotificationsActions, { INotification, NotificationsActionType } from "./types";
+import INotification from "src/interfaces/Notification";
+import TNotificationsActions, { NotificationsActionType } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 // export interface INotificationsState extends Array<INotification> { }

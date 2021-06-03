@@ -3,10 +3,11 @@ import styles from "./InputImage.module.scss";
 import { Delete, ImageSearch } from "@material-ui/icons";
 
 export interface InputImageProps {
-  error: string | false;
-  onChange: (file: File | null) => void;
-  file: File;
-  htmlProps: React.HTMLProps<HTMLInputElement>;
+  name?: string;
+  error?: string | false;
+  onChange: (file?: File) => void;
+  file?: File;
+  htmlProps?: React.HTMLProps<HTMLInputElement>;
 }
 
 const InputImage = (props: InputImageProps) => {
@@ -17,7 +18,7 @@ const InputImage = (props: InputImageProps) => {
   };
 
   const handleClear = (): void => {
-    onChange(null);
+    onChange();
   };
 
   const imgInputKey = file ? file.name : "";

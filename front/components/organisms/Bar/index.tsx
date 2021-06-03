@@ -1,29 +1,19 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+
 import { Text, NavTab, Image } from "components/atoms";
 import styles from "./Bar.module.scss";
 import { signOut } from "store/auth/actions";
-
-const navList = [
-  {
-    to: "/",
-    label: "Main page",
-  },
-  // {
-  //   to: "/auth",
-  //   label: "Auth",
-  // },
-];
+import { useAppDispatch, useAppSelector } from "store";
 
 const Bar = () => {
   const router = useRouter();
-  const authUser = useSelector((store) => store.auth);
+  const authUser = useAppSelector((store) => store.auth);
   const {
     isAuth,
     user: { username },
   } = authUser;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleSignOut = () => dispatch(signOut({ username }));
   return (
     <div className={styles["bar-top"]}>
@@ -95,5 +85,4 @@ const Bar = () => {
   );
 };
 
-Bar.propTypes = {};
 export default Bar;

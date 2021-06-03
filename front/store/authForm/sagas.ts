@@ -4,7 +4,7 @@ import { Auth } from "src/api";
 import { notificationCreate } from "store/notifications/actions";
 import { AuthFormActionType, IActionSubmitEmailConfirm, IActionSubmitSendCode, IActionSubmitSignIn, IActionSubmitSignUp } from "./types";
 import { gotoEmailConfirm, gotoSignIn } from "./actions";
-import { NotificationVariants } from "store/notifications/types";
+import { NotificationVariants } from "src/interfaces/Notification";
 
 /* SignIn */
 

@@ -1,23 +1,24 @@
 import { FullPageLoader } from "components/moleculs";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Auth } from "src/api";
+import { NotificationVariants } from "src/interfaces/Notification";
 import { loadUser } from "store/auth/actions";
 import { notificationCreate } from "store/notifications/actions";
 
 const EmailConfirmation = () => {
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const dispatch = useDispatch();
   console.log("router :>> ", router);
   useEffect(() => {
-    if (router.query.username && router.query.code) {
-      Auth.EmailConfirm(router.query.username, router.query.code)
+    const { username, code } = router.query;
+    if (username && code) {
+      Auth.EmailConfirm(username as string, code as string)
         .then(() => {
           dispatch(
             notificationCreate({
-              variant: "success",
+              variant: NotificationVariants.success,
               text: `Email successful confirmed.`,
             })
           );
@@ -27,7 +28,7 @@ const EmailConfirmation = () => {
         .catch((error) => {
           dispatch(
             notificationCreate({
-              variant: "error",
+              variant: NotificationVariants.error,
               text: error.message,
             })
           );
@@ -37,11 +38,7 @@ const EmailConfirmation = () => {
   }, [router]);
   return (
     <>
-      {loading ? (
-        <FullPageLoader label="Waiting. Checking the confirmation code." />
-      ) : (
-        "gg"
-      )}
+      <FullPageLoader label="Waiting. Checking the confirmation code." />
     </>
   );
 };

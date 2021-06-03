@@ -5,7 +5,7 @@ export interface ButtonProps {
   variant?: "primary" | "secondary" | "success" | "warning" | "error";
   children?: string | React.ReactNode;
   // children: any,
-  text: string;
+  text?: string;
   onClick: () => void;
   fluid?: boolean;
   animated?: boolean;

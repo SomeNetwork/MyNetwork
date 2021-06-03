@@ -11,24 +11,39 @@ import { Auth, Bucket } from "src/api";
 import { notificationCreate } from "store/notifications/actions";
 import { Button, Card, Form, Image, InputImage, Text } from "components/atoms";
 import { useDispatch } from "react-redux";
+import IUser from "src/interfaces/User";
+import { FormFieldType } from "components/moleculs/Form";
+import { useAppDispatch } from "store";
+import { NotificationVariants } from "src/interfaces/Notification";
 
-export const Tab0 = (props) => {
+interface TabProps {
+  user: IUser;
+}
+
+export const Tab0 = (props: TabProps) => {
   const { user } = props;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div>
       <Card className={styles["block"]}>
         <Form
           {...configPersonalDataForm}
-          fields={configPersonalDataForm.fields.map((field) => ({
-            ...field,
-            defaultValue: user[field.name],
-          }))}
+          fields={configPersonalDataForm.fields.map((field): FormFieldType => {
+            return {
+              ...field,
+              // defaultValue: user[field.name],
+              // FIXME: fix me plz
+              defaultValue: user[
+                field.name as keyof IUser
+              ] as FormFieldType["defaultValue"],
+            };
+          })}
           onSubmit={(data) => {
             console.log("data :>> ", data);
             dispatch(updateUser(data));
+            // dispatch(updateUser((data as unknown) as IUser));
           }}
         />
       </Card>
@@ -36,8 +51,8 @@ export const Tab0 = (props) => {
   );
 };
 
-export const Tab1 = (props) => {
-  const dispatch = useDispatch();
+export const Tab1 = (props: TabProps) => {
+  const dispatch = useAppDispatch();
   const { user } = props;
   return (
     <>
@@ -46,7 +61,10 @@ export const Tab1 = (props) => {
           {...configEmailForm}
           fields={configEmailForm.fields.map((field) => ({
             ...field,
-            defaultValue: user[field.name],
+            // FIXME: fix me plz
+            defaultValue: user[
+              field.name as keyof IUser
+            ] as FormFieldType["defaultValue"],
           }))}
           onSubmit={(data) => {
             console.log("data :>> ", data);
@@ -64,7 +82,7 @@ export const Tab1 = (props) => {
                   Auth.EmailConfirmationCodeResend(user.username).then(() => {
                     dispatch(
                       notificationCreate({
-                        variant: "success",
+                        variant: NotificationVariants.success,
                         text: `Code sended.`,
                       })
                     );
@@ -73,8 +91,8 @@ export const Tab1 = (props) => {
               />
             </div>
             <Text variant="small">
-              To confirm, you need to click on the link in the email sent to
-              you. If you can't find the email, we can send it to you again.
+              {` To confirm, you need to click on the link in the email sent to
+              you. If you can't find the email, we can send it to you again.`}
             </Text>
           </div>
         )}
@@ -85,7 +103,7 @@ export const Tab1 = (props) => {
             {...configEmailConfirmForm}
             onSubmit={(data) => {
               console.log("data :>> ", data);
-              dispatch(confirmEmail(data));
+              dispatch(confirmEmail(data as { code: string }));
             }}
           />
         </Card>
@@ -94,9 +112,9 @@ export const Tab1 = (props) => {
   );
 };
 
-export const Tab2 = (props) => {
+export const Tab2 = (props: TabProps) => {
   const { user } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <Card className={styles["block"]}>
@@ -105,7 +123,9 @@ export const Tab2 = (props) => {
         // submitButton={{ ...configUsernameForm.submitButton, disabled: true }}
         fields={configUsernameForm.fields.map((field) => ({
           ...field,
-          defaultValue: user[field.name],
+          defaultValue: user[
+            field.name as keyof IUser
+          ] as FormFieldType["defaultValue"],
         }))}
         onSubmit={(data) => {
           console.log("data :>> ", data);
@@ -116,21 +136,31 @@ export const Tab2 = (props) => {
   );
 };
 
-export const Tab3 = (props) => {
+interface ITab3State {
+  loading: boolean;
+  src: string | null;
+  file?: File;
+}
+
+export const Tab3 = (props: TabProps) => {
   const { user } = props;
-  const [state, setState] = useState({
+  const [state, setState] = useState<ITab3State>({
     loading: false,
     src: user.avatar ? `${process.env.API_PATH}${user.avatar}` : null,
   });
   const dispatch = useDispatch();
 
-  const handleChange = (file) => {
-    setState({ loading: true, file });
+  const handleChange = (file: ITab3State["file"]): void => {
+    setState({ loading: true, file, src: null });
     Bucket.localSave(file)
       .then((src) =>
-        setState((prevState) => ({ ...prevState, src, loading: false }))
+        setState((prevState) => ({
+          ...prevState,
+          src: src as ITab3State["src"],
+          loading: false,
+        }))
       )
-      .catch((err) => setState({ loading: false }));
+      .catch(() => setState({ loading: false, src: null }));
   };
 
   useEffect(() => {
@@ -150,12 +180,12 @@ export const Tab3 = (props) => {
         variant="avatar"
       />
       <div className={styles["img-inp-container"]}>
-        <InputImage name="avatar" file={state.file} onChange={handleChange} />
+        <InputImage name={"avatar"} file={state.file} onChange={handleChange} />
       </div>
       <Button
         disabled={!state.file}
         fluid
-        onClick={() => dispatch(updateUser({ avatar: state.src }))}
+        onClick={() => dispatch(updateUser({ avatar: state.src } as IUser))}
       >
         Save avatar
       </Button>

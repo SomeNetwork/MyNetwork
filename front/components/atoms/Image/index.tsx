@@ -3,9 +3,9 @@ import styles from "./Image.module.scss";
 
 export interface ImageProps {
   className?: string;
-  src?: string;
+  src?: string | null;
   url?: string | null;
-  variant: "avatar";
+  variant?: "avatar";
 }
 
 const Image = (props: ImageProps) => {
@@ -31,7 +31,11 @@ const Image = (props: ImageProps) => {
           alt="Ooops"
         />
       ) : (
-        <img src={imgSrc} alt="alt" onError={() => setError(true)} />
+        <img
+          src={imgSrc ? imgSrc : undefined}
+          alt="alt"
+          onError={() => setError(true)}
+        />
       )}
     </div>
   );

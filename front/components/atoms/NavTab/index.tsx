@@ -2,6 +2,7 @@ import React from "react";
 import { Text } from "components/atoms";
 import styles from "./NavTab.module.scss";
 import Link from "next/link";
+import { LinkProps } from "@material-ui/core";
 
 export interface NavTabProps {
   // children: string | string[] | React.ReactChildren;
@@ -10,8 +11,9 @@ export interface NavTabProps {
   label?: string;
   active: boolean;
   type: "link" | "tab";
-  to: string;
-  onClick: () => void;
+  to?: LinkProps["href"];
+  // to?: string;
+  onClick?: () => void;
   variant: "left" | "right" | "bottom";
 }
 
@@ -40,7 +42,7 @@ const NavTab = (props: NavTabProps) => {
       )}
     </div>
   );
-  if (type === "link") return <Link href={to}>{tab}</Link>;
+  if (type === "link") return <Link href={to || "/"}>{tab}</Link>;
   return tab;
 };
 

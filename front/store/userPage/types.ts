@@ -1,4 +1,4 @@
-import IUser from "src/types/User";
+import IUser from "src/interfaces/User";
 import { IAction } from "store/types";
 
 export interface IUserPageState {

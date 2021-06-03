@@ -10,3 +10,4 @@ export default interface IUser {
     confirmed: boolean
     updatedAt: string,
 }
+export type IUserOptional = { [key in (keyof IUser)]?: IUser[key] }

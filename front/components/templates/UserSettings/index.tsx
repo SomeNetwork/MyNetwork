@@ -1,15 +1,18 @@
 import { Card, NavTab } from "components/atoms";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import styles from "./UserSettings.module.scss";
 import { tabs } from "./formsConfig";
 import { Tab0, Tab1, Tab2, Tab3 } from "./TabsScreens";
+import IUser from "src/interfaces/User";
 
-const UserSettings = (props) => {
+export interface UserSettingsProps {
+  user: IUser;
+}
+
+const UserSettings = (props: UserSettingsProps) => {
   const { user } = props;
   const [tab, setTab] = useState(0);
-  const dispatch = useDispatch();
 
   return (
     <div className={styles["container"]}>
