@@ -2,3 +2,6 @@ node_modules
 
 back/.vscode/launch.json
 back/bucket
+back/.env.local
+
+ssl

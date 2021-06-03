@@ -1,0 +1,9 @@
+@import "styles/variables/main.scss";
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  height: calc(100vh - 56px - #{$size-step});
+  margin: auto;
+  margin-top: $size-step;
+}

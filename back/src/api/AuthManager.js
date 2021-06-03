@@ -56,7 +56,7 @@ class AuthManager {
             .then(async (user) => {
                 await Email.send(user.email, {
                     subject: 'Some Network',
-                    text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link http://dev.localhost:3000/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
+                    text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link ${process.env.FRONT_URL}/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
                 })
                 return user
             })
@@ -66,37 +66,39 @@ class AuthManager {
         return Users.findById(id).then(async (user) => {
             await Email.send(user.email, {
                 subject: 'Some Network',
-                text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link http://dev.localhost:3000/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
+                text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link ${process.env.FRONT_URL}/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
             })
             return user
         })
     }
     sendConfirmationCodeByUsername(username) {
         return Users.findByUsername(username).then(async (user) => {
-            if (user)
+            if (user) {
+                if (user.emailConfirmationCode === null)
+                    throw new Error('Email is confirmed!')
                 await Email.send(user.email, {
                     subject: 'Some Network',
-                    text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link http://dev.localhost:3000/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
+                    text: `To confirm your account, use code: ${user.emailConfirmationCode}, or follow the link ${process.env.FRONT_URL}/auth/emailconfirmation?username=${user.username}&code=${user.emailConfirmationCode}`,
                 })
-            else throw new Error('User not found!')
+            } else throw new Error('User not found!')
             return user
         })
     }
 
-    confirmEmail(id, code) {
-        return Users.findById(id).then((user) => {
-            if (!user) throw new Error('User not found!')
-            if (user.emailConfirmationCode === null) {
-                throw new Error('Email alredy confirmed!')
-            }
-            if (user.emailConfirmationCode === code) {
-                return Users.updateById(id, {
-                    emailConfirmationCode: null,
-                    confirmed: true,
-                })
-            } else throw new Error('The code is not correct!')
-        })
-    }
+    // confirmEmail(id, code) {
+    //     return Users.findById(id).then((user) => {
+    //         if (!user) throw new Error('User not found!')
+    //         if (user.emailConfirmationCode === null) {
+    //             throw new Error('Email alredy confirmed!')
+    //         }
+    //         if (user.emailConfirmationCode === code) {
+    //             return Users.updateById(id, {
+    //                 emailConfirmationCode: null,
+    //                 confirmed: true,
+    //             })
+    //         } else throw new Error('The code is not correct!')
+    //     })
+    // }
 
     confirmEmailByUsername(username, code) {
         return Users.findByUsername(username).then((user) => {

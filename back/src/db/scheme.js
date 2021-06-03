@@ -26,6 +26,7 @@ const UserModelShema = new Schema({
     username: String,
     password: String,
     emailConfirmationCode: String,
+    avatar: String,
     // confirmed: Boolean,
     confirmed: {
         type: Boolean,
