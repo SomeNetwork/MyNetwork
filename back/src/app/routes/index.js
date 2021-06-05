@@ -15,11 +15,11 @@ router.use(async (req, res, next) => {
     // if (req.user == null){
     //     res.status(401).send({success:false, error:"Need SignIn!"})
     // }
-    
+
     next()
 })
 
-const routes = ['auth', 'users']
+const routes = ['auth', 'users', 'conversations', 'messages']
 routes.forEach((route) => router.use(`/${route}`, require(`./${route}`)))
 // router.use(`/auth`, require(`./auth`))
 

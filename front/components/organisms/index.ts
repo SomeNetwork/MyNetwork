@@ -8,3 +8,5 @@ import ToastManagerComponent from "./managers/ToastManager";
 export const ToastManager = ToastManagerComponent;
 import UsersListComponent from "./UsersList";
 export const UsersList = UsersListComponent;
+import ChatsListComponent from "./ChatsList";
+export const ChatsList = ChatsListComponent;

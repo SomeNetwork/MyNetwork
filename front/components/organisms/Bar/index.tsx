@@ -45,6 +45,9 @@ const Bar = () => {
             <NavTab to={"/users"} active={router.asPath === "/users"}>
               Users
             </NavTab>
+            <NavTab to={"/chats"} active={router.asPath === "/chats"}>
+              Chats
+            </NavTab>
           </>
         ) : (
           <>

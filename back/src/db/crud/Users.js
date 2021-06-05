@@ -5,26 +5,27 @@ const Bucket = require('../../api/Bucket')
 
 class Users extends CRUD {
     constructor() {
-        super()
+        super(UserModel)
     }
     create(user) {
-        return new Promise((resolve, reject) => {
-            UserModel.exists(
-                { username: user.username },
-                function (err, userExists) {
-                    if (err) reject(err)
-                    resolve(userExists)
-                }
-            )
-        })
+        // return new Promise((resolve, reject) => {
+        //     this.Model.exists(
+        //         { username: user.username },
+        //         function (err, userExists) {
+        //             if (err) reject(err)
+        //             resolve(userExists)
+        //         }
+        //     )
+        // })
+        return this.exists({ username: user.username })
             .then((isExist) => {
                 if (isExist === true)
-                    throw new Error('Username is udeb by other user')
+                    throw new Error('Username is useb by other user')
             })
             .then(
                 () =>
                     new Promise((resolve, reject) => {
-                        UserModel.create(user, function (err, user) {
+                        this.Model.create(user, function (err, user) {
                             if (err) {
                                 // handleError(err)
                                 reject(err)
@@ -34,27 +35,41 @@ class Users extends CRUD {
                     })
             )
     }
-    findById(id) {
+    // findById(id) {
+    //     return new Promise((resolve, reject) => {
+    //         this.Model.findById(id, function (err, user) {
+    //             if (err) {
+    //                 // handleError(err)
+    //                 reject(err)
+    //             }
+    //             resolve(user)
+    //         })
+    //     })
+    // }
+    findByUsername(username, params) {
+        // FIXME:
+        params = { populate: ['conversationsId'] }
         return new Promise((resolve, reject) => {
-            UserModel.findById(id, function (err, user) {
+            const query = this.Model.findOne({ username })
+            const { populate } = params
+            if (populate) populate.forEach((p) => query.populate(p))
+            query.exec(function (err, res) {
                 if (err) {
                     // handleError(err)
                     reject(err)
                 }
-                resolve(user)
+                resolve(res)
             })
         })
-    }
-    findByUsername(username) {
-        return new Promise((resolve, reject) => {
-            UserModel.findOne({ username }, function (err, user) {
-                if (err) {
-                    // handleError(err)
-                    reject(err)
-                }
-                resolve(user)
-            })
-        })
+        // return new Promise((resolve, reject) => {
+        //     this.Model.findOne({ username }, function (err, user) {
+        //         if (err) {
+        //             // handleError(err)
+        //             reject(err)
+        //         }
+        //         resolve(user)
+        //     })
+        // })
     }
     async updateByUsername(username, newData) {
         return new Promise(async (resolve, reject) => {
@@ -74,7 +89,7 @@ class Users extends CRUD {
             if (newData.username) {
                 if (newData.username !== username) {
                     const isExist = await new Promise((resolve, reject) => {
-                        UserModel.exists(
+                        this.Model.exists(
                             { username: newData.username },
                             function (err, userExists) {
                                 if (err) reject(err)
@@ -88,7 +103,7 @@ class Users extends CRUD {
                     }
                 }
             }
-            UserModel.findOneAndUpdate(
+            this.Model.findOneAndUpdate(
                 { username },
                 newData,
                 {
@@ -106,7 +121,7 @@ class Users extends CRUD {
     }
     // updateById(id, newData) {
     //     return new Promise((resolve, reject) => {
-    //         UserModel.findOneAndUpdate(
+    //         this.Model.findOneAndUpdate(
     //             { _id: id },
     //             newData,
     //             function (err, user) {
@@ -119,20 +134,20 @@ class Users extends CRUD {
     //         )
     //     })
     // }
-    list(config) {
-        return new Promise((resolve, reject) => {
-            UserModel.find({ ...config }, function (err, users) {
-                if (err) {
-                    // handleError(err)
-                    reject(err)
-                }
-                resolve(users)
-            })
-        })
-    }
+    // list(config) {
+    //     return new Promise((resolve, reject) => {
+    //         this.Model.find({ ...config }, function (err, users) {
+    //             if (err) {
+    //                 // handleError(err)
+    //                 reject(err)
+    //             }
+    //             resolve(users)
+    //         })
+    //     })
+    // }
     checkUsernameExists(username) {
         return new Promise((resolve, reject) => {
-            UserModel.exists({ username }, function (err, userExists) {
+            this.Model.exists({ username }, function (err, userExists) {
                 if (err) reject(err)
                 resolve(userExists)
             })
@@ -140,4 +155,4 @@ class Users extends CRUD {
     }
 }
 
-module.exports = Users
+module.exports = new Users()

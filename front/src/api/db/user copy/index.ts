@@ -1,5 +1,5 @@
 import { IResponse } from "@api/axios";
-import API from "src/api";
+import API from "@api";
 import IUser, { IUserOptional } from "src/interfaces/User";
 
 
@@ -18,8 +18,9 @@ interface IUpdateResponse extends IResponse {
 }
 interface IListResponse extends IResponse {
   data: {
-    user: IUser[],
-  }
+    user: IUser,
+    isOwner: boolean
+  }[]
 }
 export function read(data: { username: string }) {
   const { username } = data;
