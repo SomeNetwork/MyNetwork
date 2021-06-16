@@ -55,3 +55,8 @@
   }
   //   background-color: $primary-color;
 }
+
+.content-conteiner {
+  max-width: 800px !important;
+  height: calc(100vh - 56px /* top */ - 16px /* bottom */ - #{$size-step});
+}

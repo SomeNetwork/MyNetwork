@@ -9,6 +9,8 @@ import ToastComponent from "./Toast";
 import NavTabComponent from "./NavTab";
 import LoaderComponent from "./Loader";
 import ImageComponent from "./Image";
+import MessageComponent from "./Message";
+import IconButtonComponent from "./IconButton";
 
 export const Button = ButtonComponent;
 // export const IconButton = IconButtonComponent;
@@ -21,3 +23,5 @@ export const Toast = ToastComponent;
 export const NavTab = NavTabComponent;
 export const Loader = LoaderComponent;
 export const Image = ImageComponent;
+export const Message = MessageComponent;
+export const IconButton = IconButtonComponent;

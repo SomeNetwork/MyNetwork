@@ -5,12 +5,13 @@ const DB = require('../../../db/crud')
 router.get('/:id', (req, res) => {
     // const body = req.body
     const id = req.params.id
-    DB.Conversations.findById(id).then((conv) => {
-        console.log(`conv`, conv)
-        if (conv) {
+    // DB.Conversations.findById(id).then((conversation) => {
+    DB.Conversations.findById(id, req.user._id).then((conversation) => {
+        console.log(`conversation`, conversation)
+        if (conversation) {
             res.send({
                 success: true,
-                data: { conv },
+                data: { conversation },
             })
         } else {
             res.send({
@@ -83,7 +84,13 @@ router.post('/update/:id', (req, res) => {
 router.post('', (req, res) => {
     const data = req.body
     const { config } = data
-    DB.Conversations.list(config)
+    config.match = {
+        ...config.match,
+        'members._id': { $eq: req.user._id },
+    }
+    // config.my_id = req.user._id
+    // req.user.id
+    DB.Conversations.list(config, req.user._id)
         .then((conversations) => {
             res.send({
                 success: true,

@@ -12,6 +12,7 @@
     "check": " npm run type-check && npm run lint"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.5.1",
     "axios": "^0.21.1",

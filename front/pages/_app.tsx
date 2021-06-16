@@ -1,8 +1,9 @@
 import { Provider } from "react-redux";
-import { AuthManager, Bar, ToastManager } from "components/organisms";
+import { AuthManager, ToastManager } from "components/organisms";
 import { useStore } from "store";
 import "../styles/globals.scss";
 import { AppProps } from "next/app";
+import { WithBar } from "components/organisms/Bar";
 
 function App({ Component, pageProps }: AppProps) {
   const store = useStore(pageProps.initialReduxState);
@@ -10,8 +11,9 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
       <AuthManager>
-        <Bar />
-        <Component {...pageProps} />
+        <WithBar>
+          <Component {...pageProps} />
+        </WithBar>
       </AuthManager>
       <ToastManager />
     </Provider>

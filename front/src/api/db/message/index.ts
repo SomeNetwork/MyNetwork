@@ -1,6 +1,6 @@
 import { IResponse } from "@api/axios";
 import API from "src/api";
-import IMessage from "src/interfaces/Message";
+import IMessage, { INewMessageData } from "src/interfaces/Message";
 
 interface ICreateResponse extends IResponse {
   data: {
@@ -15,7 +15,7 @@ interface IListResponse extends IResponse {
 
   }
 }
-type INewMessageData = Omit<IMessage, "_id">
+
 export function create(data: INewMessageData) {
   return API.req.post<ICreateResponse>(`/messages/create`, data).then((data) => {
     console.log("data :>> ", data);

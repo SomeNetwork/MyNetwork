@@ -1,33 +1,43 @@
-import { UserCard } from "components/moleculs";
-import React, { useEffect } from "react";
+import { ChatCard, ChatCardLoading } from "components/moleculs";
+import { ChatCardProps } from "components/moleculs/ChatCard";
+import React from "react";
 import {
   AutoSizer,
   List as VirtualizedList,
   ListRowProps,
 } from "react-virtualized";
-import { useAppDispatch, useAppSelector } from "store";
-import { usersLoadUsers } from "store/users/actions";
+import IConversation from "src/interfaces/Conversation";
+import IUser from "src/interfaces/User";
+import { IMessengerState } from "store/messenger/type";
 import styles from "./ChatsList.module.scss";
+export interface IChatsListProps {
+  chats: IConversation[];
+  onClick: ChatCardProps["onClick"];
+  me: IUser;
+  activeChat: IMessengerState["activeConversation"]["conversation"];
+  isLoaded: IMessengerState["isLoaded"];
+}
 
-const ChatsList = () => {
-  const state = useAppSelector((state) => state.users);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(usersLoadUsers());
-  }, []);
+const ChatsList = (props: IChatsListProps) => {
+  const { me, chats, onClick, activeChat, isLoaded } = props;
 
   const rowRenderer = ({
-    key,
+    // key,
     index,
     /* isScrolling, isVisible, */ style,
   }: ListRowProps) => {
-    return (
-      <div key={key} style={style}>
-        <UserCard user={state.users[index]} />
-      </div>
-    );
+    if (isLoaded)
+      return (
+        <div key={chats[index]._id} style={style}>
+          <ChatCard
+            me={me}
+            conversation={chats[index]}
+            onClick={onClick}
+            isActive={!!activeChat && activeChat._id === chats[index]._id}
+          />
+        </div>
+      );
+    else return <ChatCardLoading />;
   };
 
   return (
@@ -42,10 +52,10 @@ const ChatsList = () => {
               // height={300}
               width={width}
               height={height}
-              rowCount={state.users.length}
-              rowHeight={100}
+              rowCount={isLoaded ? chats.length : 4}
+              rowHeight={90}
               rowRenderer={rowRenderer}
-              style={{ outline: "none" }}
+              style={{ outline: "none", padding: "0" }}
             />
           );
         }}

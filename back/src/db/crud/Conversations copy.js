@@ -3,17 +3,6 @@ const { ConversationModel } = require('../scheme')
 const ConversationLinks = require('./ConversationLinks')
 const mongoose = require('mongoose')
 
-// FIXME: delete me plz
-const _findInterlocutor = (conv, my_id) => {
-    if (conv.type === 'private') {
-        conv.interlocutor = conv.members.find(
-            (user) => user._id.toString() !== my_id.toString()
-        )
-        conv.name = conv.interlocutor?.username || conv.name
-        conv.avatar = conv.interlocutor?.avatar || conv.avatar
-    }
-    return conv
-}
 class Conversations extends CRUD {
     constructor() {
         super(ConversationModel)
@@ -30,8 +19,6 @@ class Conversations extends CRUD {
 
     findById(
         id,
-        // FIXME:plz
-        my_id,
         params = {
             populate: [
                 'owner',
@@ -79,15 +66,7 @@ class Conversations extends CRUD {
                             {
                                 $match: {
                                     $expr: {
-                                        $and: [
-                                            {
-                                                $eq: [
-                                                    '$$local_id',
-                                                    '$conversationId',
-                                                ],
-                                            },
-                                        ],
-                                        // $eq: ['$$local_id', '$conversationId'],
+                                        $eq: ['$$local_id', '$conversationId'],
                                     },
                                 },
                             },
@@ -105,61 +84,15 @@ class Conversations extends CRUD {
                     },
                 },
                 {
-                    $lookup: {
-                        from: 'users',
-                        localField: 'members._id',
-                        foreignField: '_id',
-                        as: 'interlocutor_',
-                    },
-                },
-                // FIXME: plz
-                // {
-                //     $lookup: {
-                //         from: 'users',
-                //         let: {
-                //             mem: '$members',
-                //             // local_type: '$type',
-                //         },
-                //         as: 'interlocutor',
-                //         pipeline: [
-                //             {
-                //                 $match: {
-                //                     $expr: {
-                //                         // $and: [
-                //                         //     {
-                //                         // $eq: ['$_id', '$$mem._id'],
-                //                         $eq: ['$$mem._id', '$_id'],
-                //                         //     },
-                //                         // ],
-                //                         // $eq: ['$$local_id', '$conversationId'],
-                //                     },
-                //                 },
-                //                 // $match: {
-                //                 //     $expr: {
-                //                 //         $eq: ['$$local_id', '$_id'],
-                //                 //         $and: {
-                //                 //             $eq: ['$$local_type', 'private'],
-                //                 //         },
-                //                 //     },
-                //                 // },
-                //             },
-                //             { $sort: { createdAt: -1 } },
-                //             // { $limit: 1 },
-                //         ],
-                //     },
-                // },
-                {
                     $unset: ['conversationLinks'],
                 },
             ]).exec(function (err, res) {
                 if (err) {
                     reject(err)
-                    return
                 }
                 console.log(`err`, err)
                 console.log(`res`, res)
-                resolve(_findInterlocutor(res[0], my_id))
-                // resolve(res[0])
+                resolve(res[0])
             })
         })
     }
@@ -221,7 +154,21 @@ class Conversations extends CRUD {
     // ) {
     //     return super.list(config, params)
     // }
-    list(config, my_id) {
+    list(
+        config,
+        params = {
+            populate: [
+                'owner',
+                'conversationLinks',
+                'lastMessage',
+                // 'members', // FIXME:
+                {
+                    path: 'conversationLinks',
+                    populate: { path: 'user' },
+                },
+            ],
+        }
+    ) {
         return new Promise((resolve, reject) => {
             this.Model.aggregate([
                 {
@@ -278,9 +225,7 @@ class Conversations extends CRUD {
                 }
                 console.log(`err`, err)
                 console.log(`res`, res)
-                // FIXME: plz
-                resolve(res.map((c) => _findInterlocutor(c, my_id)))
-                // resolve(res)
+                resolve(res)
             })
         })
     }

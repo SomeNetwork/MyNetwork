@@ -1,11 +1,13 @@
 import Api from "@api";
 import { Button } from "components/atoms";
+import { ConversationTypes } from "src/interfaces/Conversation";
 
 export default function Home() {
   const handleCreate = () => {
     const data = {
       name: "test Chat",
       ownerId: "606c7926ba825204a395b3a2",
+      type: ConversationTypes["group"],
     };
     Api.DB.Conversation.create(data).then((res) => console.log(`res`, res));
   };
@@ -17,9 +19,10 @@ export default function Home() {
   };
   const handleCreateMessage = () => {
     const data = {
-      content: "msg_111",
-      conversationId: "60ba3c653f572da6323725d9",
+      content: "last",
+      conversationId: "60bb74b9f83384eec4df1323",
       authorId: "606c7926ba825204a395b3a2",
+      type: "group",
     };
     Api.DB.Message.create(data).then((res) => console.log(`message`, res));
   };

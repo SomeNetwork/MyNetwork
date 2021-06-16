@@ -1,3 +1,4 @@
+import { Grid } from "@material-ui/core";
 import { Form } from "components/atoms";
 import Tabs from "components/moleculs/Tabs";
 import React from "react";
@@ -34,7 +35,13 @@ const AuthForm = () => {
   // const [state, setState] = useState(0);
   return (
     <>
-      <div className={styles["multiform-container"]}>
+      <Grid
+        item
+        container
+        className={styles["multiform-container"]}
+        justify={"center"}
+        alignItems={"center"}
+      >
         <Tabs
           tabs={[
             { label: "SignIn", onClick: () => dispatch(gotoSignIn()) },
@@ -92,7 +99,7 @@ const AuthForm = () => {
             />
           </div>
         </Tabs>
-      </div>
+      </Grid>
     </>
   );
 };

@@ -7,7 +7,9 @@ export default interface IMessage {
     conversationId: IConversation["_id"],
     // populate
     user?: IUser,
-    conversation?: IConversation
+    conversation?: IConversation,
+    createdAt?: string,
 }
 
 export type IMessageOptional = { [key in (keyof IMessage)]?: IMessage[key] }
+export type INewMessageData = Omit<IMessage, "_id">

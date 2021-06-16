@@ -1,0 +1,17 @@
+@import "styles/variables/main.scss";
+
+.icon-btn {
+  // border-radius: 50%;
+  clip-path: circle(46% at center center);
+  transition: background-color $time-step;
+  &:hover {
+    cursor: pointer;
+    background: $gray-light2;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > * {
+    // margin: auto;
+  }
+}

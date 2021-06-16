@@ -17,6 +17,8 @@ body {
   //   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-family: GolosTextWebRegular;
   background-color: $background-color;
+  overflow: hidden;
+  height: 100%;
 }
 
 * {

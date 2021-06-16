@@ -4,6 +4,8 @@ import watchAuthForm from "./authForm/sagas";
 import watchNotification from "./notifications/sagas";
 import watchUserPage from "./userPage/sagas";
 import watchUsers from "./users/sagas";
+import watchConversations from "./conversations/sagas";
+import watchMessenger from "./messenger/sagas";
 
 export default function* rootSaga() {
   yield all([
@@ -12,5 +14,7 @@ export default function* rootSaga() {
     watchNotification(),
     watchUserPage(),
     watchUsers(),
+    watchConversations(),
+    watchMessenger(),
   ]);
 }

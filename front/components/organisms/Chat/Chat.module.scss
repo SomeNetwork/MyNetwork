@@ -1,0 +1,48 @@
+.right {
+  height: 100%;
+
+  .top-part {
+    padding: 8px;
+    height: 48px;
+  }
+  .down-part {
+    height: calc(100% - 48px);
+    box-shadow: 2px 5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+
+    .content {
+      height: calc(100% - 48px);
+      background: linear-gradient(
+        0deg,
+        rgba(85, 108, 214, 1) 0%,
+        rgba(85, 108, 214, 0.5) 16%,
+        rgba(85, 108, 214, 0.013042717086834688) 84%
+      );
+    }
+    .input-container {
+      min-height: 48px;
+      max-height: 96px;
+      height: auto;
+      margin-bottom: 0;
+      position: relative;
+      overflow: hidden;
+      align-items: center;
+      display: flex;
+      .input {
+        position: absolute;
+        top: auto;
+        bottom: 0;
+        width: calc(100% - 48px);
+      }
+      button {
+        width: 48px;
+        float: right;
+        padding: 0;
+        border: none;
+        background: none !important;
+        color: black !important;
+        margin: auto;
+        margin-right: 0;
+      }
+    }
+  }
+}

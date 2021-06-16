@@ -1,10 +1,11 @@
 .multiform-container {
-  width: 100vw;
-  height: calc(100vh - 56px);
-  display: flex;
+  // width: 100vw;
+  // height: calc(100vh - 56px);
+  // display: flex;
+  height: 100%;
   & > div {
     width: 400px;
-    margin: auto;
+    // margin: auto;
     height: 600px;
   }
   // .form-container {

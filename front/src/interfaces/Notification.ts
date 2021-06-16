@@ -12,4 +12,5 @@ export default interface INotification {
     id: string,
     hidden?: boolean | undefined,
     onClick?: () => void,
+    createdAt?: string,
 }

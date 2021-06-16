@@ -1,0 +1,15 @@
+.container {
+  width: fit-content;
+  max-width: 50%;
+
+  .text {
+  }
+  .date {
+  }
+  &.left {
+    margin-right: auto;
+  }
+  &.right {
+    margin-left: auto;
+  }
+}

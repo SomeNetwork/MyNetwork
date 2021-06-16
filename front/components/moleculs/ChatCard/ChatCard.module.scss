@@ -1,0 +1,37 @@
+@import "styles/variables/main.scss";
+
+.container {
+  width: 96%;
+  cursor: pointer;
+  margin: auto;
+  transition: $time-step;
+
+  &.loading {
+    height: 80px;
+  }
+  &.active {
+    background-color: $gray-light2;
+  }
+  .avatar {
+    width: 64px;
+    height: 64px;
+    // display: flex;
+  }
+  .center-block {
+    overflow: hidden;
+    float: left;
+  }
+  .lastmsg-container {
+    width: inherit;
+    overflow: hidden;
+    margin: auto;
+    .lastmsg-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  &:hover {
+    background-color: $gray-light2;
+  }
+}

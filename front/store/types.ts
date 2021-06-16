@@ -1,5 +1,7 @@
 import { IAuthState } from "./auth/types"
 import { IAuthFormState } from "./authForm/types"
+import { IConversationsState } from "./conversations/type"
+import { IMessengerState } from "./messenger/type"
 import { INotificationsState } from "./notifications/reducers"
 import { IUserPageState } from "./userPage/types"
 import { IUsersState } from "./users/type"
@@ -22,5 +24,7 @@ export interface IRootState {
   notifications: INotificationsState,
   users: IUsersState,
   userPage: IUserPageState,
+  conversations: IConversationsState,
+  messenger: IMessengerState,
 }
 // export type IRootState = IStore | undefined

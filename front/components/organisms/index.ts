@@ -1,5 +1,7 @@
 import BarComponent from "./Bar";
 export const Bar = BarComponent;
+import { WithBar as WithBarComponent } from "./Bar";
+export const WithBar = WithBarComponent;
 import AuthFormComponent from "./AuthForm";
 export const AuthForm = AuthFormComponent;
 import AuthManagerComponent from "./managers/AuthManager";
@@ -10,3 +12,5 @@ import UsersListComponent from "./UsersList";
 export const UsersList = UsersListComponent;
 import ChatsListComponent from "./ChatsList";
 export const ChatsList = ChatsListComponent;
+import ChatComponent from "./Chat";
+export const Chat = ChatComponent;

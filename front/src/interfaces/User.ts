@@ -8,6 +8,6 @@ export default interface IUser {
     emailConfirmationCode?: string | null,
     avatar: string | null,
     confirmed: boolean
-    updatedAt: string,
+    createdAt?: string,
 }
 export type IUserOptional = { [key in (keyof IUser)]?: IUser[key] }

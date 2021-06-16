@@ -6,3 +6,7 @@ import FullPageLoaderComponent from "./FullPageLoader";
 export const FullPageLoader = FullPageLoaderComponent;
 import UserCardComponent from "./UserCard";
 export const UserCard = UserCardComponent;
+import ChatCardComponent from "./ChatCard";
+export const ChatCard = ChatCardComponent;
+import ChatCardLoadingComponent from "./ChatCard/ChatCardLoading";
+export const ChatCardLoading = ChatCardLoadingComponent;

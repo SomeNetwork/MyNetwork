@@ -8,7 +8,7 @@ export interface InputProps {
   name: string;
   onChange: (value: string | number) => void;
   type: "text" | "number" | "email" | "password";
-  value: string | number | undefined;
+  value: string | number ;
   variant?: "outlined";
   htmlProps?: React.HTMLProps<HTMLInputElement>;
   // htmlProps: any;
@@ -83,6 +83,7 @@ Input.defaultProps = {
   value: "",
   required: false,
   fluid: false,
+  variant: "outlined",
 };
 
 export default Input;

@@ -1,8 +1,9 @@
-import { ChatsList } from "components/organisms";
+import { ChatsPage } from "components/templates";
 
 const User = () => {
   // return <ReactVirtualizedTable />;
-  return <ChatsList />;
+  return <ChatsPage />;
+  // return <ChatsList />;
 };
 
 User.propTypes = {};

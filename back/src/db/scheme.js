@@ -16,7 +16,7 @@ const UserModelShema = new Schema(
             type: Boolean,
             default: false,
         },
-        updatedAt: { type: Date, default: Date.now },
+        createdAt: { type: Date, default: Date.now },
     },
     { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
@@ -46,7 +46,7 @@ const MessageModelShema = new Schema(
             type: Boolean,
             default: false,
         },
-        updatedAt: { type: Date, default: Date.now },
+        createdAt: { type: Date, default: Date.now },
     },
     { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
@@ -69,7 +69,8 @@ const ConversationModelShema = new Schema(
         id: Schema.Types.ObjectId,
         name: { type: String, default: 'Some Chat' },
         avatar: String,
-        ownerId: { type: Schema.Types.ObjectId, ref: 'User' },
+        ownerId: { type: Schema.Types.ObjectId, required: true },
+        // ownerId: { type: Schema.Types.ObjectId, ref: 'User' },
         // messages: [MessageModelScheme],
         // users: [UserModelScheme],
         // ownder: UserModelScheme,
@@ -78,7 +79,7 @@ const ConversationModelShema = new Schema(
             enum: ['private', 'group'],
             default: 'private',
         },
-        updatedAt: { type: Date, default: Date.now },
+        createdAt: { type: Date, default: Date.now },
     },
     { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
@@ -94,9 +95,17 @@ ConversationModelShema.virtual('conversationLinks', {
     foreignField: 'conversationId',
     // justOne: true,
 })
-ConversationModelShema.virtual('members', {
+ConversationModelShema.virtual('lastMessage', {
+    ref: 'Message',
+    localField: '_id',
+    foreignField: 'conversationId',
+    // justOne: true,
+    options: { sort: { createdAt: -1 }, limit: 1 },
+})
+// FIXME:
+ConversationModelShema.virtual('usersId', {
     ref: 'User',
-    localField: 'conversationLinks.userId',
+    localField: 'conversationLinks.user',
     foreignField: '_id',
 })
 
@@ -106,7 +115,7 @@ const ConversationLinkModelShema = new Schema(
         id: Schema.Types.ObjectId,
         conversationId: { type: Schema.Types.ObjectId, ref: 'Conversation' },
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
-        updatedAt: { type: Date, default: Date.now },
+        createdAt: { type: Date, default: Date.now },
     },
     { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
