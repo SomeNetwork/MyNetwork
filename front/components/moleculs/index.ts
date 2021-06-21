@@ -10,3 +10,5 @@ import ChatCardComponent from "./ChatCard";
 export const ChatCard = ChatCardComponent;
 import ChatCardLoadingComponent from "./ChatCard/ChatCardLoading";
 export const ChatCardLoading = ChatCardLoadingComponent;
+import PopupMenuComponent from "./PopupMenu";
+export const PopupMenu = PopupMenuComponent;

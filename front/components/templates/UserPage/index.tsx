@@ -26,7 +26,7 @@ const UserPage = (props: UserPageProps) => {
               <Image
                 // src={"/users/fox1209/images/3.jpg"}
                 url={user.avatar}
-                // className={styles["ava"]}
+                className={styles["avatar"]}
                 variant="avatar"
               />
             </div>

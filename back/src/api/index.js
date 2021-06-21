@@ -1,9 +1,23 @@
 const AuthManager = require('./AuthManager')
-function func(a) {
-    console.log('api func :>> ', a)
-}
+module.exports.AuthManager = AuthManager
+const Bucket = require('./Bucket')
+module.exports.Bucket = Bucket
 
-module.exports = {
-    func,
-    AuthManager: new AuthManager(),
+function getCookie(cookies, name) {
+    let matches = cookies?.match(
+        new RegExp(
+            '(?:^|; )' +
+                name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') +
+                '=([^;]*)'
+        )
+    )
+    return matches ? decodeURIComponent(matches[1]) : undefined
 }
+module.exports.getCookie = getCookie
+
+// const API = {
+//     func,
+//     AuthManager,
+// }
+
+// module.exports = API

@@ -7,6 +7,7 @@ import { AuthActionType, IActionConfirmEmail, IActionSignIn, IActionSignOut, IAc
 import { authChecked, loadUser, localSaveUser } from "./actions";
 import { gotoEmailConfirm } from "store/authForm/actions";
 import { NotificationVariants } from "src/interfaces/Notification";
+import { messengerLoadConvs } from "store/messenger/actions";
 
 /* SignIn */
 
@@ -21,6 +22,7 @@ function* workerSignIn({ payload }: IActionSignIn) {
       })
     );
     yield call(Router.push, "/");
+    // yield put(messengerLoadConvs())
   } catch (error) {
     yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
     // throw error;
@@ -90,6 +92,8 @@ function* workerAuthCheck() {
       })
     );
     // yield call(Router.push, "/");
+    // yield put(messengerLoadConvs())
+
   } catch (error) {
     console.log("workerAuthCheck2");
     yield put(authChecked());

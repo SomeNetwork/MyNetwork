@@ -14,3 +14,5 @@ import ChatsListComponent from "./ChatsList";
 export const ChatsList = ChatsListComponent;
 import ChatComponent from "./Chat";
 export const Chat = ChatComponent;
+import AppInitComponent from "./AppInit";
+export const AppInit = AppInitComponent;

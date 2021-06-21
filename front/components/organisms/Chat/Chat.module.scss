@@ -2,21 +2,57 @@
   height: 100%;
 
   .top-part {
-    padding: 8px;
+    padding: 2px;
     height: 48px;
+
+    .back {
+      margin-right: 8px;
+    }
+    .info {
+      position: relative;
+      align-items: center;
+      display: flex;
+      cursor: pointer;
+      .avatar {
+        height: 40px;
+        width: 40px;
+      }
+      .name {
+        margin-left: 8px;
+      }
+    }
   }
   .down-part {
     height: calc(100% - 48px);
     box-shadow: 2px 5px 5px -5px rgba(34, 60, 80, 0.6) inset;
-
-    .content {
-      height: calc(100% - 48px);
+    .messages-container-parent {
+      position: relative;
       background: linear-gradient(
         0deg,
         rgba(85, 108, 214, 1) 0%,
         rgba(85, 108, 214, 0.5) 16%,
         rgba(85, 108, 214, 0.013042717086834688) 84%
       );
+      height: calc(100% - 48px);
+      width: 100%;
+
+      overflow: scroll;
+      .messages-container-child {
+        position: absolute;
+        max-height: 100%;
+        height: fit-content;
+        overflow: scroll;
+        width: 100%;
+        bottom: 0;
+
+        .content {
+          height: fit-content;
+          width: 100%;
+          // margin-top: 0;
+          bottom: 0;
+          z-index: 0;
+        }
+      }
     }
     .input-container {
       min-height: 48px;

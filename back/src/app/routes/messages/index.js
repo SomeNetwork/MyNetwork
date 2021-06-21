@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const DB = require('../../../db/crud')
+const WSManager = require('../../ws')
 
 router.get('/:id', (req, res) => {
     // const body = req.body
@@ -23,6 +24,16 @@ router.get('/:id', (req, res) => {
 router.post('/create', (req, res) => {
     const data = req.body
     DB.Messages.create(data)
+        .then((message) => {
+            return DB.Conversations.getMembersOfConv(data.conversationId).then(
+                (users) =>
+                    WSManager.emit(
+                        { name: 'new message', data: message },
+                        users
+                    )
+            )
+        })
+
         .then((message) => {
             res.send({
                 success: true,

@@ -33,6 +33,9 @@
       display: flex;
       flex-direction: column;
       .block {
+        .avatar {
+          padding-bottom: 100%;
+        }
         .email-confirmation {
           margin-top: 16px;
           .top {

@@ -5,6 +5,7 @@ const fs = require('fs')
 const cors = require('cors')
 const routes = require('./routes')
 const cookieParser = require('cookie-parser')
+const wsmanager = require('./ws')
 
 const httpsConfig = {
     key: fs.readFileSync(process.env.SSL_KEY),
@@ -14,7 +15,7 @@ const httpsConfig = {
 const corsOptions = {
     credentials: true,
     // origin: true,
-    origin: process.env.FRONT_URL||true,
+    origin: process.env.FRONT_URL || true,
     body: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders:
@@ -41,4 +42,5 @@ apps.listen(process.env.PORT_HTTPS || 3031, () => {
     console.log(`Server started on port: ${process.env.PORT_HTTPS || 3031}`)
 })
 
+wsmanager.connectToServer(apps)
 module.exports = app

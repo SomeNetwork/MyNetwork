@@ -1,13 +1,15 @@
-import React from "react";
-import { IconButton, Message, Text } from "components/atoms";
+import React, { useEffect, useRef, useState } from "react";
+import { IconButton, Image, Message, Text } from "components/atoms";
 import { Grid } from "@material-ui/core";
 import styles from "./Chat.module.scss";
-import IConversation from "src/interfaces/Conversation";
+import IConversation, { ConversationTypes } from "src/interfaces/Conversation";
 import IUser from "src/interfaces/User";
-import { ArrowBack } from "@material-ui/icons";
+import { ArrowBack, ExpandMore } from "@material-ui/icons";
 import ChatInputForm, { IChatInputFormProps } from "./ChatInputForm";
 import { useAppDispatch } from "store";
 import { messengerCreateNewMessage } from "store/messenger/actions";
+import { PopupMenu } from "components/moleculs";
+import { useRouter } from "next/router";
 
 export interface IChatProps {
   conversation: IConversation | null;
@@ -19,7 +21,27 @@ export interface IChatProps {
 const Chat = (props: IChatProps) => {
   const { conversation, me, onClose: handleClose } = props;
 
+  const [menuIsOpen, setMenuOpen] = useState<boolean>(false);
+
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const inputRef = useRef<null | HTMLInputElement>(null);
+  const menuEl = useRef<null | HTMLDivElement>(null);
+
   const dispatch = useAppDispatch();
+
+  const router = useRouter();
+
+  const scrollToBottom = () => {
+    messagesEndRef?.current?.scrollIntoView(/* { behavior: "smooth" } */);
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+    if (conversation != null && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.value = "";
+    }
+  }, [conversation]);
 
   const handleSend: IChatInputFormProps["onSend"] = (content) => {
     console.log(`content`, content);
@@ -32,6 +54,39 @@ const Chat = (props: IChatProps) => {
       dispatch(messengerCreateNewMessage(data));
     }
   };
+
+  const groupMenuTabs = [
+    {
+      label: "something 1 ...",
+      onClick: () => {
+        console.log("clicked 1");
+      },
+    },
+    {
+      label: "something 2 ...",
+      onClick: () => {
+        console.log("clicked 2");
+      },
+    },
+  ];
+  const privateMenuTabs = [
+    {
+      label: "user page",
+      onClick: () => {
+        if (conversation?.interlocutor?.username)
+          router.push({
+            pathname: "/users/[username]",
+            query: { username: conversation?.interlocutor?.username },
+          });
+      },
+    },
+    {
+      label: "something 2 ...",
+      onClick: () => {
+        console.log("clicked 2");
+      },
+    },
+  ];
 
   return (
     <Grid item container direction="column" xs={8} className={styles["right"]}>
@@ -47,37 +102,73 @@ const Chat = (props: IChatProps) => {
           </Grid>
         ) : (
           <>
-            <Grid item xs={4} container alignItems={"center"}>
-              <IconButton icon={ArrowBack} onClick={handleClose} />
+            <Grid item xs={6} container alignItems={"center"}>
+              <div className={styles["back"]}>
+                <IconButton icon={ArrowBack} onClick={handleClose} />
+              </div>
               {/* <ArrowBack onClick={handleClose} /> */}
-            </Grid>
-            <Grid item xs={4} container alignItems={"center"}>
-              tab 2
-            </Grid>
-            <Grid item xs={4} container alignItems={"center"}>
-              tab 3
+              <div
+                ref={menuEl}
+                className={styles["info"]}
+                onClick={() => setMenuOpen(true)}
+                onKeyPress={() => setMenuOpen(true)}
+                role="button"
+                tabIndex={0}
+              >
+                <Image
+                  url={conversation.avatar}
+                  variant="avatar"
+                  className={styles["avatar"]}
+                />
+                <div className={styles["name"]}>{conversation.name}</div>
+                <IconButton
+                  icon={ExpandMore}
+                  onClick={() => setMenuOpen(true)}
+                />
+              </div>
+              <PopupMenu
+                isOpen={menuIsOpen}
+                tabs={
+                  conversation.type === ConversationTypes.group
+                    ? groupMenuTabs
+                    : privateMenuTabs
+                }
+                // close={() => console.log("close")}
+                anchorEl={menuEl.current}
+                close={() => {
+                  console.log("close");
+                  setMenuOpen(false);
+                }}
+              />
             </Grid>
           </>
         )}
       </Grid>
       <div className={styles["down-part"]}>
-        <Grid
-          container
-          direction={"column-reverse"}
-          className={styles["content"]}
-        >
-          {conversation?.messages.map((msg) => {
-            // console.log(`me._id === msg.authorId`, me._id === msg.authorId);
-            return (
-              <Message
-                key={msg._id}
-                message={msg}
-                isOwner={me._id === msg.authorId}
-              />
-            );
-          })}
-        </Grid>
-        {conversation != null && <ChatInputForm onSend={handleSend} />}
+        <div className={styles["messages-container-parent"]}>
+          <div className={styles["messages-container-child"]}>
+            <Grid
+              container
+              direction={"column-reverse"}
+              className={styles["content"]}
+            >
+              <div ref={messagesEndRef} />
+              {conversation?.messages.map((msg) => {
+                // console.log(`me._id === msg.authorId`, me._id === msg.authorId);
+                return (
+                  <Message
+                    key={msg._id}
+                    message={msg}
+                    isOwner={me._id === msg.authorId}
+                  />
+                );
+              })}
+            </Grid>
+          </div>
+        </div>
+        {conversation != null && (
+          <ChatInputForm onSend={handleSend} ref={inputRef} />
+        )}
       </div>
     </Grid>
   );

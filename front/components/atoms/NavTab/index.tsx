@@ -27,7 +27,8 @@ const NavTab = (props: NavTabProps) => {
       className={`${styles["nav-tab"]} ${active ? styles["active"] : ""} ${
         variant ? styles[variant] : ""
       }`}
-      onMouseDown={onClick}
+      onClick={onClick}
+      onKeyUp={onClick}
     >
       {typeof label === "string" ? (
         <Text variant="body" className={`${styles["label"]}`}>

@@ -221,6 +221,7 @@ class Conversations extends CRUD {
     // ) {
     //     return super.list(config, params)
     // }
+
     list(config, my_id) {
         return new Promise((resolve, reject) => {
             this.Model.aggregate([
@@ -244,7 +245,8 @@ class Conversations extends CRUD {
                     $lookup: {
                         from: 'messages',
                         let: { local_id: '$_id' },
-                        as: 'lastMessage',
+                        as: 'messages',
+                        // as: 'lastMessage',
                         pipeline: [
                             {
                                 $match: {
@@ -270,6 +272,12 @@ class Conversations extends CRUD {
                     $match: config.match,
                 },
                 {
+                    $addFields: {
+                        lastMessageDate: { $max: '$messages.createdAt' },
+                    },
+                },
+                { $sort: { lastMessageDate: -1 } },
+                {
                     $unset: ['conversationLinks'],
                 },
             ]).exec(function (err, res) {
@@ -281,6 +289,42 @@ class Conversations extends CRUD {
                 // FIXME: plz
                 resolve(res.map((c) => _findInterlocutor(c, my_id)))
                 // resolve(res)
+            })
+        })
+    }
+
+    getMembersOfConv(conversationId) {
+        return new Promise((resolve, reject) => {
+            this.Model.aggregate([
+                {
+                    $match: {
+                        _id: { $eq: mongoose.Types.ObjectId(conversationId) },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'conversationlinks',
+                        localField: '_id',
+                        foreignField: 'conversationId',
+                        as: 'conversationLinks',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'conversationLinks.userId',
+                        foreignField: '_id',
+                        as: 'members',
+                    },
+                },
+            ]).exec(function (err, res) {
+                if (err) {
+                    reject(err)
+                }
+                console.log(`err`, err)
+                console.log(`res`, res)
+                if (res.length > 0) resolve(res[0].members)
+                reject(new Error('Conversation not found!'))
             })
         })
     }

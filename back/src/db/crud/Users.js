@@ -1,7 +1,7 @@
 const CRUD = require('./CRUD')
 const { UserModel } = require('../scheme')
 const { v4: uuidv4 } = require('uuid')
-const Bucket = require('../../api/Bucket')
+// const { Bucket } = require('../../api')
 
 class Users extends CRUD {
     constructor() {
@@ -35,17 +35,6 @@ class Users extends CRUD {
                     })
             )
     }
-    // findById(id) {
-    //     return new Promise((resolve, reject) => {
-    //         this.Model.findById(id, function (err, user) {
-    //             if (err) {
-    //                 // handleError(err)
-    //                 reject(err)
-    //             }
-    //             resolve(user)
-    //         })
-    //     })
-    // }
     findByUsername(username, params) {
         // FIXME:
         params = { populate: ['conversationsId'] }
@@ -80,12 +69,12 @@ class Users extends CRUD {
                     emailConfirmationCode: uuidv4(),
                 }
             }
-            if (newData.avatar) {
-                const filename = `/bucket/users/${username}/images/avatar${uuidv4()}`
+            // if (newData.avatar) {
+            //     const filename = `/bucket/users/${username}/images/avatar${uuidv4()}`
 
-                await Bucket.saveBase64(newData.avatar, '.' + filename)
-                newData.avatar = filename
-            }
+            //     await Bucket.saveBase64(newData.avatar, '.' + filename)
+            //     newData.avatar = filename
+            // }
             if (newData.username) {
                 if (newData.username !== username) {
                     const isExist = await new Promise((resolve, reject) => {
@@ -119,32 +108,6 @@ class Users extends CRUD {
             )
         })
     }
-    // updateById(id, newData) {
-    //     return new Promise((resolve, reject) => {
-    //         this.Model.findOneAndUpdate(
-    //             { _id: id },
-    //             newData,
-    //             function (err, user) {
-    //                 if (err) {
-    //                     // handleError(err)
-    //                     reject(err)
-    //                 }
-    //                 resolve(user)
-    //             }
-    //         )
-    //     })
-    // }
-    // list(config) {
-    //     return new Promise((resolve, reject) => {
-    //         this.Model.find({ ...config }, function (err, users) {
-    //             if (err) {
-    //                 // handleError(err)
-    //                 reject(err)
-    //             }
-    //             resolve(users)
-    //         })
-    //     })
-    // }
     checkUsernameExists(username) {
         return new Promise((resolve, reject) => {
             this.Model.exists({ username }, function (err, userExists) {
@@ -153,6 +116,7 @@ class Users extends CRUD {
             })
         })
     }
+
 }
 
 module.exports = new Users()

@@ -178,6 +178,7 @@ export const Tab3 = (props: TabProps) => {
         src={state.src}
         url={state.src ? null : user.avatar}
         variant="avatar"
+        className={styles["avatar"]}
       />
       <div className={styles["img-inp-container"]}>
         <InputImage name={"avatar"} file={state.file} onChange={handleChange} />

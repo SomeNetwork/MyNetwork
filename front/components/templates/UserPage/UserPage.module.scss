@@ -21,6 +21,14 @@
       display: block;
       .avatar-container {
         margin-bottom: 8px;
+        // height: max-content;
+        // height: 200px;
+        // height: 100%;
+        .avatar {
+          height: auto;
+          // max-height: 200px;
+          padding-bottom: 100%;
+        }
       }
 
       .btn-settings {

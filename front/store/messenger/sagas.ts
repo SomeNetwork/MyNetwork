@@ -7,7 +7,7 @@ import { NotificationVariants } from "src/interfaces/Notification";
 
 import { notificationCreate } from "store/notifications/actions";
 import { messengerLoadActiveConv, messengerLocalSaveActiveConv, messengerLocalSaveConvs } from "./actions";
-import { IActionChooseActiveConv, IActionCreateNewMessage, IActionLoadActiveConv, MessengersType } from "./type";
+import { IActionChooseActiveConv, IActionCreateNewMessage, IActionEventNewMessageCreated, IActionLoadActiveConv, MessengersType } from "./type";
 
 /* LOAD_CONVS */
 function* workerConversationsLoad() {
@@ -85,6 +85,14 @@ export function* watchCreateNewMessage() {
 
 // TODO: WebSocket events
 /* EVENT_NEW_MESSAGE_CREATED */
+function* workerEventNewMessageCreated({ payload }: IActionEventNewMessageCreated) {
+  console.log(`payload`, payload)
+  yield put(notificationCreate({ variant: NotificationVariants.info, text: "new message received " }));
+
+}
+export function* watchEventNewMessageCreated() {
+  yield takeEvery(MessengersType.EVENT_NEW_MESSAGE_CREATED, workerEventNewMessageCreated);
+}
 /* EVENT_NEW_CONVERSATION_CREATED */
 
 // EXAMPLE:
@@ -111,6 +119,9 @@ export default function* rootSaga() {
     watchConversationsLoad(),
     watchChooseActiveConv(),
     watchLoadActiveConv(),
-    watchCreateNewMessage()
+    watchCreateNewMessage(),
+    watchEventNewMessageCreated()
   ]);
 }
+
+

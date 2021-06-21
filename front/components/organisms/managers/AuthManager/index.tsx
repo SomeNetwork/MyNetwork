@@ -28,6 +28,7 @@ const AuthManager = (props: AuthManagerProps) => {
       if (canView !== false) setCanView(false);
     } else if (authChecking === false) {
       if (isAuth === true) {
+        
         // if (router.pathname === "/auth",) router.push("/");
         if (onlyPublicUrls.includes(router.pathname)) router.push("/");
         else if (canView !== true) setCanView(true);

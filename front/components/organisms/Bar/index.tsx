@@ -52,9 +52,9 @@ const Bar = () => {
           </>
         ) : (
           <>
-            <NavTab to={"/auth"} active={router.asPath === "/auth"}>
+            {/* <NavTab to={"/auth"} active={router.asPath === "/auth"}>
               Auth
-            </NavTab>
+            </NavTab> */}
           </>
         )}
       </div>

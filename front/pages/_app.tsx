@@ -1,15 +1,21 @@
 import { Provider } from "react-redux";
-import { AuthManager, ToastManager } from "components/organisms";
-import { useStore } from "store";
+import {
+  AppInit,
+  AuthManager,
+  ToastManager,
+  WithBar,
+} from "components/organisms";
 import "../styles/globals.scss";
 import { AppProps } from "next/app";
-import { WithBar } from "components/organisms/Bar";
+// import { WithBar } from "components/organisms/Bar";
+import { useStore } from "store";
 
 function App({ Component, pageProps }: AppProps) {
   const store = useStore(pageProps.initialReduxState);
 
   return (
     <Provider store={store}>
+      <AppInit />
       <AuthManager>
         <WithBar>
           <Component {...pageProps} />

@@ -10,7 +10,21 @@ class Messages extends CRUD {
 
     create(data) {
         // TODO: emit event (msg created)
-        return this.canCreate(true).then(() => super.create(data))
+        return this.canCreate(true)
+            .then(() => super.create(data))
+            .then((res) => {
+                // TODO: ws emit to all members
+                // const event = {
+                //     name: 'new message',
+                //     data: {
+                //         conversationId,
+                //         authorId,
+                //         content,
+                //     }, //message
+                // }
+                // WSmanager.emit()
+                return res
+            })
     }
     canCreate(data) {
         const authorExists = Users.exists({ _id: data.authorId })

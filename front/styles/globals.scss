@@ -18,7 +18,10 @@ body {
   font-family: GolosTextWebRegular;
   background-color: $background-color;
   overflow: hidden;
-  height: 100%;
+  height: 100vh;
+  #__next {
+    height: 100vh;
+  }
 }
 
 * {

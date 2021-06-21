@@ -13,8 +13,12 @@ const UserCard = (props: UserCardProps) => {
   const { user } = props;
   return (
     <Card className={styles["container"]}>
-      <div className={styles["avatar-container"]}>
-        <Image url={user.avatar} variant="avatar" />
+      <div className={styles["avatar"]}>
+        <Image
+          url={user.avatar}
+          variant="avatar"
+          className={styles["avatar"]}
+        />
       </div>
 
       <div className={styles["baseinfo-container"]}>

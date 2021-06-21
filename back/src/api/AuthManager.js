@@ -151,8 +151,10 @@ class AuthManager {
     getUserByJWT(token) {
         const id = this.getUserIdByJWT(token)
         if (id) return Users.findById(id)
-        else return null
+        else return Promise.resolve(null)
     }
 }
 
-module.exports = AuthManager
+const authManager = new AuthManager()
+
+module.exports = authManager

@@ -22,7 +22,7 @@ const ChatsList = (props: IChatsListProps) => {
   const { me, chats, onClick, activeChat, isLoaded } = props;
 
   const rowRenderer = ({
-    // key,
+    key,
     index,
     /* isScrolling, isVisible, */ style,
   }: ListRowProps) => {
@@ -37,29 +37,31 @@ const ChatsList = (props: IChatsListProps) => {
           />
         </div>
       );
-    else return <ChatCardLoading />;
+    else return <ChatCardLoading key={key} />;
   };
 
   return (
     <div className={styles["container"]}>
-      <AutoSizer>
-        {({ height, width }: { height: number; width: number }) => {
-          console.log(`height`, height);
-          console.log(`width`, width);
-          return (
-            <VirtualizedList
-              // width={800}
-              // height={300}
-              width={width}
-              height={height}
-              rowCount={isLoaded ? chats.length : 4}
-              rowHeight={90}
-              rowRenderer={rowRenderer}
-              style={{ outline: "none", padding: "0" }}
-            />
-          );
-        }}
-      </AutoSizer>
+      <div className={styles["content"]}>
+        <AutoSizer>
+          {({ height, width }: { height: number; width: number }) => {
+            console.log(`height`, height);
+            console.log(`width`, width);
+            return (
+              <VirtualizedList
+                // width={800}
+                // height={300}
+                width={width}
+                height={height}
+                rowCount={isLoaded ? chats.length : 4}
+                rowHeight={90}
+                rowRenderer={rowRenderer}
+                style={{ outline: "none", padding: "0" }}
+              />
+            );
+          }}
+        </AutoSizer>
+      </div>
     </div>
   );
 };

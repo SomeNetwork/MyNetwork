@@ -9,7 +9,6 @@ interface IMessageProps {
 
 const Message = (props: IMessageProps) => {
   const { message, isOwner } = props;
-  console.log(`styles`, styles);
   return (
     <Card
       className={`${styles["container"]} ${

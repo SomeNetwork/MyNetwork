@@ -1,0 +1,17 @@
+.menu {
+  position: absolute;
+  z-index: 99;
+  padding-left: 0;
+  max-width: 400px;
+  min-width: 100px;
+  width: fit-content;
+  // bottom: 0;
+  // min-width: 200px;
+  margin: 0;
+  padding: 0;
+  > div {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+}

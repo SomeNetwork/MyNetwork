@@ -3,7 +3,11 @@
 .container {
   width: 100%;
   max-width: 600px;
-  height: calc(100vh - 56px - #{$size-step});
-  margin: auto;
-  margin-top: $size-step;
+  height: 100%;
+  .content {
+    width: 100%;
+    height: calc(100vh - 56px - 16 * #{$size-step});
+    margin: auto;
+    margin-top: $size-step;
+  }
 }

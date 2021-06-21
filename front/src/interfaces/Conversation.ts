@@ -17,6 +17,7 @@ export default interface IConversation {
     lastMessage: IMessage[],
     members: IUser[],
     createdAt?: string,
+    interlocutor?: IUser
 }
 
 export type IConversationOptional = { [key in (keyof IConversation)]?: IConversation[key] }

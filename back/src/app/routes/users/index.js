@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const DB = require('../../../db/crud')
+const API = require('../../../api')
+const { v4: uuidv4 } = require('uuid')
 
 router.get('/:username', (req, res) => {
     // const body = req.body
@@ -28,9 +30,14 @@ router.get('/:username', (req, res) => {
     })
 })
 
-router.post('/update/:username', (req, res) => {
+router.post('/update/:username', async (req, res) => {
     const username = req.params.username
     const data = req.body
+    if (data.avatar) {
+        const filename = `/bucket/users/${username}/images/avatar${uuidv4()}`
+        await API.Bucket.saveBase64(data.avatar, '.' + filename)
+        data.avatar = filename
+    }
     DB.Users.updateByUsername(username, data)
         .then((user) => {
             console.log('user', user)

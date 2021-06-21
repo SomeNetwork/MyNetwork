@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { Button } from "components/atoms";
 import { TextField } from "@material-ui/core";
 import styles from "./Chat.module.scss";
@@ -11,7 +11,10 @@ export interface IChatInputFormProps {
   onSend: (content: IMessage["content"]) => void;
 }
 
-const ChatInputForm = (props: IChatInputFormProps) => {
+const ChatInputForm = forwardRef(function ChatInputForm(
+  props: IChatInputFormProps,
+  inputRef
+) {
   const [content, setContent] = useState<IMessage["content"]>("");
 
   const handleSend = (): void => {
@@ -22,9 +25,7 @@ const ChatInputForm = (props: IChatInputFormProps) => {
       onSend(content.trim());
       console.log("sended");
     }
-    console.log("prev cont", { content });
     setContent("");
-    console.log("next cont", { content });
   };
   const handleChange = (oEvent: React.ChangeEvent<HTMLInputElement>): void => {
     setContent(oEvent.target.value);
@@ -33,14 +34,18 @@ const ChatInputForm = (props: IChatInputFormProps) => {
   const handleKeyPress = (
     oEvent: React.KeyboardEvent<HTMLInputElement>
   ): void => {
-    console.log("key pressed");
     console.log(oEvent);
-    if (oEvent.code === "Enter" && oEvent.shiftKey === false) handleSend();
+    if (oEvent.code === "Enter" && oEvent.shiftKey === false) {
+      handleSend();
+      oEvent.preventDefault();
+    }
   };
 
   return (
     <div className={styles["input-container"]}>
       <TextField
+        inputRef={inputRef}
+        // ref={ref}
         className={styles["input"]}
         multiline
         rowsMax={2}
@@ -55,6 +60,5 @@ const ChatInputForm = (props: IChatInputFormProps) => {
       </Button>
     </div>
   );
-};
-
+});
 export default ChatInputForm;
