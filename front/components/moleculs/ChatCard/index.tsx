@@ -1,5 +1,5 @@
 import { Card, Image, Text } from "components/atoms";
-import React from "react";
+import React, { memo } from "react";
 import styles from "./ChatCard.module.scss";
 
 import IConversation from "src/interfaces/Conversation";
@@ -30,7 +30,7 @@ const ChatCard = (props: ChatCardProps) => {
         ? conversation.messages[0].createdAt
         : "",
   };
- 
+
   if (lastMessage.date) {
     const fullDate = new Date(lastMessage.date);
     const today = new Date();
@@ -44,7 +44,6 @@ const ChatCard = (props: ChatCardProps) => {
         .join(".");
     else lastMessage.date = fullDate.getHours() + ":" + fullDate.getMinutes();
   }
-  console.log(`lastMessage`, lastMessage);
   return (
     <Card
       className={`${styles["container"]} ${isActive ? styles["active"] : ""}`}
@@ -94,9 +93,21 @@ ChatCard.defaultProps = {
     avatar: undefined,
     // messagesIds: any[],
     usersIds: [],
-    ownderId: "",
+    ownerId: "",
     users: [],
   },
 };
 
-export default ChatCard;
+export default memo(
+  ChatCard,
+  (prev, next) =>
+    prev.conversation._id === next.conversation._id &&
+    prev.conversation.name === next.conversation.name &&
+    prev.conversation.avatar === next.conversation.avatar &&
+    prev.conversation.messages.length === next.conversation.messages.length &&
+    prev.conversation.messages[0]?.createdAt ===
+      next.conversation.messages[0]?.createdAt &&
+    prev.conversation.messages[0]?.content ===
+      next.conversation.messages[0]?.content &&
+    prev.isActive === next.isActive
+);

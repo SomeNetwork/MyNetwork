@@ -12,7 +12,7 @@ function send(to, config) {
                 reject(error)
             } else {
                 resolve(info)
-                console.log('Email sent: ' + info.response)
+                // console.log('Email sent: ' + info.response)
             }
         })
     })

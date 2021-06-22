@@ -18,7 +18,6 @@ import {
   IActionSubmitEmailConfirm,
   IActionSubmitSendCode,
   IActionSubmitSignIn,
-  IActionSubmitSignUp,
 } from "store/authForm/types";
 import styles from "./AuthForm.module.scss";
 import {

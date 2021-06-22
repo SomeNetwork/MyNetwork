@@ -14,6 +14,7 @@ function save(file, pathname) {
 }
 function saveBase64(base64, pathname) {
     return createDirectories(pathname).then(() => {
+        // console.log(`base64`, base64)
         const base64Data = base64.replace(/^data:([A-Za-z-+\/]+);base64,/, '')
         return new Promise((resolve, reject) => {
             fs.writeFile(
@@ -43,7 +44,7 @@ function createDirectories(pathname) {
                     console.error(e)
                     reject(e)
                 } else {
-                    console.log('Success')
+                    // console.log('Success')
                     resolve()
                 }
             }

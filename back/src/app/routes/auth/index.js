@@ -4,7 +4,7 @@ const { AuthManager } = require('../../../api')
 
 router.post('/signup', (req, res) => {
     const body = req.body
-    console.log('signup :>> ', body)
+    // console.log('signup :>> ', body)
     AuthManager.signUp(body)
         // AuthManager.signUp({ username: body.username, password: body.password })
         .then((user) => {
@@ -23,7 +23,7 @@ router.post('/signup', (req, res) => {
 })
 router.post('/signin', (req, res) => {
     const body = req.body
-    console.log('signin :>> ', body)
+    // console.log('signin :>> ', body)
     AuthManager.signIn({ username: body.username, password: body.password })
         .then((token) => {
             res.cookie('token', token, {
@@ -44,7 +44,7 @@ router.post('/signin', (req, res) => {
 })
 router.post('/signout', (req, res) => {
     const body = req.body
-    console.log('signout :>> ', body)
+    // console.log('signout :>> ', body)
 
     res.clearCookie('token', {
         httpsOnly: true,

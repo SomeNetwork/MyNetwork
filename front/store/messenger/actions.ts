@@ -12,7 +12,8 @@ import {
   IActionEventNewMessageCreated,
   IActionCreateNewConv,
   IActionEventNewConvCreated,
-  MessengersType
+  MessengersType,
+  IActionSetScreen
 } from "./type";
 
 
@@ -60,6 +61,11 @@ export const messengerCreateNewConv: TAction<IActionCreateNewConv> = (payload) =
 });
 export const messengerEventNewConvCreated: TAction<IActionEventNewConvCreated> = (payload) => ({
   type: MessengersType.EVENT_NEW_CONVERSATION_CREATED,
+  payload,
+});
+
+export const messengerSetScreen: TAction<IActionSetScreen> = (payload) => ({
+  type: MessengersType.SET_SCREEN,
   payload,
 });
 

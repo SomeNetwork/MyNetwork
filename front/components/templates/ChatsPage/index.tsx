@@ -1,18 +1,20 @@
 import { Grid } from "@material-ui/core";
-import { Card } from "components/atoms";
-import { ChatsList, Chat } from "components/organisms";
+import { Card, IconButton } from "components/atoms";
+import { ChatsList, ChatCreateForm, Chat } from "components/organisms";
 // import { useRouter } from "next/router";
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import styles from "./ChatsPage.module.scss";
 import { useAppDispatch, useAppSelector } from "store";
 import {
   messengerChooseActiveConv,
   messengerLoadConvs,
+  messengerSetScreen,
 } from "store/messenger/actions";
-import IConversation from "src/interfaces/Conversation";
 import { IChatsListProps } from "components/organisms/ChatsList";
 import { IChatProps } from "components/organisms/Chat";
+import { MessengerScreens } from "store/messenger/type";
+import { Add } from "@material-ui/icons";
 
 const ChatsPage = () => {
   // const router = useRouter();
@@ -23,22 +25,38 @@ const ChatsPage = () => {
 
   useEffect(() => {
     dispatch(messengerLoadConvs());
-  }, []);
+  }, [dispatch]);
 
-  const handleOpenChat: IChatsListProps["onClick"] = (
-    id: IConversation["_id"]
-  ) => {
-    dispatch(messengerChooseActiveConv(id));
-  };
-  const handleCloseChat: IChatProps["onClose"] = () => {
+  const handleOpenChat: IChatsListProps["onClick"] = useCallback(
+    (id) => {
+      dispatch(messengerSetScreen(MessengerScreens.chat));
+      dispatch(messengerChooseActiveConv(id));
+    },
+    [dispatch]
+  );
+  const handleCloseChat: IChatProps["onClose"] = useCallback(() => {
     dispatch(messengerChooseActiveConv(null));
-  };
+  }, [dispatch]);
+  const handleCloseCreateForm = useCallback(() => {
+    dispatch(messengerSetScreen(MessengerScreens.chat));
+  }, [dispatch]);
+  const handleOpenCreateForm = useCallback(() => {
+    dispatch(messengerSetScreen(MessengerScreens.fromCreate));
+  }, [dispatch]);
+
+  // const handleOpenChat: IChatsListProps["onClick"] = (id) => {
+  //   dispatch(messengerChooseActiveConv(id));
+  // };
+  // const handleCloseChat: IChatProps["onClose"] = () => {
+  //   dispatch(messengerChooseActiveConv(null));
+  // };
+
   return (
-    <>
+    <Card className={styles["container"]}>
       <Grid
         container
         direction={"row"}
-        component={Card}
+        // component={Card}
         className={styles["container"]}
       >
         <Grid
@@ -54,18 +72,17 @@ const ChatsPage = () => {
             direction="row"
             className={styles["top-part"]}
             justify={"space-between"}
+            alignItems={"center"}
           >
-            <Grid item container xs={8} alignItems={"center"}>
+            <Grid item xs={10}>
               Search
             </Grid>
             <Grid
               item
-              container
-              xs={4}
+              xs={2}
               // justify={"flex-end"}
-              alignItems={"center"}
             >
-              Add
+              <IconButton icon={Add} onClick={handleOpenCreateForm} />
             </Grid>
           </Grid>
           <Grid item className={styles["down-part"]}>
@@ -78,14 +95,21 @@ const ChatsPage = () => {
             />
           </Grid>
         </Grid>
-        <Chat
-          conversation={messenger.activeConversation.conversation}
-          isLoaded={messenger.activeConversation.isLoaded}
-          me={me}
-          onClose={handleCloseChat}
-        />
+        {messenger.screen === MessengerScreens.chat ? (
+          <Chat
+            conversation={messenger.activeConversation.conversation}
+            isLoaded={messenger.activeConversation.isLoaded}
+            me={me}
+            onClose={handleCloseChat}
+          />
+        ) : messenger.screen === MessengerScreens.fromCreate ? (
+          <ChatCreateForm me={me} onClose={handleCloseCreateForm} />
+        ) : (
+          // "other screen"
+          <ChatCreateForm me={me} onClose={handleCloseCreateForm} />
+        )}
       </Grid>
-    </>
+    </Card>
   );
 };
 

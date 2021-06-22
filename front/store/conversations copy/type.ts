@@ -10,8 +10,8 @@ export interface IConversationsState {
 
 export enum ConversationsType {
     CONVERSATIONS_LOAD = "CONVERSATIONS_LOAD",
-    CONVERSATIONS_LOCAL_SAVE = "CONVERSATIONS_LOCAL_SAVE",
     CONVERSATIONS_SET_FILTERS = "CONVERSATIONS_SET_FILTERS",
+    CONVERSATIONS_LOCAL_SAVE = "CONVERSATIONS_LOCAL_SAVE",
 }
 
 export interface IActionLoad extends IActionWithoutPayload {

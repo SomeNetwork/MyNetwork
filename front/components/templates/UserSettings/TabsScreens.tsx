@@ -139,7 +139,7 @@ export const Tab2 = (props: TabProps) => {
 interface ITab3State {
   loading: boolean;
   src: string | null;
-  file?: File;
+  file: File | null;
 }
 
 export const Tab3 = (props: TabProps) => {
@@ -147,6 +147,7 @@ export const Tab3 = (props: TabProps) => {
   const [state, setState] = useState<ITab3State>({
     loading: false,
     src: user.avatar ? `${process.env.API_PATH}${user.avatar}` : null,
+    file: null,
   });
   const dispatch = useDispatch();
 
@@ -160,7 +161,7 @@ export const Tab3 = (props: TabProps) => {
           loading: false,
         }))
       )
-      .catch(() => setState({ loading: false, src: null }));
+      .catch(() => setState({ loading: false, src: null, file: null }));
   };
 
   useEffect(() => {
@@ -168,6 +169,7 @@ export const Tab3 = (props: TabProps) => {
       setState({
         loading: false,
         src: null,
+        file: null,
         // src: user.avatar ? `${process.env.API_PATH}${user.avatar}` : null,
       });
   }, [user.avatar]);
@@ -181,7 +183,7 @@ export const Tab3 = (props: TabProps) => {
         className={styles["avatar"]}
       />
       <div className={styles["img-inp-container"]}>
-        <InputImage name={"avatar"} file={state.file} onChange={handleChange} />
+        <InputImage name={"avatar"} onChange={handleChange} />
       </div>
       <Button
         disabled={!state.file}

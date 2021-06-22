@@ -29,7 +29,7 @@ const EmailConfirmation = () => {
           dispatch(
             notificationCreate({
               variant: NotificationVariants.error,
-              text: error.message,
+              text: (error as Error).message,
             })
           );
         })

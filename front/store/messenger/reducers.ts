@@ -1,5 +1,6 @@
-import TMessengerActions, { IMessengerState, MessengersType } from "./type";
+import TMessengerActions, { IMessengerState, MessengerScreens, MessengersType } from "./type";
 import IConversation from 'src/interfaces/Conversation'
+
 const defaultState: IMessengerState = {
   conversations: [],
   activeConversation: {
@@ -8,6 +9,8 @@ const defaultState: IMessengerState = {
   },
   filters: {} as IMessengerState["filters"],
   isLoaded: false,
+  screen: MessengerScreens.chat,
+  // chatForm: {} 
 };
 
 export const messengerReduser = (state = defaultState, action: TMessengerActions): IMessengerState => {
@@ -32,22 +35,34 @@ export const messengerReduser = (state = defaultState, action: TMessengerActions
 
       };
     case MessengersType.LOAD_ACTIVE_CONV:
+
       return {
         ...state,
+
         activeConversation: {
           ...state.activeConversation,
           // conversation: null,
           isLoaded: false
         }
       };
-    case MessengersType.LOCAL_SAVE_ACTIVE_CONV:
-      return {
+
+    case MessengersType.LOCAL_SAVE_ACTIVE_CONV: {
+      const newState = {
         ...state,
         activeConversation: {
           conversation: payload,
           isLoaded: true
         }
       };
+      if (payload) {
+        const convIdx = state.conversations.findIndex(conv => conv._id === payload._id)
+        if (convIdx !== -1) {
+          newState.conversations = state.conversations.slice()
+          newState.conversations.splice(convIdx, 1, { ...payload, messages: payload.messages.slice(0, 1) })
+        }
+      }
+      return newState
+    }
     case MessengersType.EVENT_NEW_MESSAGE_CREATED: {
       const newState = { ...state }
       if (payload.conversationId === newState.activeConversation.conversation?._id)
@@ -74,6 +89,11 @@ export const messengerReduser = (state = defaultState, action: TMessengerActions
       }
       return newState
     }
+    case MessengersType.SET_SCREEN:
+
+      return { ...state, screen: payload }
+    // return { ...state, screen: payload as IMessengerState["screen"] }
+
 
   }
   return state;

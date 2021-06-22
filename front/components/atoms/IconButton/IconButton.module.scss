@@ -4,6 +4,7 @@
   // border-radius: 50%;
   clip-path: circle(46% at center center);
   transition: background-color $time-step;
+  width: min-content;
   &:hover {
     cursor: pointer;
     background: $gray-light2;

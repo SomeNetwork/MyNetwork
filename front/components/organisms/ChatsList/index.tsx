@@ -28,7 +28,7 @@ const ChatsList = (props: IChatsListProps) => {
   }: ListRowProps) => {
     if (isLoaded)
       return (
-        <div key={chats[index]._id} style={style}>
+        <div key={chats[index]._id} style={{ ...style, marginTop: "4px" }}>
           <ChatCard
             me={me}
             conversation={chats[index]}

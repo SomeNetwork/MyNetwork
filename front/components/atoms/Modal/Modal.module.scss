@@ -1,0 +1,33 @@
+@import "styles/variables/main.scss";
+.background {
+  &.blur {
+  }
+}
+
+.root {
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  &.left {
+    left: 0;
+  }
+  &.right {
+    right: 0;
+  }
+  &.bottom {
+    bottom: 0;
+  }
+  &.top {
+    top: 0;
+  }
+  &.centerX {
+    left: 50%;
+  }
+  &.centerY {
+    top: 50%;
+  }
+}

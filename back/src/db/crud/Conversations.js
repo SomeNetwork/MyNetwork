@@ -2,6 +2,8 @@ const CRUD = require('./CRUD')
 const { ConversationModel } = require('../scheme')
 const ConversationLinks = require('./ConversationLinks')
 const mongoose = require('mongoose')
+const { v4: uuidv4 } = require('uuid')
+const API = require('../../api')
 
 // FIXME: delete me plz
 const _findInterlocutor = (conv, my_id) => {
@@ -20,12 +22,20 @@ class Conversations extends CRUD {
     }
 
     create(data) {
-        return super.create(data).then((conv) =>
-            ConversationLinks.create({
-                conversationId: conv._id,
-                userId: conv.ownerId,
-            })
-        )
+        return super.create(data).then((conv) => {
+            console.log(`data`, data)
+            const members = data.members.map((e) => e._id)
+            if (members.indexOf(conv.ownerId) !== -1)
+                members.unshift(conv.ownerId)
+            return Promise.all(
+                members.map((userId) =>
+                    ConversationLinks.create({
+                        conversationId: conv._id,
+                        userId: userId.toString(),
+                    })
+                )
+            )
+        })
     }
 
     findById(
@@ -44,11 +54,12 @@ class Conversations extends CRUD {
         }
     ) {
         // return super.findById(id, params)
+        console.log(`id`, id)
         return new Promise((resolve, reject) => {
             this.Model.aggregate([
                 {
                     $match: {
-                        _id: { $eq: mongoose.Types.ObjectId(id) },
+                        _id: { $eq: mongoose.Types.ObjectId(id.toString()) },
                     },
                 },
                 {
@@ -148,16 +159,16 @@ class Conversations extends CRUD {
                 //         ],
                 //     },
                 // },
-                {
-                    $unset: ['conversationLinks'],
-                },
+                // {
+                //     $unset: ['conversationLinks'],
+                // },
             ]).exec(function (err, res) {
                 if (err) {
                     reject(err)
                     return
                 }
-                console.log(`err`, err)
-                console.log(`res`, res)
+                // console.log(`err`, err)
+                // console.log(`res`, res)
                 resolve(_findInterlocutor(res[0], my_id))
                 // resolve(res[0])
             })
@@ -167,42 +178,48 @@ class Conversations extends CRUD {
         // TODO:
     }
     async updateById(id, newDate) {
-        if (newDate.userIds) {
-            await this.findById(id, { populate: ['conversationLinks'] }).then(
-                (conv) => {
-                    const oldUsersIds = conv.conversationLinks.map((cl) =>
-                        cl.userId.toString()
-                    )
-                    const newUsersIds = newDate.userIds
-                    // CLId
-                    const needDelete = conv.conversationLinks
-                        .filter(
-                            ({ userId }) =>
-                                newUsersIds.indexOf(userId.toString()) == -1
-                        )
-                        .map(({ _id }) => _id.toString())
-                    // USERId
-                    const needCreate = newUsersIds.filter(
-                        (e) => oldUsersIds.indexOf(e) == -1
-                    )
-
-                    const deletingConvoLinks =
-                        ConversationLinks.deleteManyById(needDelete)
-                    const creatingConvoLinks = Promise.all(
-                        needCreate.map((userId) =>
-                            ConversationLinks.create({
-                                conversationId: conv._id,
-                                userId,
-                            })
-                        )
-                    )
-
-                    return Promise.all([deletingConvoLinks, creatingConvoLinks])
+        return this.findById(id)
+            .then(async (conv) => {
+                if (newDate.avatar && newDate.avatar !== conv.avatar) {
+                    const filename = `/bucket/users/${
+                        conv.ownerId
+                    }/images/conv_avatar_${uuidv4()}`
+                    await API.Bucket.saveBase64(newDate.avatar, '.' + filename)
+                    newDate.avatar = filename
                 }
-            )
-            delete newDate.userIds
-        }
-        return super.updateById(id, newDate)
+                return conv
+            })
+            .then((conv) => {
+                const oldUsersIds = conv.members.map((e) => e._id.toString())
+                const newUsersIds = newDate.members.map((e) => e._id.toString())
+                const needCreate = newUsersIds.filter(
+                    (id) => oldUsersIds.indexOf(id) === -1
+                )
+                const needDelete = conv.conversationLinks
+                    .filter(
+                        ({ userId }) =>
+                            newUsersIds.indexOf(userId.toString()) === -1
+                    )
+                    .map(({ _id }) => _id.toString())
+
+                const deletingConvoLinks =
+                    ConversationLinks.deleteManyById(needDelete)
+                const creatingConvoLinks = Promise.all(
+                    needCreate.map((userId) =>
+                        ConversationLinks.create({
+                            conversationId: conv._id,
+                            userId,
+                        })
+                    )
+                )
+
+                return Promise.all([deletingConvoLinks, creatingConvoLinks])
+            })
+            .then(() => {
+                delete newDate.members
+                return super.updateById(id, newDate)
+            })
+        // delete newDate.members
     }
     // list(
     //     config,
@@ -284,8 +301,8 @@ class Conversations extends CRUD {
                 if (err) {
                     reject(err)
                 }
-                console.log(`err`, err)
-                console.log(`res`, res)
+                // console.log(`err`, err)
+                // console.log(`res`, res)
                 // FIXME: plz
                 resolve(res.map((c) => _findInterlocutor(c, my_id)))
                 // resolve(res)
@@ -321,8 +338,8 @@ class Conversations extends CRUD {
                 if (err) {
                     reject(err)
                 }
-                console.log(`err`, err)
-                console.log(`res`, res)
+                // console.log(`err`, err)
+                // console.log(`res`, res)
                 if (res.length > 0) resolve(res[0].members)
                 reject(new Error('Conversation not found!'))
             })

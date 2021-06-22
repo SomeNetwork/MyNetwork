@@ -23,7 +23,6 @@ class WSManager {
             connection.id === uuidv4()
             const token = getCookie(req.headers.cookie, 'token')
             AuthManager.getUserByJWT(token).then((user) => {
-                console.log('connected', user.username)
                 if (user) {
                     const userID = user._id.toString()
                     const userConnections =
@@ -53,15 +52,15 @@ class WSManager {
 
     emit(event, users) {
         if (users) {
-            console.log(`this.connections`, this.connections)
+            // console.log(`this.connections`, this.connections)
 
             users.forEach(({ _id: userId }) => {
-                console.log(
-                    `send`,
-                    userId,
-                    event,
-                    this.connections.authorized.get(userId.toString())
-                )
+                // // console.log(
+                //     `send`,
+                //     userId,
+                //     event,
+                //     this.connections.authorized.get(userId.toString())
+                // )
                 this.connections.authorized
                     .get(userId.toString())
                     ?.forEach((connection) =>

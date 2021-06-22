@@ -20,7 +20,7 @@ function* workerUsersLoad() {
     yield put(usersLocalSave(data));
     yield put(notificationCreate({ variant: NotificationVariants.info, text: "users loaded" }));
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchUsersLoad() {

@@ -11,7 +11,7 @@ export default interface IConversation {
     avatar: string,
     type: ConversationTypes,
     messages: IMessage[],
-    ownderId: IUser["_id"],
+    ownerId: IUser["_id"],
     // conversationLinks: IConversationLink[],
     owner: IUser[],
     lastMessage: IMessage[],
@@ -21,3 +21,15 @@ export default interface IConversation {
 }
 
 export type IConversationOptional = { [key in (keyof IConversation)]?: IConversation[key] }
+
+export interface INewConversationData {
+    ownerId: IConversation["ownerId"],
+    name: IConversation["name"],
+    avatar?: string,
+    members?: IUser[],
+    type: IConversation["type"]
+}
+
+export interface IConversationReadData {
+    id: IConversation["_id"]
+}

@@ -2,6 +2,9 @@ import IConversation from "src/interfaces/Conversation";
 import IMessage, { INewMessageData } from "src/interfaces/Message";
 import { IAction, IActionWithoutPayload } from "store/types";
 
+export enum MessengerScreens {
+    chat, fromCreate, formUpdate
+}
 export interface IMessengerState {
     conversations: IConversation[],
     activeConversation: {
@@ -11,6 +14,8 @@ export interface IMessengerState {
     // FIXME: type of filters
     filters: any,
     isLoaded: boolean,
+    screen: MessengerScreens,
+    // chatForm:IChatFormState
 }
 
 export enum MessengersType {
@@ -27,6 +32,7 @@ export enum MessengersType {
     EVENT_NEW_MESSAGE_CREATED = "MESSENGER_EVENT_NEW_MESSAGE_CREATED",
     CREATE_NEW_CONVERSATION = "MESSENGER_CREATE_NEW_CONVERSATION",
     EVENT_NEW_CONVERSATION_CREATED = "MESSENGER_EVENT_NEW_CONVERSATION_CREATED",
+    SET_SCREEN = "SET_SCREEN"
 }
 
 export interface IActionLoadConvs extends IActionWithoutPayload {
@@ -81,6 +87,10 @@ export interface IActionEventNewConvCreated extends IAction {
     type: MessengersType.EVENT_NEW_CONVERSATION_CREATED,
     payload: IConversation
 }
+export interface IActionSetScreen extends IAction {
+    type: MessengersType.SET_SCREEN,
+    payload: MessengerScreens
+}
 
 type TMessengerActions =
     | IActionLoadConvs
@@ -95,5 +105,6 @@ type TMessengerActions =
     | IActionEventNewMessageCreated
     | IActionCreateNewConv
     | IActionEventNewConvCreated
+    | IActionSetScreen
 
 export default TMessengerActions

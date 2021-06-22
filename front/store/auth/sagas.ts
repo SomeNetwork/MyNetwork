@@ -7,7 +7,7 @@ import { AuthActionType, IActionConfirmEmail, IActionSignIn, IActionSignOut, IAc
 import { authChecked, loadUser, localSaveUser } from "./actions";
 import { gotoEmailConfirm } from "store/authForm/actions";
 import { NotificationVariants } from "src/interfaces/Notification";
-import { messengerLoadConvs } from "store/messenger/actions";
+// import { messengerLoadConvs } from "store/messenger/actions";
 
 /* SignIn */
 
@@ -24,7 +24,7 @@ function* workerSignIn({ payload }: IActionSignIn) {
     yield call(Router.push, "/");
     // yield put(messengerLoadConvs())
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
     // throw error;
   }
 }
@@ -53,7 +53,7 @@ function* workerSignUp({ payload }: IActionSignUp) {
 
     // yield call(Router.push, "/auth");
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
     // throw error;
   }
 }
@@ -72,7 +72,7 @@ function* workerSignOut({ payload }: IActionSignOut) {
       })
     );
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchSignOut() {
@@ -127,7 +127,7 @@ function* workerUserUpdate({ payload }: IActionUpdateUser) {
     );
   } catch (error) {
     console.log("error :>> ", error);
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
 
     // yield call(Router.push, "/auth");
   }
@@ -150,7 +150,7 @@ function* workerEmailConfirm({ payload }: IActionConfirmEmail) {
     );
     yield put(loadUser());
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchEmailConfirm() {
@@ -163,7 +163,7 @@ function* workerUserLoad() {
     const data: IUser = yield call(() => Auth.AuthCheck());
     yield put(localSaveUser(data));
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchUserLoad() {

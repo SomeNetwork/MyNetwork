@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import styles from "./Image.module.scss";
 
 export interface ImageProps {
@@ -41,4 +41,4 @@ const Image = (props: ImageProps) => {
   );
 };
 
-export default Image;
+export default memo(Image);

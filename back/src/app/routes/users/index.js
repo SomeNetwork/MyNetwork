@@ -7,9 +7,9 @@ const { v4: uuidv4 } = require('uuid')
 router.get('/:username', (req, res) => {
     // const body = req.body
     const username = req.params.username
-    console.log('username :>> ', username)
+    // console.log('username :>> ', username)
     DB.Users.findByUsername(username).then((user) => {
-        console.log('user', user)
+        // console.log('user', user)
         if (user) {
             user.password = undefined
             res.send({
@@ -34,13 +34,13 @@ router.post('/update/:username', async (req, res) => {
     const username = req.params.username
     const data = req.body
     if (data.avatar) {
-        const filename = `/bucket/users/${username}/images/avatar${uuidv4()}`
+        const filename = `/bucket/users/${username}/images/avatar_${uuidv4()}`
         await API.Bucket.saveBase64(data.avatar, '.' + filename)
         data.avatar = filename
     }
     DB.Users.updateByUsername(username, data)
         .then((user) => {
-            console.log('user', user)
+            // console.log('user', user)
             if (user) {
                 user.password = undefined
                 res.send({

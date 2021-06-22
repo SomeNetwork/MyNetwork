@@ -8,11 +8,16 @@ import rootSagas from "./sagas";
 import { IRootState } from "./types";
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
+import { ChatFormActionType } from "./chatForm/types";
 
 const sagaMiddleware = createMiddlewar();
 const stateExample = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger, sagaMiddleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [ChatFormActionType.CHAT_FORM_AVATAR_CHANGE]
+    },
+  }).concat(logger, sagaMiddleware),
 })
 export type IStore = (typeof stateExample)
 
@@ -27,7 +32,12 @@ function initStore(preloadedState = {} as IRootState): IStore {
     preloadedState: preloadedState,
     // composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
 
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger, sagaMiddleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+      // serializableCheck: false,
+      serializableCheck: {
+        ignoredActions: [ChatFormActionType.CHAT_FORM_AVATAR_CHANGE]
+      },
+    }).concat(logger, sagaMiddleware),
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   })
   // const store: IStore = createStore<IStore, any, any, any>(

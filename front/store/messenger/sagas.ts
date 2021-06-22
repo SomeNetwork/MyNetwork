@@ -1,14 +1,15 @@
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { all, call, put, select, takeEvery } from "redux-saga/effects";
 // import Router from "next/router";
 import { DB } from "src/api";
 import IConversation from "src/interfaces/Conversation";
 import IMessage from "src/interfaces/Message";
 import { NotificationVariants } from "src/interfaces/Notification";
+import { setupForm } from "store/chatForm/actions";
 
 import { notificationCreate } from "store/notifications/actions";
+import { IRootState } from "store/types";
 import { messengerLoadActiveConv, messengerLocalSaveActiveConv, messengerLocalSaveConvs } from "./actions";
-import { IActionChooseActiveConv, IActionCreateNewMessage, IActionEventNewMessageCreated, IActionLoadActiveConv, MessengersType } from "./type";
-
+import { IActionChooseActiveConv, IActionCreateNewMessage, IActionEventNewMessageCreated, IActionLoadActiveConv, IActionSetScreen, IMessengerState, MessengerScreens, MessengersType } from "./type";
 /* LOAD_CONVS */
 function* workerConversationsLoad() {
   try {
@@ -21,7 +22,7 @@ function* workerConversationsLoad() {
     yield put(messengerLocalSaveConvs(conversations));
     yield put(notificationCreate({ variant: NotificationVariants.info, text: "Conv loaded" }));
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchConversationsLoad() {
@@ -38,7 +39,7 @@ function* workerChooseActiveConv({ payload }: IActionChooseActiveConv) {
       yield put(messengerLoadActiveConv(payload));
 
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchChooseActiveConv() {
@@ -49,14 +50,16 @@ export function* watchChooseActiveConv() {
 function* workerLoadActiveConv({ payload }: IActionLoadActiveConv) {
   try {
     // const username: IUser["username"] = yield select((state) => state.messenger.user.username);
-
     // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv start loading." }));
-    const { conversation }: { conversation: IConversation } = yield call(() => DB.Conversation.read({ id: payload }));
-    // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv loaded." }));
-    console.log(`conversation`, conversation)
-    yield put(messengerLocalSaveActiveConv(conversation));
+    if (payload) {
+      const { conversation }: { conversation: IConversation } = yield call(() => DB.Conversation.read({ id: payload }));
+      // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv loaded." }));
+      console.log(`conversation`, conversation)
+
+      yield put(messengerLocalSaveActiveConv(conversation))
+    }
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchLoadActiveConv() {
@@ -75,7 +78,7 @@ function* workerCreateNewMessage({ payload }: IActionCreateNewMessage) {
     // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv loaded." }));
     console.log(`new message sended`, message)
   } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
 }
 export function* watchCreateNewMessage() {
@@ -94,7 +97,37 @@ export function* watchEventNewMessageCreated() {
   yield takeEvery(MessengersType.EVENT_NEW_MESSAGE_CREATED, workerEventNewMessageCreated);
 }
 /* EVENT_NEW_CONVERSATION_CREATED */
+/* SET_SCREEN */
+function* workerSetScreen({ payload }: IActionSetScreen) {
+  switch (payload) {
+    case MessengerScreens.chat:
+      break
+    case MessengerScreens.fromCreate:
+      yield put(setupForm(null))
 
+      break
+    case MessengerScreens.formUpdate:
+      {
+        const conversation: IMessengerState["activeConversation"]["conversation"] = yield select((state: IRootState) => state.messenger.activeConversation.conversation)
+        if (conversation) {
+          const data = {
+            name: conversation.name,
+            avatar: conversation.avatar,
+            members: conversation.members,
+          }
+          yield put(setupForm(data))
+        }
+        else
+          yield put(setupForm(null))
+        break
+      }
+
+  }
+
+}
+export function* watchSetScreen() {
+  yield takeEvery(MessengersType.SET_SCREEN, workerSetScreen);
+}
 // EXAMPLE:
 // function* workerConversationsLoad() {
 //   try {
@@ -107,7 +140,7 @@ export function* watchEventNewMessageCreated() {
 //     yield put(convsLocalSave(data));
 //     yield put(notificationCreate({ variant: NotificationVariants.info, text: "Conversations loaded" }));
 //   } catch (error) {
-//     yield put(notificationCreate({ variant: NotificationVariants.error, text: error.message }));
+//     yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
 //   }
 // }
 // export function* watchConversationsLoad() {
@@ -120,7 +153,8 @@ export default function* rootSaga() {
     watchChooseActiveConv(),
     watchLoadActiveConv(),
     watchCreateNewMessage(),
-    watchEventNewMessageCreated()
+    watchEventNewMessageCreated(),
+    watchSetScreen()
   ]);
 }
 

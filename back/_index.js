@@ -12,5 +12,5 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 // users.create({ username: 'Goga' }).then((user) => {
-//     console.log('user :>> ', user)
+//     // console.log('user :>> ', user)
 // })

@@ -1,24 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./InputImage.module.scss";
 import { Delete, ImageSearch } from "@material-ui/icons";
 
 export interface InputImageProps {
   name?: string;
   error?: string | false;
-  onChange: (file?: File) => void;
-  file?: File;
+  onChange: (file: File | null) => void;
+  // file: File | null;
   htmlProps?: React.HTMLProps<HTMLInputElement>;
 }
 
 const InputImage = (props: InputImageProps) => {
-  const { file, onChange, error, htmlProps } = props;
-
+  const { onChange, error, htmlProps } = props;
+  const [file, setFile] = useState<File | null>(null);
   const handleChange = (oEvent: React.ChangeEvent<HTMLInputElement>): void => {
-    if (oEvent.target.files) onChange(oEvent.target.files[0]);
+    if (oEvent.target.files) {
+      onChange(oEvent.target.files[0] || null);
+      setFile(oEvent.target.files[0] || null);
+    }
   };
 
   const handleClear = (): void => {
-    onChange();
+    onChange(null);
   };
 
   const imgInputKey = file ? file.name : "";

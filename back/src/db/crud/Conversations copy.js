@@ -90,8 +90,8 @@ class Conversations extends CRUD {
                 if (err) {
                     reject(err)
                 }
-                console.log(`err`, err)
-                console.log(`res`, res)
+                // console.log(`err`, err)
+                // console.log(`res`, res)
                 resolve(res[0])
             })
         })
@@ -223,8 +223,8 @@ class Conversations extends CRUD {
                 if (err) {
                     reject(err)
                 }
-                console.log(`err`, err)
-                console.log(`res`, res)
+                // console.log(`err`, err)
+                // console.log(`res`, res)
                 resolve(res)
             })
         })

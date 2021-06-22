@@ -10,7 +10,7 @@
     height: 80px;
   }
   &.active {
-    background-color: $gray-light2;
+    background-color: $gray-light2 !important;
   }
   .avatar {
     width: 64px;
@@ -32,6 +32,6 @@
     }
   }
   &:hover {
-    background-color: $gray-light2;
+    background-color: $gray-light3;
   }
 }

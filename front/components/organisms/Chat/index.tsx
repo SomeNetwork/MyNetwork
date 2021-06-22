@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { IconButton, Image, Message, Text } from "components/atoms";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Card, IconButton, Image, Message, Text } from "components/atoms";
 import { Grid } from "@material-ui/core";
 import styles from "./Chat.module.scss";
 import IConversation, { ConversationTypes } from "src/interfaces/Conversation";
@@ -7,9 +7,10 @@ import IUser from "src/interfaces/User";
 import { ArrowBack, ExpandMore } from "@material-ui/icons";
 import ChatInputForm, { IChatInputFormProps } from "./ChatInputForm";
 import { useAppDispatch } from "store";
-import { messengerCreateNewMessage } from "store/messenger/actions";
+import { messengerCreateNewMessage, messengerSetScreen } from "store/messenger/actions";
 import { PopupMenu } from "components/moleculs";
 import { useRouter } from "next/router";
+import { MessengerScreens } from "store/messenger/type";
 
 export interface IChatProps {
   conversation: IConversation | null;
@@ -36,7 +37,7 @@ const Chat = (props: IChatProps) => {
   };
 
   useEffect(() => {
-    scrollToBottom();
+    if (conversation?.messages?.length) scrollToBottom();
     if (conversation != null && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.value = "";
@@ -55,12 +56,14 @@ const Chat = (props: IChatProps) => {
     }
   };
 
+  const handleOpenSettings = useCallback(() => {
+    dispatch(messengerSetScreen(MessengerScreens.formUpdate));
+  }, [dispatch]);
+
   const groupMenuTabs = [
     {
-      label: "something 1 ...",
-      onClick: () => {
-        console.log("clicked 1");
-      },
+      label: "settings",
+      onClick: handleOpenSettings,
     },
     {
       label: "something 2 ...",
@@ -146,25 +149,33 @@ const Chat = (props: IChatProps) => {
       </Grid>
       <div className={styles["down-part"]}>
         <div className={styles["messages-container-parent"]}>
-          <div className={styles["messages-container-child"]}>
-            <Grid
-              container
-              direction={"column-reverse"}
-              className={styles["content"]}
-            >
-              <div ref={messagesEndRef} />
-              {conversation?.messages.map((msg) => {
-                // console.log(`me._id === msg.authorId`, me._id === msg.authorId);
-                return (
-                  <Message
-                    key={msg._id}
-                    message={msg}
-                    isOwner={me._id === msg.authorId}
-                  />
-                );
-              })}
-            </Grid>
-          </div>
+          {conversation ? (
+            conversation.messages.length > 0 ? (
+              <div className={styles["messages-container-child"]}>
+                <Grid
+                  container
+                  direction={"column-reverse"}
+                  className={styles["content"]}
+                >
+                  <div ref={messagesEndRef} />
+                  {conversation?.messages.map((msg) => {
+                    // console.log(`me._id === msg.authorId`, me._id === msg.authorId);
+                    return (
+                      <Message
+                        key={msg._id}
+                        message={msg}
+                        isOwner={me._id === msg.authorId}
+                      />
+                    );
+                  })}
+                </Grid>
+              </div>
+            ) : (
+              <Card className={styles["info-message"]}>chat is empty</Card>
+            )
+          ) : (
+            <Card className={styles["info-message"]}>no chat selected</Card>
+          )}
         </div>
         {conversation != null && (
           <ChatInputForm onSend={handleSend} ref={inputRef} />

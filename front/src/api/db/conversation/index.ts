@@ -1,32 +1,31 @@
 import { IResponse } from "@api/axios";
 import API from "src/api";
-import IConversation, { IConversationOptional } from "src/interfaces/Conversation";
+import IConversation, { IConversationReadData, INewConversationData } from "src/interfaces/Conversation";
 
 
-interface ICreateResponse extends IResponse {
+export interface ICreateResponse extends IResponse {
   data: {
     conversation: IConversation
   },
 }
-interface IReadResponse extends IResponse {
+export interface IReadResponse extends IResponse {
   data: {
     conversation: IConversation
   },
 }
-interface IUpdateResponse extends IResponse {
+export interface IUpdateResponse extends IResponse {
   data: {
-    conversation: IConversation
+    conv: IConversation
   },
 }
-interface IListResponse extends IResponse {
+export interface IListResponse extends IResponse {
   data: {
     conversations: IConversation[]
 
   }
 }
-interface INewConversationData extends IConversationOptional {
-  name: IConversation["name"]
-}
+// interface INewConversationData extends IConversationOptional {
+
 export function create(data: INewConversationData) {
   return API.req.post<ICreateResponse>(`/conversations/create`, data).then((data) => {
     console.log("data :>> ", data);
@@ -36,10 +35,7 @@ export function create(data: INewConversationData) {
   });
 }
 
-interface INewConversationReadData extends IConversationOptional {
-  id: IConversation["_id"]
-}
-export function read(data: INewConversationReadData) {
+export function read(data: IConversationReadData) {
   const { id } = data;
   return API.req.get<IReadResponse>(`/conversations/${id}`).then((data) => {
     console.log("data :>> ", data);

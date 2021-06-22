@@ -17,14 +17,14 @@ const PopupMenu = (props: IPopupMenuProps) => {
     let flag = true;
     const handleClose = () => flag && close();
     if (isOpen) {
-      document.addEventListener("click", handleClose);
       document.removeEventListener("click", handleClose);
+      document.addEventListener("click", handleClose);
     }
     return () => {
       flag = false;
       document.removeEventListener("click", handleClose);
     };
-  }, [isOpen]);
+  }, [isOpen, close]);
   if (isOpen)
     return (
       <Card

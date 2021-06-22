@@ -7,7 +7,7 @@ export function save(path: string, file: File) {
   return Api.req.put(path, { body: file });
 }
 
-export async function localSave(file?: File): Promise<FileReader["result"]> {
+export async function localSave(file?: File | null): Promise<FileReader["result"]> {
   return new Promise<FileReader["result"]>((resolve, reject) => {
     if (file) {
       if (typeof window !== "undefined") {

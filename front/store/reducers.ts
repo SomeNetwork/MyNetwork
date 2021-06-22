@@ -6,6 +6,7 @@ import { userPageReduser } from "./userPage/reducers";
 import { usersReduser } from "./users/reducers";
 import { conversationsReduser } from "./conversations/reducers";
 import { messengerReduser } from "./messenger/reducers";
+import { chatFormReduser } from "./chatForm/reducers";
 
 
 export default combineReducers({
@@ -16,4 +17,5 @@ export default combineReducers({
   users: usersReduser,
   conversations: conversationsReduser,
   messenger: messengerReduser,
+  chatForm: chatFormReduser
 });

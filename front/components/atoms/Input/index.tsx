@@ -1,22 +1,34 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styles from "./Input.module.scss";
 
+enum InputVariants {
+  "outlined" = "outlined",
+}
+enum InputTypes {
+  "text" = "text",
+  "number" = "number",
+  "email" = "email",
+  "password" = "password",
+}
 export interface InputProps {
   // children: null | undefined;
   error?: string | false;
   label: string;
   name: string;
   onChange: (value: string | number) => void;
-  type: "text" | "number" | "email" | "password";
-  value: string | number ;
-  variant?: "outlined";
+  type?: InputTypes;
+  value: string | number;
+  variant?: InputVariants;
   htmlProps?: React.HTMLProps<HTMLInputElement>;
   // htmlProps: any;
-  required: boolean;
+  required?: boolean;
   fluid: boolean;
 }
 
-const Input = (props: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  props: InputProps,
+  inputRef
+) {
   const {
     variant,
     label,
@@ -53,6 +65,7 @@ const Input = (props: InputProps) => {
       }`}
     >
       <input
+        ref={inputRef}
         value={value}
         className={`${styles[`inp-${variant || "outlined"}`]} ${
           error ? styles["error"] : ""
@@ -77,13 +90,14 @@ const Input = (props: InputProps) => {
       </label>
     </div>
   );
-};
+});
 
 Input.defaultProps = {
   value: "",
   required: false,
   fluid: false,
   variant: "outlined",
+  type: "text",
 };
 
 export default Input;

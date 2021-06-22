@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import IMessage from "src/interfaces/Message";
 import { Card } from "..";
 import styles from "./Message.module.scss";
@@ -20,4 +20,9 @@ const Message = (props: IMessageProps) => {
   );
 };
 
-export default Message;
+export default memo(
+  Message,
+  (prev, next) =>
+    prev.message.content == next.message.content &&
+    prev.isOwner === next.isOwner
+);

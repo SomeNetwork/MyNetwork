@@ -18,7 +18,7 @@ interface IUpdateResponse extends IResponse {
 }
 interface IListResponse extends IResponse {
   data: {
-    user: IUser[],
+    users: IUser[],
   }
 }
 export function read(data: { username: string }) {
