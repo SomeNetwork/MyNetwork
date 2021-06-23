@@ -6,23 +6,23 @@ export enum MessengerScreens {
     chat, fromCreate, formUpdate
 }
 export interface IMessengerState {
-    conversations: IConversation[],
+    // conversations: IConversation[],
     activeConversation: {
         conversation: IConversation | null,
         isLoaded: boolean,
     },
     // FIXME: type of filters
-    filters: any,
-    isLoaded: boolean,
+    // filters: any,
+    // isLoaded: boolean,
     screen: MessengerScreens,
     // chatForm:IChatFormState
 }
 
 export enum MessengersType {
 
-    LOAD_CONVS = "MESSENGER_LOAD_CONVS",
-    LOCAL_SAVE_CONVS = "MESSENGER_LOCAL_SAVE_CONVS",
-    SET_FILTERS = "MESSENGER_SET_FILTERS",
+    // LOAD_CONVS = "MESSENGER_LOAD_CONVS",
+    // LOCAL_SAVE_CONVS = "MESSENGER_LOCAL_SAVE_CONVS",
+    // SET_FILTERS = "MESSENGER_SET_FILTERS",
     CHOOSE_ACTIVE_CONV = "MESSENGER_CHOOSE_ACTIVE_CONV",
     LOAD_ACTIVE_CONV = "MESSENGER_LOAD_ACTIVE_CONV",
     LOCAL_SAVE_ACTIVE_CONV = "MESSENGER_LOCAL_SAVE_ACTIVE_CONV",
@@ -35,17 +35,17 @@ export enum MessengersType {
     SET_SCREEN = "SET_SCREEN"
 }
 
-export interface IActionLoadConvs extends IActionWithoutPayload {
-    type: MessengersType.LOAD_CONVS,
-}
-export interface IActionLocalSaveConvs extends IAction {
-    type: MessengersType.LOCAL_SAVE_CONVS,
-    payload: IMessengerState["conversations"]
-}
-export interface IActionSetFilters extends IAction {
-    type: MessengersType.SET_FILTERS,
-    payload: IMessengerState["filters"]
-}
+// export interface IActionLoadConvs extends IActionWithoutPayload {
+//     type: MessengersType.LOAD_CONVS,
+// }
+// export interface IActionLocalSaveConvs extends IAction {
+//     type: MessengersType.LOCAL_SAVE_CONVS,
+//     payload: IMessengerState["conversations"]
+// }
+// export interface IActionSetFilters extends IAction {
+//     type: MessengersType.SET_FILTERS,
+//     payload: IMessengerState["filters"]
+// }
 
 export interface IActionChooseActiveConv extends IAction {
     type: MessengersType.CHOOSE_ACTIVE_CONV,
@@ -93,9 +93,9 @@ export interface IActionSetScreen extends IAction {
 }
 
 type TMessengerActions =
-    | IActionLoadConvs
-    | IActionLocalSaveConvs
-    | IActionSetFilters
+    // | IActionLoadConvs
+    // | IActionLocalSaveConvs
+    // | IActionSetFilters
     | IActionChooseActiveConv
     | IActionLoadActiveConv
     | IActionLocalSaveActiveConv

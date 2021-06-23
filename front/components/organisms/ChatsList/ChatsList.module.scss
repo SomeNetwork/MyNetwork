@@ -6,7 +6,8 @@
   // height: 100%;
   .content {
     width: 100%;
-    height: calc(100vh - 56px - 9 * #{$size-step});
+    // height: 100%;
+    height: calc(100vh - 56px - 15 * #{$size-step});
     margin: auto;
     // margin-top: $size-step;
   }

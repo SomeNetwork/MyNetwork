@@ -13,21 +13,49 @@
     .top-part {
       padding: 0 8px;
       height: 48px;
+      .search-container {
+        height: 100%;
+        & > * {
+          padding-top: 18px;
+        }
+      }
     }
     .down-part {
-      height: calc(100% - 48px);
+      height: calc(100% - 48px - 48px);
       position: relative;
       &::after {
         content: "";
         box-shadow: -2px 5px 5px -5px rgba(34, 60, 80, 0.6) inset;
         z-index: 2;
         width: 100%;
-        height: 100%;
+        height: 50%;
         position: absolute;
         display: block;
         top: 0;
         left: 0;
         pointer-events: none;
+      }
+      &::before {
+        content: "";
+        box-shadow: -2px -5px 5px -5px rgba(34, 60, 80, 0.6) inset;
+        z-index: 2;
+        width: 100%;
+        height: 50%;
+        position: absolute;
+        display: block;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+      }
+      .chat-types {
+        // box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6);
+        height: 48px;
+        z-index: 1;
+        & > * {
+          width: 50%;
+          margin: 0;
+          justify-content: center;
+        }
       }
     }
   }

@@ -5,29 +5,30 @@ import IConversation from "src/interfaces/Conversation";
 import IMessage from "src/interfaces/Message";
 import { NotificationVariants } from "src/interfaces/Notification";
 import { setupForm } from "store/chatForm/actions";
+import { convsLocalSave } from "store/conversations/actions";
 
 import { notificationCreate } from "store/notifications/actions";
 import { IRootState } from "store/types";
-import { messengerLoadActiveConv, messengerLocalSaveActiveConv, messengerLocalSaveConvs } from "./actions";
-import { IActionChooseActiveConv, IActionCreateNewMessage, IActionEventNewMessageCreated, IActionLoadActiveConv, IActionSetScreen, IMessengerState, MessengerScreens, MessengersType } from "./type";
-/* LOAD_CONVS */
-function* workerConversationsLoad() {
-  try {
-    // const data = yield call(DB.User.read, payload);
-    // FIXME: put filters
-    const config = {}
-    // FIXME: need del type there and write in DB.User.read
-    const { conversations }: { conversations: IConversation[] } = yield call(() => DB.Conversation.list(config));
+import { messengerLoadActiveConv, messengerLocalSaveActiveConv } from "./actions";
+import { IActionChooseActiveConv, IActionCreateNewMessage, IActionEventNewMessageCreated, IActionLoadActiveConv, IActionLocalSaveActiveConv, IActionSetScreen, IMessengerState, MessengerScreens, MessengersType } from "./type";
+// /* LOAD_CONVS */
+// function* workerConversationsLoad() {
+//   try {
+//     // const data = yield call(DB.User.read, payload);
+//     // FIXME: put filters
+//     const config = {}
+//     // FIXME: need del type there and write in DB.User.read
+//     const { conversations }: { conversations: IConversation[] } = yield call(() => DB.Conversation.list(config));
 
-    yield put(messengerLocalSaveConvs(conversations));
-    yield put(notificationCreate({ variant: NotificationVariants.info, text: "Conv loaded" }));
-  } catch (error) {
-    yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
-  }
-}
-export function* watchConversationsLoad() {
-  yield takeEvery(MessengersType.LOAD_CONVS, workerConversationsLoad);
-}
+//     yield put(messengerLocalSaveConvs(conversations));
+//     yield put(notificationCreate({ variant: NotificationVariants.info, text: "Conv loaded" }));
+//   } catch (error) {
+//     yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
+//   }
+// }
+// export function* watchConversationsLoad() {
+//   yield takeEvery(MessengersType.LOAD_CONVS, workerConversationsLoad);
+// }
 /* CHOOSE_ACTIVE_CONV */
 function* workerChooseActiveConv({ payload }: IActionChooseActiveConv) {
   try {
@@ -65,6 +66,23 @@ function* workerLoadActiveConv({ payload }: IActionLoadActiveConv) {
 export function* watchLoadActiveConv() {
   yield takeEvery(MessengersType.CHOOSE_ACTIVE_CONV, workerLoadActiveConv);
 }
+
+function* workerLocalSaveActiveConv({ payload }: IActionLocalSaveActiveConv) {
+
+  const conversations: IConversation[] = yield select((state: IRootState) => state.conversations.conversations)
+  if (payload) {
+    const convIdx = conversations.findIndex(conv => conv._id === payload._id)
+    if (convIdx !== -1) {
+      const newConversations = conversations.slice()
+      newConversations.splice(convIdx, 1, { ...payload, messages: payload.messages.slice(0, 1) })
+      yield put(convsLocalSave(newConversations))
+    }
+  }
+
+}
+export function* watchLocalSaveActiveConv() {
+  yield takeEvery(MessengersType.LOCAL_SAVE_ACTIVE_CONV, workerLocalSaveActiveConv);
+}
 /* TODO: FULL_UPLOAD_ACTIVE_CONV */
 /* TODO: NEXT_MESSAGES_UPLOAD_ACTIVE_CONV */
 /* TODO: CREATE_NEW_MESSAGE */
@@ -89,7 +107,18 @@ export function* watchCreateNewMessage() {
 // TODO: WebSocket events
 /* EVENT_NEW_MESSAGE_CREATED */
 function* workerEventNewMessageCreated({ payload }: IActionEventNewMessageCreated) {
-  console.log(`payload`, payload)
+  const conversations: IConversation[] = yield select((state: IRootState) => state.conversations.conversations)
+  const idx = conversations.findIndex((conv => conv._id === payload.conversationId))
+  if (idx > -1) {
+    const newConversations = conversations.slice()
+    const conversation = newConversations.splice(idx, 1)[0]
+    yield put(convsLocalSave([{
+      ...conversation,
+      messages: [payload, ...(conversation.messages || [])]
+    }, ...newConversations,
+    ]))
+
+  }
   yield put(notificationCreate({ variant: NotificationVariants.info, text: "new message received " }));
 
 }
@@ -149,9 +178,10 @@ export function* watchSetScreen() {
 
 export default function* rootSaga() {
   yield all([
-    watchConversationsLoad(),
+    // watchConversationsLoad(),
     watchChooseActiveConv(),
     watchLoadActiveConv(),
+    watchLocalSaveActiveConv(),
     watchCreateNewMessage(),
     watchEventNewMessageCreated(),
     watchSetScreen()

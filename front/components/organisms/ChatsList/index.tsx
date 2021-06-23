@@ -1,4 +1,4 @@
-import { ChatCard, ChatCardLoading } from "components/moleculs";
+import { ChatCard } from "components/moleculs";
 import { ChatCardProps } from "components/moleculs/ChatCard";
 import React from "react";
 import {
@@ -8,6 +8,7 @@ import {
 } from "react-virtualized";
 import IConversation from "src/interfaces/Conversation";
 import IUser from "src/interfaces/User";
+import { IConversationsState } from "store/conversations/type";
 import { IMessengerState } from "store/messenger/type";
 import styles from "./ChatsList.module.scss";
 export interface IChatsListProps {
@@ -15,29 +16,30 @@ export interface IChatsListProps {
   onClick: ChatCardProps["onClick"];
   me: IUser;
   activeChat: IMessengerState["activeConversation"]["conversation"];
-  isLoaded: IMessengerState["isLoaded"];
+  isLoaded: IConversationsState["isLoaded"];
 }
 
 const ChatsList = (props: IChatsListProps) => {
   const { me, chats, onClick, activeChat, isLoaded } = props;
 
+  console.log(`isloaded`, isLoaded);
   const rowRenderer = ({
-    key,
+    // key,
     index,
     /* isScrolling, isVisible, */ style,
   }: ListRowProps) => {
-    if (isLoaded)
-      return (
-        <div key={chats[index]._id} style={{ ...style, marginTop: "4px" }}>
-          <ChatCard
-            me={me}
-            conversation={chats[index]}
-            onClick={onClick}
-            isActive={!!activeChat && activeChat._id === chats[index]._id}
-          />
-        </div>
-      );
-    else return <ChatCardLoading key={key} />;
+    // if (isLoaded)
+    return (
+      <div key={chats[index]._id} style={{ ...style, marginTop: "4px" }}>
+        <ChatCard
+          me={me}
+          conversation={chats[index]}
+          onClick={onClick}
+          isActive={!!activeChat && activeChat._id === chats[index]._id}
+        />
+      </div>
+    );
+    // else return <ChatCardLoading key={key} />;
   };
 
   return (
@@ -53,7 +55,8 @@ const ChatsList = (props: IChatsListProps) => {
                 // height={300}
                 width={width}
                 height={height}
-                rowCount={isLoaded ? chats.length : 4}
+                rowCount={chats.length}
+                // rowCount={isLoaded ? chats.length : 0}
                 rowHeight={90}
                 rowRenderer={rowRenderer}
                 style={{ outline: "none", padding: "0" }}

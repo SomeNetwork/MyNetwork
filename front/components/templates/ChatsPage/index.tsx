@@ -1,5 +1,5 @@
-import { Grid } from "@material-ui/core";
-import { Card, IconButton } from "components/atoms";
+import { Grid /* TextField */ } from "@material-ui/core";
+import { Card, IconButton, Input, NavTab } from "components/atoms";
 import { ChatsList, ChatCreateForm, Chat } from "components/organisms";
 // import { useRouter } from "next/router";
 
@@ -8,23 +8,30 @@ import styles from "./ChatsPage.module.scss";
 import { useAppDispatch, useAppSelector } from "store";
 import {
   messengerChooseActiveConv,
-  messengerLoadConvs,
   messengerSetScreen,
 } from "store/messenger/actions";
 import { IChatsListProps } from "components/organisms/ChatsList";
 import { IChatProps } from "components/organisms/Chat";
 import { MessengerScreens } from "store/messenger/type";
 import { Add } from "@material-ui/icons";
+import {
+  convsLoadConvs,
+  convsSetNameFilter,
+  convsSetType,
+} from "store/conversations/actions";
+import { ConversationTypes } from "src/interfaces/Conversation";
 
 const ChatsPage = () => {
   // const router = useRouter();
   const messenger = useAppSelector((state) => state.messenger);
+  const conversations = useAppSelector((state) => state.conversations);
   const me = useAppSelector((state) => state.auth.user);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(messengerLoadConvs());
+    dispatch(convsLoadConvs());
+    // dispatch(messengerLoadConvs());
   }, [dispatch]);
 
   const handleOpenChat: IChatsListProps["onClick"] = useCallback(
@@ -74,25 +81,60 @@ const ChatsPage = () => {
             justify={"space-between"}
             alignItems={"center"}
           >
-            <Grid item xs={10}>
-              Search
+            <Grid item container xs={10} className={styles["search-container"]}>
+              {/* <TextField
+                name="search"
+                value={conversations.nameFilter}
+                onChange={(oEvent) =>
+                  dispatch(convsSetNameFilter(oEvent.target.value))
+                }
+                placeholder="search"
+                fullWidth
+                variant="outlined"
+                size="small"
+              /> */}
+              {/* <Search /> */}
+              <Input
+                label="Search"
+                name="search"
+                value={conversations.nameFilter}
+                onChange={(value) =>
+                  dispatch(convsSetNameFilter(value as string))
+                }
+                // placeholder="search"
+                fluid
+              />
             </Grid>
-            <Grid
-              item
-              xs={2}
-              // justify={"flex-end"}
-            >
+            <Grid item container xs={2} justify={"flex-end"}>
               <IconButton icon={Add} onClick={handleOpenCreateForm} />
             </Grid>
           </Grid>
           <Grid item className={styles["down-part"]}>
             <ChatsList
               me={me}
-              chats={messenger.conversations}
+              chats={conversations.conversations}
               onClick={handleOpenChat}
               activeChat={messenger.activeConversation.conversation}
-              isLoaded={messenger.isLoaded}
+              isLoaded={conversations.isLoaded}
             />
+            <Grid container className={styles["chat-types"]}>
+              <NavTab
+                type="tab"
+                active={conversations.type == ConversationTypes.group}
+                onClick={() => dispatch(convsSetType(ConversationTypes.group))}
+              >
+                Group
+              </NavTab>
+              <NavTab
+                type="tab"
+                active={conversations.type == ConversationTypes.private}
+                onClick={() =>
+                  dispatch(convsSetType(ConversationTypes.private))
+                }
+              >
+                Private
+              </NavTab>
+            </Grid>
           </Grid>
         </Grid>
         {messenger.screen === MessengerScreens.chat ? (

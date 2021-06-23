@@ -240,6 +240,7 @@ class Conversations extends CRUD {
     // }
 
     list(config, my_id) {
+        console.log(`config`, config)
         return new Promise((resolve, reject) => {
             this.Model.aggregate([
                 {

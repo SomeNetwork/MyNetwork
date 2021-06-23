@@ -13,7 +13,7 @@ enum InputTypes {
 export interface InputProps {
   // children: null | undefined;
   error?: string | false;
-  label: string;
+  label?: string;
   name: string;
   onChange: (value: string | number) => void;
   type?: InputTypes;
@@ -22,7 +22,9 @@ export interface InputProps {
   htmlProps?: React.HTMLProps<HTMLInputElement>;
   // htmlProps: any;
   required?: boolean;
-  fluid: boolean;
+  fluid?: boolean;
+  placeholder?: string;
+  iconStart?: any;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -39,6 +41,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     htmlProps,
     required,
     fluid,
+    placeholder,
   } = props;
 
   //TODO: input(number): e, -, +,...
@@ -74,6 +77,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         onChange={handleChange}
         {...htmlProps}
         autoComplete={"false"}
+        placeholder={placeholder || ""}
         // onKeyDown={onKeyDown}
       />
       <label
@@ -96,8 +100,8 @@ Input.defaultProps = {
   value: "",
   required: false,
   fluid: false,
-  variant: "outlined",
-  type: "text",
+  variant: InputVariants.outlined,
+  type: InputTypes.text,
 };
 
 export default Input;

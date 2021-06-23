@@ -71,7 +71,7 @@ router.post('/create', async (req, res) => {
 router.post('/update/:id', async (req, res) => {
     const id = req.params.id
     const data = req.body
-    
+
     DB.Conversations.updateById(id, data)
         .then((conv) => {
             if (conv) {
@@ -96,9 +96,12 @@ router.post('/update/:id', async (req, res) => {
 router.post('', (req, res) => {
     const data = req.body
     const { config } = data
+    if (config.match.$and)
+        config.match.$and.push({ 'members._id': { $eq: req.user._id } })
+    else
     config.match = {
-        ...config.match,
-        'members._id': { $eq: req.user._id },
+        // ...config.match,
+        $and: [{ 'members._id': { $eq: req.user._id } }],
     }
     // config.my_id = req.user._id
     // req.user.id

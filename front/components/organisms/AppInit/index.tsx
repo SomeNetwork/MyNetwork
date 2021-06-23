@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import IMessage from "src/interfaces/Message";
 import { IWSEventHandler } from "src/interfaces/WS";
 import { useAppDispatch, useAppSelector } from "store";
+import { convsLoadConvs } from "store/conversations/actions";
 import {
   messengerEventNewMessageCreated,
-  messengerLoadConvs,
 } from "store/messenger/actions";
 
 const AppInit = () => {
@@ -18,7 +18,9 @@ const AppInit = () => {
     };
     if (isAuth) {
       console.log(11, isAuth);
-      dispatch(messengerLoadConvs());
+      // dispatch(messengerLoadConvs());
+      dispatch(convsLoadConvs());
+
       console.log(12, isAuth);
       WS.subscribe("new message", subNewMessage);
     }
