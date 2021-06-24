@@ -4,7 +4,7 @@ import styles from "./Input.module.scss";
 enum InputVariants {
   "outlined" = "outlined",
 }
-enum InputTypes {
+export enum InputTypes {
   "text" = "text",
   "number" = "number",
   "email" = "email",

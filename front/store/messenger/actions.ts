@@ -1,8 +1,6 @@
 import { TAction, TActionWithoutPayload } from "store/types";
 import {
-  IActionSetFilters,
-  IActionLoadConvs,
-  IActionLocalSaveConvs,
+
   IActionChooseActiveConv,
   IActionLoadActiveConv,
   IActionLocalSaveActiveConv,
@@ -17,17 +15,6 @@ import {
 } from "./type";
 
 
-export const messengerLoadConvs: TActionWithoutPayload<IActionLoadConvs> = () => ({
-  type: MessengersType.LOAD_CONVS,
-});
-export const messengerLocalSaveConvs: TAction<IActionLocalSaveConvs> = (payload) => ({
-  type: MessengersType.LOCAL_SAVE_CONVS,
-  payload,
-});
-export const messengerSetFilters: TAction<IActionSetFilters> = (payload) => ({
-  type: MessengersType.SET_FILTERS,
-  payload,
-});
 export const messengerChooseActiveConv: TAction<IActionChooseActiveConv> = (payload) => ({
   type: MessengersType.CHOOSE_ACTIVE_CONV,
   payload,

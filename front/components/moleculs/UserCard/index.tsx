@@ -7,7 +7,7 @@ import IUser from "src/interfaces/User";
 
 export interface IUserCardProps {
   user: IUser;
-  goToChat: () => void;
+  goToChat?: () => void;
 }
 
 const UserCard = (props: IUserCardProps) => {
@@ -34,7 +34,7 @@ const UserCard = (props: IUserCardProps) => {
         <Text variant="body2">{user.username}</Text>
       </div>
       <div className={styles["actions-container"]}>
-        <IconButton icon={Sms} onClick={goToChat} />
+        {goToChat && <IconButton icon={Sms} onClick={goToChat} />}
         {/* <Sms /> */}
         <Link
           href={{

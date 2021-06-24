@@ -1,3 +1,4 @@
+import { InputTypes } from "components/atoms/Input";
 import { FormProps } from "components/moleculs/Form";
 type FormConfig = Omit<FormProps, "onSubmit">;
 export const tabs = [
@@ -16,7 +17,7 @@ export const configPersonalDataForm: FormConfig = {
     {
       label: "Name",
       name: "name",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 2 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
@@ -29,7 +30,7 @@ export const configPersonalDataForm: FormConfig = {
     {
       label: "Family name",
       name: "family_name",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 2 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
@@ -52,7 +53,7 @@ export const configEmailForm: FormConfig = {
     {
       label: "Email",
       name: "email",
-      type: "text",
+      type: InputTypes["text"],
       // defaultValue: "def val",
       rules: [
         (v) => typeof v === "string" && /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/.test(v) || "Invalid format.",
@@ -74,7 +75,7 @@ export const configEmailConfirmForm: FormConfig = {
     {
       label: "Code",
       name: "code",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => v !== "" || "Required field",
         (v) => typeof v === "string" && v.length > 2 || "Must be longer than 5 characters",
@@ -97,7 +98,7 @@ export const configUsernameForm: FormConfig = {
     {
       label: "Username",
       name: "username",
-      type: "text",
+      type: InputTypes["text"],
       // defaultValue: "def val",
       rules: [
         (v) => v !== "" || "Required field",

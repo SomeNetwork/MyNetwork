@@ -1,3 +1,4 @@
+import { InputTypes } from "components/atoms/Input";
 import { FormProps } from "components/moleculs/Form";
 type FormConfig = Omit<FormProps, "onSubmit">
 export const configSignIn: FormConfig = {
@@ -6,7 +7,7 @@ export const configSignIn: FormConfig = {
     {
       label: "Username",
       name: "username",
-      type: "text",
+      type: InputTypes["text"],
       // defaultValue: "def val",
       rules: [
         (v) =>
@@ -23,7 +24,7 @@ export const configSignIn: FormConfig = {
     {
       label: "Password",
       name: "password",
-      type: "password",
+      type: InputTypes["password"],
       // defaultValue: "def val",
       rules: [
         (v) =>
@@ -63,7 +64,7 @@ export const configSignUp: FormConfig = {
     {
       label: "Email",
       name: "email",
-      type: "text",
+      type:InputTypes["text"],
       // defaultValue: "def val",
       rules: [
         (v) => typeof v === "string" && /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(?:\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@(?:[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(?:aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/.test(v) || "Invalid format.",
@@ -74,7 +75,7 @@ export const configSignUp: FormConfig = {
     {
       label: "Username",
       name: "username",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 5 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
@@ -86,7 +87,7 @@ export const configSignUp: FormConfig = {
     {
       label: "Name",
       name: "name",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 2 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
@@ -98,7 +99,7 @@ export const configSignUp: FormConfig = {
     {
       label: "Family name",
       name: "family_name",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 2 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
@@ -110,7 +111,7 @@ export const configSignUp: FormConfig = {
     {
       label: "Password",
       name: "password",
-      type: "password",
+      type: InputTypes["password"],
       rules: [
         (v) => typeof v === "string" && v.length >= 8 || "Must be longer than 8 characters",
         (v) => v !== "" || "Required field",
@@ -125,7 +126,7 @@ export const configSignUp: FormConfig = {
     {
       label: "Repeat password",
       name: "repeat_password",
-      type: "password",
+      type: InputTypes["password"],
       rules: [
         (v) => typeof v === "string" && v.length >= 8 || "Must be longer than 8 characters",
         (v, state) => v == state?.password.value || "Passwords must be the same",
@@ -152,7 +153,7 @@ export const configEmailConfirm: FormConfig = {
     {
       label: "Username",
       name: "username",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 5 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
@@ -164,7 +165,7 @@ export const configEmailConfirm: FormConfig = {
     {
       label: "Code",
       name: "code",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 2 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
@@ -190,7 +191,7 @@ export const configCodeSend: FormConfig = {
     {
       label: "Username",
       name: "username",
-      type: "text",
+      type: InputTypes["text"],
       rules: [
         (v) => typeof v === "string" && v.length > 5 || "Must be longer than 5 characters",
         (v) => v !== "" || "Required field",
