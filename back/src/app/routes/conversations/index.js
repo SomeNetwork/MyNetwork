@@ -9,66 +9,59 @@ router.get('/:id', (req, res) => {
     const id = req.params.id
     // DB.Conversations.findById(id).then((conversation) => {
     console.log(`req.user._id`, req.user._id)
-    DB.Conversations.findById(id, req.user._id.toString()).then(
-        (conversation) => {
+    DB.Conversations.findById(id, req.user._id.toString())
+        .then((conversation) => {
             // console.log(`conversation`, conversation)
             if (conversation) {
                 res.send({
                     success: true,
                     data: { conversation },
                 })
-            } else {
-                res.send({
-                    success: false,
-                    error: "Conversation doen't exist!",
-                })
             }
+        })
+        .catch((error) => {
+            res.send({
+                success: false,
+                error: error.message,
+            })
+        })
+})
+router.get('/private/:userId', (req, res) => {
+    const userId = req.params.userId
+    DB.Conversations.findPrivateIdByIds(userId, req.user._id).then((convId) => {
+        if (convId) {
+            res.send({
+                success: true,
+                data: { convId },
+            })
+        } else {
+            res.send({
+                success: false,
+                error: 'Something went wrong...',
+            })
         }
-    )
+    })
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', (req, res) => {
     const data = req.body
-    if (data.avatar) {
-        const filename = `/bucket/users/${
-            req.user.username
-        }/images/conv_avatar_${uuidv4()}`
-        await API.Bucket.saveBase64(data.avatar, '.' + filename)
-        data.avatar = filename
-    }
-    if (data.ownerId) {
-        DB.Users.findById(data.ownerId).then((user) =>
-            DB.Conversations.create({ ...data, owner: user._id })
-                // DB.Conversations.create({ ...data, owner: user._id })
-                .then((conv) => {
-                    res.send({
-                        success: true,
-                        data: { conv },
-                    })
-                })
-                .catch((error) => {
-                    res.send({
-                        success: false,
-                        error: error.message,
-                    })
-                })
-        )
-    } else
-        DB.Conversations.create(data)
-            .then((conv) => {
-                res.send({
-                    success: true,
-                    data: { conv },
-                })
+    if (!data.ownerId) data.ownerId = req.user._id
+    DB.Conversations.create({...data})
+        .then((conv) => {
+            res.send({
+                success: true,
+                data: { conv },
             })
-            .catch((error) => {
-                res.send({
-                    success: false,
-                    error: error.message,
-                })
+        })
+        .catch((error) => {
+            res.send({
+                success: false,
+                error: error.message,
             })
+        })
 })
-router.post('/update/:id', async (req, res) => {
+
+router.post('/update/:id', (req, res) => {
     const id = req.params.id
     const data = req.body
 
@@ -99,10 +92,10 @@ router.post('', (req, res) => {
     if (config.match.$and)
         config.match.$and.push({ 'members._id': { $eq: req.user._id } })
     else
-    config.match = {
-        // ...config.match,
-        $and: [{ 'members._id': { $eq: req.user._id } }],
-    }
+        config.match = {
+            // ...config.match,
+            $and: [{ 'members._id': { $eq: req.user._id } }],
+        }
     // config.my_id = req.user._id
     // req.user.id
     DB.Conversations.list(config, req.user._id)

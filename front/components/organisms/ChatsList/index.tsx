@@ -57,7 +57,7 @@ const ChatsList = (props: IChatsListProps) => {
                 height={height}
                 rowCount={chats.length}
                 // rowCount={isLoaded ? chats.length : 0}
-                rowHeight={90}
+                rowHeight={chats.length === 1 ? 150 : 90}
                 rowRenderer={rowRenderer}
                 style={{ outline: "none", padding: "0" }}
               />

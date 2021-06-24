@@ -1,16 +1,18 @@
 import { ArrowForwardIosRounded, Sms } from "@material-ui/icons";
-import { Card, Image, Text } from "components/atoms";
+import { Card, IconButton, Image, Text } from "components/atoms";
 import React from "react";
 import styles from "./UserCard.module.scss";
 import Link from "next/link";
 import IUser from "src/interfaces/User";
 
-export interface UserCardProps {
+export interface IUserCardProps {
   user: IUser;
+  goToChat: () => void;
 }
 
-const UserCard = (props: UserCardProps) => {
-  const { user } = props;
+const UserCard = (props: IUserCardProps) => {
+  const { user, goToChat } = props;
+
   return (
     <Card className={styles["container"]}>
       <div className={styles["avatar"]}>
@@ -32,7 +34,8 @@ const UserCard = (props: UserCardProps) => {
         <Text variant="body2">{user.username}</Text>
       </div>
       <div className={styles["actions-container"]}>
-        <Sms />
+        <IconButton icon={Sms} onClick={goToChat} />
+        {/* <Sms /> */}
         <Link
           href={{
             pathname: "/users/[username]",

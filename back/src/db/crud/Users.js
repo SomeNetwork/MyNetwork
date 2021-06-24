@@ -117,6 +117,22 @@ class Users extends CRUD {
         })
     }
 
+    list(config) {
+        console.log(`config`, config)
+        return new Promise((resolve, reject) => {
+            this.Model.aggregate([
+                {
+                    $match: config.match,
+                },
+                { $sort: { lastMessageDate: -1 } },
+            ]).exec(function (err, res) {
+                if (err) {
+                    reject(err)
+                }
+                resolve(res)
+            })
+        })
+    }
 }
 
 module.exports = new Users()

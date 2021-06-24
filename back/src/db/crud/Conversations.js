@@ -21,13 +21,18 @@ class Conversations extends CRUD {
         super(ConversationModel)
     }
 
-    create(data) {
-        return super.create(data).then((conv) => {
+    async create(data) {
+        if (data.avatar) {
+            const filename = `/bucket/users/${data.ownerId.toString()}/images/conv_avatar_${uuidv4()}`
+            await API.Bucket.saveBase64(data.avatar, '.' + filename)
+            data.avatar = filename
+        }
+        return super.create(data).then(async (conv) => {
             console.log(`data`, data)
             const members = data.members.map((e) => e._id)
-            if (members.indexOf(conv.ownerId) !== -1)
+            if (members.indexOf(conv.ownerId.toString()) === -1)
                 members.unshift(conv.ownerId)
-            return Promise.all(
+            await Promise.all(
                 members.map((userId) =>
                     ConversationLinks.create({
                         conversationId: conv._id,
@@ -35,6 +40,7 @@ class Conversations extends CRUD {
                     })
                 )
             )
+            return conv
         })
     }
 
@@ -123,6 +129,10 @@ class Conversations extends CRUD {
                         as: 'interlocutor_',
                     },
                 },
+
+                {
+                    $limit: 1,
+                },
                 // FIXME: plz
                 // {
                 //     $lookup: {
@@ -167,15 +177,127 @@ class Conversations extends CRUD {
                     reject(err)
                     return
                 }
-                // console.log(`err`, err)
-                // console.log(`res`, res)
+                if (res.length === 0) {
+                    reject(new Error("Conversation doesn't exist!"))
+                    return
+                }
                 resolve(_findInterlocutor(res[0], my_id))
-                // resolve(res[0])
             })
         })
     }
-    findPrivateByIds(userId1, userId2) {
-        // TODO:
+    findPrivateIdByIds(interlocutorId, myId) {
+        return new Promise((resolve, reject) => {
+            this.Model.aggregate([
+                {
+                    $match: {
+                        $and: [
+                            {
+                                type: { $eq: 'private' },
+                            },
+                        ],
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'conversationlinks',
+                        let: { convId: '$_id' },
+
+                        // localField: '_id',
+                        // foreignField: 'conversationId',
+                        as: 'conversationLinks',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ['$$convId', '$conversationId'],
+                                    },
+                                },
+                            },
+                            {
+                                $sort: { createdAt: -1 },
+                            },
+                        ],
+                    },
+                },
+                {
+                    $addFields: {
+                        membersId: "$conversationLinks.userId",
+                        // membersId: [mongoose.Types.ObjectId(interlocutorId),mongoose.Types.ObjectId(myId)],
+                    },
+                },
+                {
+                    $match: {
+                        $and: [
+                            {
+                                membersId: {
+                                    $all: [
+                                        mongoose.Types.ObjectId(interlocutorId),
+                                        mongoose.Types.ObjectId(myId)
+                                    ],
+                                },
+                            },
+                            // { membersId: mongoose.Types.ObjectId(myId) },
+                        ],
+                        // $all: [
+                        //     interlocutorId.toString(),
+                        //     myId.toString()
+                        // ],
+                        // $all: [
+                        //     mongoose.Types.ObjectId(interlocutorId),
+                        //     mongoose.Types.ObjectId(myId),
+                        // ],
+
+                        // $and: [
+                        //     {
+                        //         membersId: {
+                        //             $elemMatch:
+                        //                 mongoose.Types.ObjectId(interlocutorId),
+                        //         },
+                        //     },
+                        //     {
+                        //         membersId: {
+                        //             $elemMatch: mongoose.Types.ObjectId(myId),
+                        //         },
+                        //     },
+                        // ],
+                    },
+                },
+
+                /* {
+                    $match: {
+                        members: {
+                            $elemMatch: {
+                                _id: {
+                                    $in: [
+                                        mongoose.Types.ObjectId(interlocutorId),
+                                        mongoose.Types.ObjectId(myId),
+                                    ],
+                                },
+                            },
+                        },
+                    },
+                }, */
+            ]).exec((err, res) => {
+                if (err) {
+                    reject(err)
+                    return
+                }
+                if (res.length == 0)
+                    this.create({
+                        ownerId: myId.toString(),
+                        members: [
+                            { _id: interlocutorId.toString() },
+                            { _id: myId.toString() },
+                        ],
+                        type: 'private',
+                    }).then((conv) => {
+                        resolve(conv._id)
+                    })
+                else {
+                    resolve(res[0]._id)
+                }
+            })
+        })
     }
     async updateById(id, newDate) {
         return this.findById(id)
@@ -295,9 +417,9 @@ class Conversations extends CRUD {
                     },
                 },
                 { $sort: { lastMessageDate: -1 } },
-                {
-                    $unset: ['conversationLinks'],
-                },
+                // {
+                //     $unset: ['conversationLinks', 'lastMessageDate'],
+                // },
             ]).exec(function (err, res) {
                 if (err) {
                     reject(err)

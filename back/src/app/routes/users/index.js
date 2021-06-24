@@ -68,6 +68,16 @@ router.post('/update/:username', async (req, res) => {
 router.post('', (req, res) => {
     const data = req.body
     const { config } = data
+
+    const match = {
+        $and: [
+            {
+                _id: { $ne: req.user._id },
+            },
+        ],
+    }
+    if (config.match) match.$and.push(config.match)
+    config.match = match
     DB.Users.list(config).then((users) => {
         res.send({
             success: true,
