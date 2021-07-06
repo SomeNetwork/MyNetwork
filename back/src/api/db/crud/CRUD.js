@@ -53,6 +53,19 @@ class CRUD {
     deleteById(id) {
         return new Promise()
     }
+    deleteMany(cls) {
+        return new Promise((resolve, reject) => {
+            this.Model.deleteMany(
+                { _id: { $in: cls.map((cl) => cl._id) } },
+                function (err, res) {
+                    if (err) {
+                        reject(err)
+                    }
+                    resolve(res)
+                }
+            )
+        })
+    }
     deleteManyById(ids) {
         return new Promise((resolve, reject) => {
             this.Model.deleteMany({ _id: { $in: ids } }, function (err, res) {

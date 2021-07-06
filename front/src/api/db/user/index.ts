@@ -24,7 +24,6 @@ interface IListResponse extends IResponse {
 export function read(data: { username: string }) {
   const { username } = data;
   return API.req.get<IReadResponse>(`/users/${username}`).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }
@@ -33,7 +32,6 @@ export function read(data: { username: string }) {
 export function update(oldData: IUserOptional, newData: IUserOptional) {
   const { username } = oldData;
   return API.req.post<IUpdateResponse>(`/users/update/${username}`, newData).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }
@@ -41,7 +39,6 @@ export function update(oldData: IUserOptional, newData: IUserOptional) {
 }
 export function list(config: any) {
   return API.req.post<IListResponse>(`/users`, { config }).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }

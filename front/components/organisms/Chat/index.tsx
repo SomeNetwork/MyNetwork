@@ -7,10 +7,14 @@ import IUser from "src/interfaces/User";
 import { ArrowBack, ExpandMore } from "@material-ui/icons";
 import ChatInputForm, { IChatInputFormProps } from "./ChatInputForm";
 import { useAppDispatch } from "store";
-import { messengerCreateNewMessage, messengerSetScreen } from "store/messenger/actions";
+import {
+  messengerCreateNewMessage,
+  messengerSetScreen,
+} from "store/messenger/actions";
 import { PopupMenu } from "components/moleculs";
 import { useRouter } from "next/router";
 import { MessengerScreens } from "store/messenger/type";
+import { MessageType } from "src/interfaces/Message";
 
 export interface IChatProps {
   conversation: IConversation | null;
@@ -45,11 +49,11 @@ const Chat = (props: IChatProps) => {
   }, [conversation]);
 
   const handleSend: IChatInputFormProps["onSend"] = (content) => {
-    console.log(`content`, content);
     if (conversation && me) {
       const data = {
         content,
         authorId: me["_id"],
+        type: MessageType.text,
         conversationId: conversation["_id"],
       };
       dispatch(messengerCreateNewMessage(data));
@@ -136,10 +140,8 @@ const Chat = (props: IChatProps) => {
                     ? groupMenuTabs
                     : privateMenuTabs
                 }
-                // close={() => console.log("close")}
                 anchorEl={menuEl.current}
                 close={() => {
-                  console.log("close");
                   setMenuOpen(false);
                 }}
               />
@@ -158,16 +160,13 @@ const Chat = (props: IChatProps) => {
                   className={styles["content"]}
                 >
                   <div ref={messagesEndRef} />
-                  {conversation?.messages.map((msg) => {
-                    // console.log(`me._id === msg.authorId`, me._id === msg.authorId);
-                    return (
-                      <Message
-                        key={msg._id}
-                        message={msg}
-                        isOwner={me._id === msg.authorId}
-                      />
-                    );
-                  })}
+                  {conversation?.messages.map((msg) => (
+                    <Message
+                      key={msg._id}
+                      message={msg}
+                      isOwner={me._id === msg.author?._id}
+                    />
+                  ))}
                 </Grid>
               </div>
             ) : (

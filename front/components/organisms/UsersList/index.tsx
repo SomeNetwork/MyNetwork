@@ -49,22 +49,18 @@ const UsersList = () => {
   return (
     <div className={styles["container"]}>
       <AutoSizer>
-        {({ height, width }: { height: number; width: number }) => {
-          console.log(`height`, height);
-          console.log(`width`, width);
-          return (
-            <VirtualizedList
-              // width={800}
-              // height={300}
-              width={width}
-              height={height}
-              rowCount={state.users.length}
-              rowHeight={state.users.length === 1 ? 150 : 100}
-              rowRenderer={rowRenderer}
-              style={{ outline: "none" }}
-            />
-          );
-        }}
+        {({ height, width }: { height: number; width: number }) => (
+          <VirtualizedList
+            // width={800}
+            // height={300}
+            width={width}
+            height={height}
+            rowCount={state.users.length}
+            rowHeight={100}
+            rowRenderer={rowRenderer}
+            style={{ outline: "none" }}
+          />
+        )}
       </AutoSizer>
     </div>
   );

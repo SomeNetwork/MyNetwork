@@ -9,7 +9,6 @@ import { IActionLoad, UserPageActionType } from "./types";
 
 function* workerLoadUserPage({ payload }: IActionLoad) {
   try {
-    // FIXME: need del type there and write in 
     const data: { user: IUser, isOwner: boolean } = yield call(DB.User.read, payload);
     yield put(localSaveUserPage(data));
   } catch (error) {

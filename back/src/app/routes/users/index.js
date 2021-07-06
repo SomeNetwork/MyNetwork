@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const DB = require('../../../db/crud')
+const DB = require('../../../api/db')
 const API = require('../../../api')
 const { v4: uuidv4 } = require('uuid')
 

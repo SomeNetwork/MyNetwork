@@ -5,7 +5,8 @@ const fs = require('fs')
 const cors = require('cors')
 const routes = require('./routes')
 const cookieParser = require('cookie-parser')
-const wsmanager = require('./ws')
+const wsmanager = require('../api/WSManager')
+const wsevents = require('./ws/events')
 
 const httpsConfig = {
     key: fs.readFileSync(process.env.SSL_KEY),
@@ -35,12 +36,21 @@ app.get('/', (req, res) => {
 
 const apps = https.createServer(httpsConfig, app)
 
-app.listen(process.env.PORT_HTTP || 3030, () => {
-    console.log(`Server started on port: ${process.env.PORT_HTTP || 3030}`)
-})
-apps.listen(process.env.PORT_HTTPS || 3031, () => {
-    console.log(`Server started on port: ${process.env.PORT_HTTPS || 3031}`)
-})
+app.listen(
+    process.env.PORT_HTTP || 3030,
+    /* '192.168.43.6', */ () => {
+        console.log(`Server started on port: ${process.env.PORT_HTTP || 3030}`)
+    }
+)
+apps.listen(
+    process.env.PORT_HTTPS || 3031,
+    /* '192.168.43.6', */ () => {
+        console.log(`Server started on port: ${process.env.PORT_HTTPS || 3031}`)
+    }
+)
 
 wsmanager.connectToServer(apps)
+wsevents.forEach((handlers, eventName) =>
+    handlers.forEach((handler) => wsmanager.subscribe(eventName, handler))
+)
 module.exports = app

@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const DB = require('../../../db/crud')
+const DB = require('../../../api/db')
 const API = require('../../../api')
 const { v4: uuidv4 } = require('uuid')
+const WSManager = require('../../../api/WSManager')
+const { KeyboardReturnSharp } = require('@material-ui/icons')
 
 router.get('/:id', (req, res) => {
     // const body = req.body
@@ -46,7 +48,16 @@ router.get('/private/:userId', (req, res) => {
 router.post('/create', (req, res) => {
     const data = req.body
     if (!data.ownerId) data.ownerId = req.user._id
-    DB.Conversations.create({...data})
+    DB.Conversations.create({ ...data })
+        .then((data) =>
+            DB.Conversations.findById(data._id).then((conv) => {
+                WSManager.emit(
+                    { name: 'new conversation created', data: conv },
+                    conv.members
+                )
+                return conv
+            })
+        )
         .then((conv) => {
             res.send({
                 success: true,

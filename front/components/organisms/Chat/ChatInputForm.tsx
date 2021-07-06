@@ -18,12 +18,9 @@ const ChatInputForm = forwardRef(function ChatInputForm(
   const [content, setContent] = useState<IMessage["content"]>("");
 
   const handleSend = (): void => {
-    console.log("send1");
-
     if (content.trim()) {
       const { onSend } = props;
       onSend(content.trim());
-      console.log("sended");
     }
     setContent("");
   };
@@ -34,7 +31,6 @@ const ChatInputForm = forwardRef(function ChatInputForm(
   const handleKeyPress = (
     oEvent: React.KeyboardEvent<HTMLInputElement>
   ): void => {
-    console.log(oEvent);
     if (oEvent.code === "Enter" && oEvent.shiftKey === false) {
       handleSend();
       oEvent.preventDefault();

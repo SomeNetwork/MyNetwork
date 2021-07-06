@@ -3,7 +3,7 @@ const { ConversationModel } = require('../scheme')
 const ConversationLinks = require('./ConversationLinks')
 const mongoose = require('mongoose')
 const { v4: uuidv4 } = require('uuid')
-const API = require('../../api')
+const Bucket = require('../../Bucket')
 
 // FIXME: delete me plz
 const _findInterlocutor = (conv, my_id) => {
@@ -20,16 +20,15 @@ class Conversations extends CRUD {
     constructor() {
         super(ConversationModel)
     }
-
     async create(data) {
         if (data.avatar) {
             const filename = `/bucket/users/${data.ownerId.toString()}/images/conv_avatar_${uuidv4()}`
-            await API.Bucket.saveBase64(data.avatar, '.' + filename)
+            await Bucket.saveBase64(data.avatar, '.' + filename)
             data.avatar = filename
         }
         return super.create(data).then(async (conv) => {
             console.log(`data`, data)
-            const members = data.members.map((e) => e._id)
+            const members = data.members?.map((e) => e._id) || []
             if (members.indexOf(conv.ownerId.toString()) === -1)
                 members.unshift(conv.ownerId)
             await Promise.all(
@@ -40,13 +39,12 @@ class Conversations extends CRUD {
                     })
                 )
             )
+            conv.members = members
             return conv
         })
     }
-
     findById(
         id,
-        // FIXME:plz
         my_id,
         params = {
             populate: [
@@ -108,11 +106,68 @@ class Conversations extends CRUD {
                                     },
                                 },
                             },
+                            {
+                                $lookup: {
+                                    from: 'users',
+                                    let: { authorId: '$authorId' },
+                                    as: 'authors',
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        {
+                                                            $eq: [
+                                                                '$$authorId',
+                                                                '$_id',
+                                                            ],
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        },
+                                        { $limit: 1 },
+                                    ],
+                                },
+                            },
+                            {
+                                $project: {
+                                    author: { $first: '$authors' },
+                                    _id: '$_id',
+                                    content: '$content',
+                                    type: '$type',
+                                    readed: '$readed',
+                                    createdAt: '$createdAt',
+                                },
+                            },
                             { $sort: { createdAt: -1 } },
                             // { $limit: 1 },
                         ],
                     },
                 },
+                // {
+                //     $lookup: {
+                //         from: 'users',
+                //         localField: 'messages.authorId',
+                //         foreignField: '_id',
+                //         as: 'messages.author',
+                //     },
+                // },
+                // {
+                //     $group: {
+                //         messages: {
+                //             ['messages._id']: '$messages._id',
+                //             ['messages.content']: '$messages.content',
+                //             ['messages.type']: '$messages.type',
+                //             ['messages.readed']: '$messages.readed',
+                //             ['messages.authorId']: '$messages.authorId',
+                //             ['messages.conversationId']:
+                //                 '$messages.conversationId',
+                //             ['messages.createdAt']: '$messages.createdAt',
+                //             ['messages.author']: '$author',
+                //         },
+                //     },
+                // },
                 {
                     $lookup: {
                         from: 'users',
@@ -181,6 +236,7 @@ class Conversations extends CRUD {
                     reject(new Error("Conversation doesn't exist!"))
                     return
                 }
+                console.log(res[0].messages[0])
                 resolve(_findInterlocutor(res[0], my_id))
             })
         })
@@ -221,7 +277,7 @@ class Conversations extends CRUD {
                 },
                 {
                     $addFields: {
-                        membersId: "$conversationLinks.userId",
+                        membersId: '$conversationLinks.userId',
                         // membersId: [mongoose.Types.ObjectId(interlocutorId),mongoose.Types.ObjectId(myId)],
                     },
                 },
@@ -232,7 +288,7 @@ class Conversations extends CRUD {
                                 membersId: {
                                     $all: [
                                         mongoose.Types.ObjectId(interlocutorId),
-                                        mongoose.Types.ObjectId(myId)
+                                        mongoose.Types.ObjectId(myId),
                                     ],
                                 },
                             },
@@ -306,26 +362,27 @@ class Conversations extends CRUD {
                     const filename = `/bucket/users/${
                         conv.ownerId
                     }/images/conv_avatar_${uuidv4()}`
-                    await API.Bucket.saveBase64(newDate.avatar, '.' + filename)
+                    await Bucket.saveBase64(newDate.avatar, '.' + filename)
                     newDate.avatar = filename
                 }
                 return conv
             })
-            .then((conv) => {
+            .then(async (conv) => {
                 const oldUsersIds = conv.members.map((e) => e._id.toString())
                 const newUsersIds = newDate.members.map((e) => e._id.toString())
                 const needCreate = newUsersIds.filter(
                     (id) => oldUsersIds.indexOf(id) === -1
                 )
-                const needDelete = conv.conversationLinks
-                    .filter(
-                        ({ userId }) =>
-                            newUsersIds.indexOf(userId.toString()) === -1
-                    )
-                    .map(({ _id }) => _id.toString())
-
+                const needDeleteCL = conv.conversationLinks.filter(
+                    ({ userId }) =>
+                        newUsersIds.indexOf(userId.toString()) === -1
+                )
                 const deletingConvoLinks =
-                    ConversationLinks.deleteManyById(needDelete)
+                    ConversationLinks.deleteMany(needDeleteCL)
+                // const deletingConvoLinks = ConversationLinks.deleteManyById(
+                //     needDeleteCL.map(({ _id }) => _id.toString())
+                // )
+
                 const creatingConvoLinks = Promise.all(
                     needCreate.map((userId) =>
                         ConversationLinks.create({
@@ -334,8 +391,37 @@ class Conversations extends CRUD {
                         })
                     )
                 )
-
-                return Promise.all([deletingConvoLinks, creatingConvoLinks])
+                // FIXME: optimize to 1 query for finding users
+                // const creatingMessages1 = Promise.all(
+                //     needDeleteCL.map((cl) =>
+                //         Users.findById(cl.userId).then((user) =>
+                //             Messages.create({
+                //                 content: `User ${user.username} left the chat`, // FIXME:  link to user
+                //                 authorId: user._id,
+                //                 conversationId: conv._id,
+                //                 type: 'info',
+                //             })
+                //         )
+                //     )
+                // )
+                // const creatingMessages2 = Promise.all(
+                //     needCreate.map((userId) =>
+                //         Users.findById(userId).then((user) =>
+                //             Messages.create({
+                //                 content: `User ${user.username} join the chat`, // FIXME:  link to user
+                //                 authorId: user._id,
+                //                 conversationId: conv._id,
+                //                 type: 'info',
+                //             })
+                //         )
+                //     )
+                // )
+                return Promise.all([
+                    deletingConvoLinks,
+                    creatingConvoLinks,
+                    // creatingMessages1,
+                    // creatingMessages2,
+                ])
             })
             .then(() => {
                 delete newDate.members
@@ -386,7 +472,6 @@ class Conversations extends CRUD {
                         from: 'messages',
                         let: { local_id: '$_id' },
                         as: 'messages',
-                        // as: 'lastMessage',
                         pipeline: [
                             {
                                 $match: {
@@ -400,6 +485,7 @@ class Conversations extends CRUD {
                         ],
                     },
                 },
+
                 {
                     $lookup: {
                         from: 'users',
@@ -408,6 +494,36 @@ class Conversations extends CRUD {
                         as: 'members',
                     },
                 },
+                // {
+                //     $lookup: {
+                //         from: 'users',
+                //         let: { local_id: '$members' },
+                //         as: 'interlocutors',
+                //         pipeline: [
+                //             {
+                //                 $match: {
+                //                     $expr: {
+                //                         $and: [
+                //                             {
+                //                                 $eq: ['$$local_id._id', '$_id'],
+                //                             },
+                //                             // {
+                //                             //     $ne: [
+                //                             //         '$_id',
+                //                             //         mongoose.Types.ObjectId(
+                //                             //             my_id
+                //                             //         ),
+                //                             //     ],
+                //                             // },
+                //                         ],
+                //                     },
+                //                 },
+                //             },
+                //             // { $sort: { createdAt: -1 } },
+                //             // { $limit: 1 },
+                //         ],
+                //     },
+                // },
                 {
                     $match: config.match,
                 },
@@ -418,12 +534,28 @@ class Conversations extends CRUD {
                 },
                 { $sort: { lastMessageDate: -1 } },
                 // {
+                //     $project: {
+                //         _id: '$_id',
+                //         name: '$name',
+                //         avatar: '$avatar',
+                //         messages: '$messages',
+                //         ownerId: '$ownerId',
+                //         owner: '$owner',
+                //         lastMessage: '$lastMessage',
+                //         members: '$members',
+                //         createdAt: '$createdAt',
+                //         interlocutors: '$interlocutors',
+                //     },
+                // },
+                // {
                 //     $unset: ['conversationLinks', 'lastMessageDate'],
                 // },
             ]).exec(function (err, res) {
                 if (err) {
                     reject(err)
+                    return
                 }
+                // console.log(res[0].interlocutors)
                 // console.log(`err`, err)
                 // console.log(`res`, res)
                 // FIXME: plz

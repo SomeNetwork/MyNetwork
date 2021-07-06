@@ -1,2 +1,2 @@
-export const publicUrls = ["/auth", "/", "/chats"]
+export const publicUrls = ["/auth", "/"]
 export const onlyPublicUrls = ["/auth"]

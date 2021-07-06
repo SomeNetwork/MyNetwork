@@ -19,6 +19,7 @@ export enum ConversationsType {
     CONVERSATIONS_LOCAL_SAVE = "CONVERSATIONS_LOCAL_SAVE",
     CONVERSATIONS_SET_NAME_FILTER = "CONVERSATIONS_SET_NAME_FILTER",
     CONVERSATIONS_SET_TYPE = "CONVERSATIONS_SET_TYPE",
+    EVENT_NEW_CONVERSATION_CREATED = "EVENT_NEW_CONVERSATION_CREATED",
 }
 
 export interface IActionLoad extends IActionWithoutPayload {
@@ -35,6 +36,10 @@ export interface IActionLocalSave extends IAction {
 export interface IActionSetType extends IAction {
     type: ConversationsType.CONVERSATIONS_SET_TYPE,
     payload: IConversationsState['type']
+}
+export interface IActionEventNewConversationCreated extends IAction {
+    type: ConversationsType.EVENT_NEW_CONVERSATION_CREATED,
+    payload: IConversationsState['conversations'][0]
 }
 
 type TConversationsActions =

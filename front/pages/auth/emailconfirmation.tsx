@@ -10,7 +10,6 @@ import { notificationCreate } from "store/notifications/actions";
 const EmailConfirmation = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log("router :>> ", router);
   useEffect(() => {
     const { username, code } = router.query;
     if (username && code) {

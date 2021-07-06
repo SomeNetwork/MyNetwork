@@ -1,5 +1,5 @@
 import { TAction, TActionWithoutPayload } from "store/types";
-import { IActionLoad, IActionLocalSave, ConversationsType, IActionSetType, IActionSetNameFilter } from "./type";
+import { IActionLoad, IActionLocalSave, ConversationsType, IActionSetType, IActionSetNameFilter, IActionEventNewConversationCreated } from "./type";
 
 export const convsLoadConvs: TActionWithoutPayload<IActionLoad> = () => ({
   type: ConversationsType.CONVERSATIONS_LOAD,
@@ -14,5 +14,9 @@ export const convsLocalSave: TAction<IActionLocalSave> = (payload) => ({
 });
 export const convsSetType: TAction<IActionSetType> = (payload) => ({
   type: ConversationsType.CONVERSATIONS_SET_TYPE,
+  payload,
+});
+export const convsEventNewConvCreated: TAction<IActionEventNewConversationCreated> = (payload) => ({
+  type: ConversationsType.EVENT_NEW_CONVERSATION_CREATED,
   payload,
 });

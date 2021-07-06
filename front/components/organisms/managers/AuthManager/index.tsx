@@ -21,22 +21,30 @@ const AuthManager = (props: AuthManagerProps) => {
 
   useEffect(() => {
     dispatch(authCheck());
-    // setTimeout(() => dispatch(authCheck()), 10000);
   }, []);
   useEffect(() => {
+    setCanView(false);
     if (authChecking === true || authChecking === null) {
-      if (canView !== false) setCanView(false);
+      setCanView(false);
+      // if (canView !== false) setCanView( false);
     } else if (authChecking === false) {
       if (isAuth === true) {
-        
         // if (router.pathname === "/auth",) router.push("/");
         if (onlyPublicUrls.includes(router.pathname)) router.push("/");
-        else if (canView !== true) setCanView(true);
+        else setCanView(true);
+        //  if (canView !== true) setCanView(true);
       } else if (isAuth === false) {
-        if (!/^\/auth((\/)?[\w])*$/.test(router.pathname)) router.push("/auth");
-        else if (!publicUrls.includes(router.pathname)) router.push("/auth");
+        // if (
+        //   !publicUrls.includes(router.pathname) ||
+        //   !/^\/auth((\/)?[\w])*$/.test(router.pathname)
+        // )
+        //   router.push("/auth");
+        if (!publicUrls.includes(router.pathname))
+          if (/^\/auth((\/)?[\w])*$/.test(router.pathname)) setCanView(true);
+          else router.push("/auth");
         // if (router.pathname !== "/auth") router.push("/auth");
-        else if (canView !== true) setCanView(true);
+        else setCanView(true);
+        // if (canView !== true) setCanView(true);
       }
     }
   }, [canView, isAuth, authChecking, router]);

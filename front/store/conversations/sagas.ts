@@ -7,7 +7,7 @@ import { NotificationVariants } from "src/interfaces/Notification";
 import { notificationCreate } from "store/notifications/actions";
 import { IRootState } from "store/types";
 import { convsLoadConvs, convsLocalSave } from "./actions";
-import { ConversationsType } from "./type";
+import { ConversationsType, IActionEventNewConversationCreated } from "./type";
 
 type filterType = { $and: [{ type: { $eq: ConversationTypes } }, { name: { content: string } }] }
 /* LOAD_CONVS */
@@ -18,9 +18,10 @@ function* workerConversationsLoad() {
 
     const filter: filterType = yield select((state: IRootState) =>
     ({
-      $and: [{ type: { $eq: state.conversations.type } },
-      // TODO:
-      { name: { $regex: state.conversations.nameFilter.trim(), $options: 'gi' } }
+      $and: [
+        { type: { $eq: state.conversations.type } },
+        // TODO:
+        { name: { $regex: state.conversations.nameFilter.trim(), $options: 'gi' } }
         // { name: { $regex: state.conversations.nameFilter.trim(), $options: 'g' } }
         // { name: { $search: state.conversations.nameFilter.trim() } }
       ]
@@ -65,30 +66,25 @@ function* workerSetNameFilter() {
 export function* watchSetNameFilter() {
   yield takeEvery(ConversationsType.CONVERSATIONS_SET_NAME_FILTER, workerSetNameFilter);
 }
-// /* LoadUser */
 
-// function* workerConversationsLoad() {
-//   try {
-//     // const data = yield call(DB.User.read, payload);
-//     // FIXME: put filters
-//     const config = {}
-//     // FIXME: need del type there and write in DB.User.read
-//     const data: IConversation[] = yield call(() => DB.Conversation.list(config));
+/* EVENT_NEW_CONVERSATION_CREATED */
+function* workerEventNewConversationCreated({ payload }: IActionEventNewConversationCreated) {
+  const conversations: IConversation[] = yield select((state: IRootState) => state.conversations.conversations)
+  const idx = conversations.findIndex((conv => conv._id === payload._id))
+  if (idx === -1)
+    yield put(convsLocalSave([payload, ...conversations]))
 
-//     yield put(convsLocalSave(data));
-//     yield put(notificationCreate({ variant: NotificationVariants.info, text: "Conversations loaded" }));
-//   } catch (error) {
-//     yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
-//   }
-// }
-// export function* watchConversationsLoad() {
-//   yield takeEvery(ConversationsType.CONVERSATIONS_LOAD, workerConversationsLoad);
-// }
+  yield put(notificationCreate({ variant: NotificationVariants.info, text: "new conversation received " }));
+}
+export function* watchEventNewConversationCreated() {
+  yield takeEvery(ConversationsType.EVENT_NEW_CONVERSATION_CREATED, workerEventNewConversationCreated);
+}
 
 export default function* rootSaga() {
   yield all([
     watchConversationsLoad(),
     watchSetType(),
-    watchSetNameFilter()
+    watchSetNameFilter(),
+    watchEventNewConversationCreated()
   ]);
 }

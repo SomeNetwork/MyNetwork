@@ -30,8 +30,8 @@ export enum MessengersType {
     NEXT_MESSAGES_UPLOAD_ACTIVE_CONV = "MESSENGER_UPLOAD_ACTIVE_CONV",
     CREATE_NEW_MESSAGE = "MESSENGER_CREATE_NEW_MESSAGE",
     EVENT_NEW_MESSAGE_CREATED = "MESSENGER_EVENT_NEW_MESSAGE_CREATED",
-    CREATE_NEW_CONVERSATION = "MESSENGER_CREATE_NEW_CONVERSATION",
-    EVENT_NEW_CONVERSATION_CREATED = "MESSENGER_EVENT_NEW_CONVERSATION_CREATED",
+    // CREATE_NEW_CONVERSATION = "MESSENGER_CREATE_NEW_CONVERSATION",
+    // EVENT_NEW_CONVERSATION_CREATED = "MESSENGER_EVENT_NEW_CONVERSATION_CREATED",
     SET_SCREEN = "SET_SCREEN"
 }
 
@@ -79,14 +79,14 @@ export interface IActionEventNewMessageCreated extends IAction {
     type: MessengersType.EVENT_NEW_MESSAGE_CREATED,
     payload: IMessage
 }
-export interface IActionCreateNewConv extends IAction {
-    type: MessengersType.CREATE_NEW_CONVERSATION,
-    payload: IConversation
-}
-export interface IActionEventNewConvCreated extends IAction {
-    type: MessengersType.EVENT_NEW_CONVERSATION_CREATED,
-    payload: IConversation
-}
+// export interface IActionCreateNewConv extends IAction {
+//     type: MessengersType.CREATE_NEW_CONVERSATION,
+//     payload: IConversation
+// }
+// export interface IActionEventNewConversationCreated extends IAction {
+//     type: MessengersType.EVENT_NEW_CONVERSATION_CREATED,
+//     payload: IConversation
+// }
 export interface IActionSetScreen extends IAction {
     type: MessengersType.SET_SCREEN,
     payload: MessengerScreens
@@ -103,8 +103,8 @@ type TMessengerActions =
     | IActionNextMessagesUpdateActiveConv
     | IActionCreateNewMessage
     | IActionEventNewMessageCreated
-    | IActionCreateNewConv
-    | IActionEventNewConvCreated
+    // | IActionCreateNewConv
+    // | IActionEventNewConversationCreated
     | IActionSetScreen
 
 export default TMessengerActions

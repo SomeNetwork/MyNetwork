@@ -76,7 +76,7 @@ export const messengerReduser = (state = defaultState, action: TMessengerActions
 
           } as IConversation,
         }
-     
+
       return newState
     }
     case MessengersType.SET_SCREEN:

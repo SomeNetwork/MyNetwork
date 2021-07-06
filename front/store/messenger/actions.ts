@@ -8,8 +8,8 @@ import {
   IActionNextMessagesUpdateActiveConv,
   IActionCreateNewMessage,
   IActionEventNewMessageCreated,
-  IActionCreateNewConv,
-  IActionEventNewConvCreated,
+  // IActionCreateNewConv,
+  // IActionEventNewConversationCreated,
   MessengersType,
   IActionSetScreen
 } from "./type";
@@ -42,14 +42,14 @@ export const messengerEventNewMessageCreated: TAction<IActionEventNewMessageCrea
   type: MessengersType.EVENT_NEW_MESSAGE_CREATED,
   payload,
 });
-export const messengerCreateNewConv: TAction<IActionCreateNewConv> = (payload) => ({
-  type: MessengersType.CREATE_NEW_CONVERSATION,
-  payload,
-});
-export const messengerEventNewConvCreated: TAction<IActionEventNewConvCreated> = (payload) => ({
-  type: MessengersType.EVENT_NEW_CONVERSATION_CREATED,
-  payload,
-});
+// export const messengerCreateNewConv: TAction<IActionCreateNewConv> = (payload) => ({
+//   type: MessengersType.CREATE_NEW_CONVERSATION,
+//   payload,
+// });
+// export const messengerEventNewConvCreated: TAction<IActionEventNewConversationCreated> = (payload) => ({
+//   type: MessengersType.EVENT_NEW_CONVERSATION_CREATED,
+//   payload,
+// });
 
 export const messengerSetScreen: TAction<IActionSetScreen> = (payload) => ({
   type: MessengersType.SET_SCREEN,

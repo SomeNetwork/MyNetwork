@@ -19,8 +19,10 @@ body {
   background-color: $background-color;
   overflow: hidden;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   #__next {
     height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
   }
 }
 

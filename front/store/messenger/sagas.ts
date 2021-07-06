@@ -2,7 +2,7 @@ import { all, call, put, select, takeEvery } from "redux-saga/effects";
 // import Router from "next/router";
 import { DB } from "src/api";
 import IConversation from "src/interfaces/Conversation";
-import IMessage from "src/interfaces/Message";
+// import IMessage from "src/interfaces/Message";
 import { NotificationVariants } from "src/interfaces/Notification";
 import { setupForm } from "store/chatForm/actions";
 import { convsLocalSave } from "store/conversations/actions";
@@ -12,23 +12,7 @@ import { IRootState } from "store/types";
 import { messengerLoadActiveConv, messengerLocalSaveActiveConv } from "./actions";
 import { IActionChooseActiveConv, IActionCreateNewMessage, IActionEventNewMessageCreated, IActionLoadActiveConv, IActionLocalSaveActiveConv, IActionSetScreen, IMessengerState, MessengerScreens, MessengersType } from "./type";
 // /* LOAD_CONVS */
-// function* workerConversationsLoad() {
-//   try {
-//     // const data = yield call(DB.User.read, payload);
-//     // FIXME: put filters
-//     const config = {}
-//     // FIXME: need del type there and write in DB.User.read
-//     const { conversations }: { conversations: IConversation[] } = yield call(() => DB.Conversation.list(config));
 
-//     yield put(messengerLocalSaveConvs(conversations));
-//     yield put(notificationCreate({ variant: NotificationVariants.info, text: "Conv loaded" }));
-//   } catch (error) {
-//     yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
-//   }
-// }
-// export function* watchConversationsLoad() {
-//   yield takeEvery(MessengersType.LOAD_CONVS, workerConversationsLoad);
-// }
 /* CHOOSE_ACTIVE_CONV */
 function* workerChooseActiveConv({ payload }: IActionChooseActiveConv) {
   try {
@@ -50,13 +34,8 @@ export function* watchChooseActiveConv() {
 
 function* workerLoadActiveConv({ payload }: IActionLoadActiveConv) {
   try {
-    // const username: IUser["username"] = yield select((state) => state.messenger.user.username);
-    // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv start loading." }));
     if (payload) {
       const { conversation }: { conversation: IConversation } = yield call(() => DB.Conversation.read({ id: payload }));
-      // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv loaded." }));
-      console.log(`conversation`, conversation)
-
       yield put(messengerLocalSaveActiveConv(conversation))
     }
   } catch (error) {
@@ -88,13 +67,10 @@ export function* watchLocalSaveActiveConv() {
 /* TODO: CREATE_NEW_MESSAGE */
 function* workerCreateNewMessage({ payload }: IActionCreateNewMessage) {
   try {
-    // const username: IUser["username"] = yield select((state) => state.messenger.user.username);
 
-    // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv start loading." }));
-    const { message }: { message: IMessage } = yield call(() => DB.Message.create(payload));
-    // const { conversation }: { conversation: IConversation } = yield call(() => DB.Conversation.read({ id: payload }));
-    // yield put(notificationCreate({ variant: NotificationVariants.info, text: "Active conv loaded." }));
-    console.log(`new message sended`, message)
+    // const { message }: { message: IMessage } =
+    yield call(() => DB.Message.create(payload));
+
   } catch (error) {
     yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
@@ -102,7 +78,6 @@ function* workerCreateNewMessage({ payload }: IActionCreateNewMessage) {
 export function* watchCreateNewMessage() {
   yield takeEvery(MessengersType.CREATE_NEW_MESSAGE, workerCreateNewMessage);
 }
-/* TODO: CREATE_NEW_CONVERSATION */
 
 // TODO: WebSocket events
 /* EVENT_NEW_MESSAGE_CREATED */
@@ -125,7 +100,7 @@ function* workerEventNewMessageCreated({ payload }: IActionEventNewMessageCreate
 export function* watchEventNewMessageCreated() {
   yield takeEvery(MessengersType.EVENT_NEW_MESSAGE_CREATED, workerEventNewMessageCreated);
 }
-/* EVENT_NEW_CONVERSATION_CREATED */
+
 /* SET_SCREEN */
 function* workerSetScreen({ payload }: IActionSetScreen) {
   switch (payload) {
@@ -133,7 +108,6 @@ function* workerSetScreen({ payload }: IActionSetScreen) {
       break
     case MessengerScreens.fromCreate:
       yield put(setupForm(null))
-
       break
     case MessengerScreens.formUpdate:
       {
@@ -184,7 +158,7 @@ export default function* rootSaga() {
     watchLocalSaveActiveConv(),
     watchCreateNewMessage(),
     watchEventNewMessageCreated(),
-    watchSetScreen()
+    watchSetScreen(),
   ]);
 }
 

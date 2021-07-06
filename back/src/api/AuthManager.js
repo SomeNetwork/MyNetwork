@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
 const { v4: uuidv4 } = require('uuid')
-const { Users } = require('../db/crud')
-const Email = require('../email')
+const { Users } = require('./db/crud')
+const Email = require('./email')
 
 class AuthManager {
     signIn(data) {

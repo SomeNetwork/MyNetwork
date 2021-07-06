@@ -62,7 +62,7 @@ export function* watchSignUp() {
 }
 /* SignOUT */
 function* workerSignOut({ payload }: IActionSignOut) {
-  console.log("payload :>> ", payload);
+
   try {
     yield call(() => Auth.SignOut());
     yield put(
@@ -82,7 +82,6 @@ export function* watchSignOut() {
 /* Check */
 function* workerAuthCheck() {
   try {
-    console.log("workerAuthCheck1");
     const data: IUser = yield call(() => Auth.AuthCheck());
     yield put(localSaveUser(data));
     yield put(
@@ -95,7 +94,6 @@ function* workerAuthCheck() {
     // yield put(messengerLoadConvs())
 
   } catch (error) {
-    console.log("workerAuthCheck2");
     yield put(authChecked());
     yield put(
       notificationCreate({
@@ -113,7 +111,6 @@ export function* watchAuthCheck() {
 /* Update */
 function* workerUserUpdate({ payload }: IActionUpdateUser) {
   try {
-    console.log("UserUpdate");
     const username: IUser["username"] = yield select((state) => state.auth.user.username);
     const { user } = yield call(() =>
       DB.User.update({ username }, { ...payload })
@@ -126,7 +123,6 @@ function* workerUserUpdate({ payload }: IActionUpdateUser) {
       })
     );
   } catch (error) {
-    console.log("error :>> ", error);
     yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
 
     // yield call(Router.push, "/auth");

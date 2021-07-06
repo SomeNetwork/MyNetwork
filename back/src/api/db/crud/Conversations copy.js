@@ -17,19 +17,7 @@ class Conversations extends CRUD {
         )
     }
 
-    findById(
-        id,
-        params = {
-            populate: [
-                'owner',
-                'conversationLinks',
-                {
-                    path: 'conversationLinks',
-                    populate: { path: 'user' },
-                },
-            ],
-        }
-    ) {
+    findById(id) {
         // return super.findById(id, params)
         return new Promise((resolve, reject) => {
             this.Model.aggregate([
@@ -144,7 +132,7 @@ class Conversations extends CRUD {
     //             'owner',
     //             'conversationLinks',
     //             'lastMessage',
-    //             // 'members', // FIXME:
+    //             // 'members',
     //             {
     //                 path: 'conversationLinks',
     //                 populate: { path: 'user' },
@@ -154,21 +142,7 @@ class Conversations extends CRUD {
     // ) {
     //     return super.list(config, params)
     // }
-    list(
-        config,
-        params = {
-            populate: [
-                'owner',
-                'conversationLinks',
-                'lastMessage',
-                // 'members', // FIXME:
-                {
-                    path: 'conversationLinks',
-                    populate: { path: 'user' },
-                },
-            ],
-        }
-    ) {
+    list(config) {
         return new Promise((resolve, reject) => {
             this.Model.aggregate([
                 {

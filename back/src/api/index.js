@@ -1,7 +1,7 @@
 const AuthManager = require('./AuthManager')
-module.exports.AuthManager = AuthManager
 const Bucket = require('./Bucket')
-module.exports.Bucket = Bucket
+const DB = require('./db')
+const Email = require('./email')
 
 function getCookie(cookies, name) {
     let matches = cookies?.match(
@@ -14,10 +14,7 @@ function getCookie(cookies, name) {
     return matches ? decodeURIComponent(matches[1]) : undefined
 }
 module.exports.getCookie = getCookie
-
-// const API = {
-//     func,
-//     AuthManager,
-// }
-
-// module.exports = API
+module.exports.AuthManager = AuthManager
+module.exports.Bucket = Bucket
+module.exports.DB = DB
+module.exports.Email = Email

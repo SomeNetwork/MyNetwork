@@ -2,7 +2,7 @@ import { useMemo } from "react";
 // import { createStore, applyMiddleware } from "redux";
 // import { composeWithDevTools } from "redux-devtools-extension";
 import createMiddlewar from "redux-saga";
-import logger from "redux-logger";
+// import logger from "redux-logger";
 import rootReducer from "./reducers";
 import rootSagas from "./sagas";
 import { IRootState } from "./types";
@@ -17,7 +17,7 @@ const stateExample = configureStore({
     serializableCheck: {
       ignoredActions: [ChatFormActionType.CHAT_FORM_AVATAR_CHANGE]
     },
-  }).concat(logger, sagaMiddleware),
+  }).concat(/* logger, */ sagaMiddleware),
 })
 export type IStore = (typeof stateExample)
 
@@ -30,20 +30,20 @@ function initStore(preloadedState = {} as IRootState): IStore {
     reducer:
       rootReducer,
     preloadedState: preloadedState,
-    // composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
+    // composeWithDevTools(applyMiddleware(/* logger, */ sagaMiddleware))
 
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
       // serializableCheck: false,
       serializableCheck: {
         ignoredActions: [ChatFormActionType.CHAT_FORM_AVATAR_CHANGE]
       },
-    }).concat(logger, sagaMiddleware),
+    }).concat(/* logger, */ sagaMiddleware),
     // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   })
   // const store: IStore = createStore<IStore, any, any, any>(
   //   rootReducer,
   //   preloadedState,
-  //   composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
+  //   composeWithDevTools(applyMiddleware(/* logger, */ sagaMiddleware))
   // );
   sagaMiddleware.run(rootSagas);
 

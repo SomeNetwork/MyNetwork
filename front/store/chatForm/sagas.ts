@@ -16,11 +16,9 @@ function* workerAvatarChange({ payload }: IActionAvatarChange) {
   try {
     yield put(notificationCreate({ variant: NotificationVariants.info, text: "start" }));
     const src: IChatFormState["avatar"]["src"] = yield call(Bucket.localSave, payload);
-    console.log(`src`, src)
     yield put(avatarLocalSaved(src))
     yield put(notificationCreate({ variant: NotificationVariants.info, text: "saved" }));
   } catch (error) {
-    console.log(`error`, error)
     yield put(notificationCreate({ variant: NotificationVariants.warning, text: (error as Error).message }));
     yield put(avatarLocalNotSaved())
 
@@ -50,7 +48,6 @@ function* workerFormSubmit() {
           return data
         });
         const res: IConversation = yield call(DB.Conversation.create, data);
-        yield put(notificationCreate({ variant: NotificationVariants.info, text: "New Chat created" }));
         yield put(messengerSetScreen(MessengerScreens.chat))
         yield put(messengerChooseActiveConv(res._id))
         yield put(setupForm(null))
@@ -69,7 +66,6 @@ function* workerFormSubmit() {
           return data
         });
         const { conv }: IUpdateResponse["data"] = yield call(DB.Conversation.update, oldData, newData);
-        console.log(`conv`, conv)
         yield put(notificationCreate({ variant: NotificationVariants.info, text: `Chat ${conv.name} updated` }));
         yield put(messengerSetScreen(MessengerScreens.chat))
         yield put(messengerChooseActiveConv(conv._id))
@@ -77,7 +73,6 @@ function* workerFormSubmit() {
       }
     }
   } catch (error) {
-    console.log(`error`, error)
     yield put(notificationCreate({ variant: NotificationVariants.error, text: (error as Error).message }));
   }
   yield put(setLoading(false))

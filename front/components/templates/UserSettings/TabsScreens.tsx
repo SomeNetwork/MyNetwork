@@ -41,9 +41,8 @@ export const Tab0 = (props: TabProps) => {
             };
           })}
           onSubmit={(data) => {
-            console.log("data :>> ", data);
+
             dispatch(updateUser(data));
-            // dispatch(updateUser((data as unknown) as IUser));
           }}
         />
       </Card>
@@ -67,7 +66,6 @@ export const Tab1 = (props: TabProps) => {
             ] as FormFieldType["defaultValue"],
           }))}
           onSubmit={(data) => {
-            console.log("data :>> ", data);
             dispatch(updateUser(data));
           }}
         />
@@ -102,7 +100,6 @@ export const Tab1 = (props: TabProps) => {
           <Form
             {...configEmailConfirmForm}
             onSubmit={(data) => {
-              console.log("data :>> ", data);
               dispatch(confirmEmail(data as { code: string }));
             }}
           />
@@ -128,7 +125,6 @@ export const Tab2 = (props: TabProps) => {
           ] as FormFieldType["defaultValue"],
         }))}
         onSubmit={(data) => {
-          console.log("data :>> ", data);
           dispatch(updateUser(data));
         }}
       />

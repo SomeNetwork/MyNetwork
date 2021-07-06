@@ -3,7 +3,7 @@ import { notificationClose, notificationDelete } from "./actions";
 import { IActionClose, IActionCreate, NotificationsActionType } from "./types";
 
 
-const delay = (time: number): Promise<null> => new Promise((resolve) => setTimeout(() => resolve(null), time));
+const delay = (time: number): Promise<null> => new Promise((resolve) => { const _t = setTimeout(() => { clearTimeout(_t); resolve(null) }, time) });
 
 function* workerNotifCreate({ payload }: IActionCreate) {
   yield call(delay, 5000);

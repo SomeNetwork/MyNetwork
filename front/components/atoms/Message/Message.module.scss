@@ -1,15 +1,28 @@
+@import "styles/variables/main.scss";
+
 .container {
   width: fit-content;
   max-width: 50%;
-
+  padding: 4px;
   .text {
   }
   .date {
   }
   &.left {
     margin-right: auto;
+    border-radius: 8px 8px 8px 2px;
   }
   &.right {
     margin-left: auto;
+    border-radius: 8px 8px 2px 8px;
+  }
+  &.info {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff22;
+    box-shadow: none;
+  }
+  .author {
+    color: $primary-color;
   }
 }

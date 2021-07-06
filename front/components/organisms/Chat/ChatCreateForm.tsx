@@ -57,7 +57,12 @@ const ChatCreateForm = (props: IChatCreateFormProps) => {
           </Grid>
           <Grid item container xs={10} justify={"center"}>
             <Grid item>
-              <Text>Create new Chat</Text>
+              <Text>
+                {formType === MessengerScreens.fromCreate
+                  ? "Create new "
+                  : "Update"}
+                Chat
+              </Text>
             </Grid>
           </Grid>
         </Grid>
@@ -87,15 +92,27 @@ const ChatCreateForm = (props: IChatCreateFormProps) => {
             required
             fluid
           />
-          {"//FIXME: delete em plz "}
+          {/* "//FIXME: delete em plz " */}
           <Autocomplete
             multiple
             id="tags-standard"
             options={users}
             getOptionLabel={(option) => option.username}
-            value={state.members}
-            // defaultValue={[]}
-            // onChange={(oEvent, newValue) => console.log(`oEvent`, newValue)}
+            // value={state.members}
+            value={state.members.map((member) => {
+              const idx = users.findIndex((u) => u._id === member._id);
+              return idx === -1 ? member : users[idx];
+            })}
+            // onChange={(oEvent, newValue) =>
+            //   dispatch(
+            //     memberChange(
+            //       newValue.map((nv) => {
+            //         const idx = users.findIndex((u) => u._id === nv._id);
+            //         return idx === -1 ? nv : users[idx];
+            //       })
+            //     )
+            //   )
+            // }
             onChange={(oEvent, newValue) => dispatch(memberChange(newValue))}
             fullWidth
             renderInput={(params) => (
@@ -107,6 +124,7 @@ const ChatCreateForm = (props: IChatCreateFormProps) => {
               />
             )}
           />
+          <br />
           <Button fluid onClick={() => dispatch(submitForm())}>
             {formType === MessengerScreens.fromCreate ? "Create" : "Update"}
           </Button>

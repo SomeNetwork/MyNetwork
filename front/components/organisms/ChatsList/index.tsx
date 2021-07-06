@@ -22,7 +22,6 @@ export interface IChatsListProps {
 const ChatsList = (props: IChatsListProps) => {
   const { me, chats, onClick, activeChat, isLoaded } = props;
 
-  console.log(`isloaded`, isLoaded);
   const rowRenderer = ({
     // key,
     index,
@@ -46,23 +45,19 @@ const ChatsList = (props: IChatsListProps) => {
     <div className={styles["container"]}>
       <div className={styles["content"]}>
         <AutoSizer>
-          {({ height, width }: { height: number; width: number }) => {
-            console.log(`height`, height);
-            console.log(`width`, width);
-            return (
-              <VirtualizedList
-                // width={800}
-                // height={300}
-                width={width}
-                height={height}
-                rowCount={chats.length}
-                // rowCount={isLoaded ? chats.length : 0}
-                rowHeight={chats.length === 1 ? 150 : 90}
-                rowRenderer={rowRenderer}
-                style={{ outline: "none", padding: "0" }}
-              />
-            );
-          }}
+          {({ height, width }: { height: number; width: number }) => (
+            <VirtualizedList
+              // width={800}
+              // height={300}
+              width={width}
+              height={height}
+              rowCount={chats.length}
+              // rowCount={isLoaded ? chats.length : 0}
+              rowHeight={chats.length === 1 ? 150 : 90}
+              rowRenderer={rowRenderer}
+              style={{ outline: "none", padding: "0" }}
+            />
+          )}
         </AutoSizer>
       </div>
     </div>

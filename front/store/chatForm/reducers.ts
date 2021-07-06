@@ -11,13 +11,13 @@ const defaultState: IChatFormState = {
   isLoading: false,
 };
 
-type IRule<T> = (v: T) => true | string
+type Rule<T> = (v: T) => true | string
 
-const nameRules: IRule<IChatFormState["name"]["value"]>[] = [
+const nameRules: Rule<IChatFormState["name"]["value"]>[] = [
   (v) => !!v || "Min name length is 3!",
 ];
 
-type TValidFunc<T> = (value: T, rules: IRule<T>[]) => false | string
+type TValidFunc<T> = (value: T, rules: Rule<T>[]) => false | string
 const checkValueError: TValidFunc<IChatFormState["name"]["value"]> = (value, rules) => {
   for (const rule of rules) {
     const res = rule(value);

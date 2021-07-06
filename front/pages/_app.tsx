@@ -4,6 +4,7 @@ import {
   AuthManager,
   ToastManager,
   WithBar,
+  Div100vh,
 } from "components/organisms";
 import "../styles/globals.scss";
 import { AppProps } from "next/app";
@@ -15,13 +16,15 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
-      <AppInit />
-      <AuthManager>
-        <WithBar>
-          <Component {...pageProps} />
-        </WithBar>
-      </AuthManager>
-      <ToastManager />
+      <Div100vh>
+        <AppInit />
+        <AuthManager>
+          <WithBar>
+            <Component {...pageProps} />
+          </WithBar>
+        </AuthManager>
+        <ToastManager />
+      </Div100vh>
     </Provider>
   );
 }

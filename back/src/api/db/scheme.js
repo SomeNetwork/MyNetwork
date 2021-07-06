@@ -41,7 +41,11 @@ const MessageModelShema = new Schema(
         },
         authorId: { type: Schema.Types.ObjectId, ref: 'User' },
         conversationId: { type: Schema.Types.ObjectId, ref: 'Conversation' },
-        // conversation: ConversationModelShema,
+        type: {
+            type: String,
+            enum: ['text', 'info'],
+            default: 'text',
+        },
         readed: {
             type: Boolean,
             default: false,
@@ -102,7 +106,7 @@ ConversationModelShema.virtual('lastMessage', {
     // justOne: true,
     options: { sort: { createdAt: -1 }, limit: 1 },
 })
-// FIXME:
+
 ConversationModelShema.virtual('usersId', {
     ref: 'User',
     localField: 'conversationLinks.user',

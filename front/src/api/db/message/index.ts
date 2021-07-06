@@ -1,6 +1,7 @@
 import { IResponse } from "@api/axios";
-import API from "src/api";
+import API from "@api";
 import IMessage, { INewMessageData } from "src/interfaces/Message";
+import { WSEvent } from "src/interfaces/WS";
 
 interface ICreateResponse extends IResponse {
   data: {
@@ -16,19 +17,21 @@ interface IListResponse extends IResponse {
   }
 }
 
-export function create(data: INewMessageData) {
+export function _create(data: INewMessageData) {
   return API.req.post<ICreateResponse>(`/messages/create`, data).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }
   });
 }
+export function create(data: INewMessageData) {
+  const event: WSEvent = { name: "new message create", data }
+  API.WS.emit(event)
+}
 
 
 export function list(config: any) {
   return API.req.post<IListResponse>(`/messages`, { config }).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }

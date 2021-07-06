@@ -34,7 +34,6 @@ export interface IListResponse extends IResponse {
 
 export function create(data: INewConversationData) {
   return API.req.post<ICreateResponse>(`/conversations/create`, data).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }
@@ -44,7 +43,6 @@ export function create(data: INewConversationData) {
 export function read(data: IConversationReadData) {
   const { id } = data;
   return API.req.get<IReadResponse>(`/conversations/${id}`).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }
@@ -53,7 +51,6 @@ export function read(data: IConversationReadData) {
 export function getPrivateIdByUser(data: IUser) {
   const { _id } = data;
   return API.req.get<IGetPrivateIdByUserResponse>(`/conversations/private/${_id}`).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }
@@ -62,7 +59,6 @@ export function getPrivateIdByUser(data: IUser) {
 export function update(oldData: IConversation, newData: IConversation) {
   const { _id: id } = oldData;
   return API.req.post<IUpdateResponse>(`/conversations/update/${id}`, newData).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }
@@ -70,7 +66,6 @@ export function update(oldData: IConversation, newData: IConversation) {
 }
 export function list(config: any) {
   return API.req.post<IListResponse>(`/conversations`, { config }).then((data) => {
-    console.log("data :>> ", data);
     if (data.success) {
       return data.data;
     }

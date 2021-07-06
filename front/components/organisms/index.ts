@@ -18,3 +18,5 @@ import ChatCreateFormComponent from "./Chat/ChatCreateForm";
 export const ChatCreateForm = ChatCreateFormComponent;
 import AppInitComponent from "./AppInit";
 export const AppInit = AppInitComponent;
+import Div100vhComponent from "./Div100vh";
+export const Div100vh = Div100vhComponent;

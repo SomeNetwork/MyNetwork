@@ -1,5 +1,5 @@
 import { Card, NavTab } from "components/atoms";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import styles from "./PopupMenu.module.scss";
 
 export interface IPopupMenuProps {
@@ -17,14 +17,35 @@ const PopupMenu = (props: IPopupMenuProps) => {
     let flag = true;
     const handleClose = () => flag && close();
     if (isOpen) {
-      document.removeEventListener("click", handleClose);
+      // document.removeEventListener("click", handleClose);
+      // console.log("removed", flag);
       document.addEventListener("click", handleClose);
+      console.log("added", flag);
     }
     return () => {
-      flag = false;
       document.removeEventListener("click", handleClose);
+      flag = false;
+      console.log("removed", flag);
     };
   }, [isOpen, close]);
+  useEffect(() => {
+    console.log("mounted");
+    return () => {
+      console.log("unmounted");
+    };
+  }, []);
+  useEffect(() => {
+    console.log("updated tabs");
+  }, [tabs]);
+  useEffect(() => {
+    console.log("updated isOpen");
+  }, [isOpen]);
+  useEffect(() => {
+    console.log("updated close");
+  }, [close]);
+  useEffect(() => {
+    console.log("updated anchorEl");
+  }, [anchorEl]);
   if (isOpen)
     return (
       <Card

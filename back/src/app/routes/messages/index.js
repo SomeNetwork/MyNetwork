@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const DB = require('../../../db/crud')
-const WSManager = require('../../ws')
+const DB = require('../../../api/db/crud')
+const WSManager = require('../../../api/WSManager')
 
 router.get('/:id', (req, res) => {
     // const body = req.body
@@ -20,33 +20,33 @@ router.get('/:id', (req, res) => {
         }
     })
 })
+// Moved to ws event
+// router.post('/create', (req, res) => {
+//     const data = req.body
+//     DB.Messages.create(data)
+//         .then((message) => {
+//             return DB.Conversations.getMembersOfConv(data.conversationId).then(
+//                 (users) =>
+//                     WSManager.emit(
+//                         { name: 'new message created', data: message },
+//                         users
+//                     )
+//             )
+//         })
 
-router.post('/create', (req, res) => {
-    const data = req.body
-    DB.Messages.create(data)
-        .then((message) => {
-            return DB.Conversations.getMembersOfConv(data.conversationId).then(
-                (users) =>
-                    WSManager.emit(
-                        { name: 'new message', data: message },
-                        users
-                    )
-            )
-        })
-
-        .then((message) => {
-            res.send({
-                success: true,
-                data: { message },
-            })
-        })
-        .catch((error) => {
-            res.send({
-                success: false,
-                error: error.message,
-            })
-        })
-})
+//         .then((message) => {
+//             res.send({
+//                 success: true,
+//                 data: { message },
+//             })
+//         })
+//         .catch((error) => {
+//             res.send({
+//                 success: false,
+//                 error: error.message,
+//             })
+//         })
+// })
 
 router.post('', (req, res) => {
     const data = req.body
