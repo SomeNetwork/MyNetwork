@@ -4,7 +4,6 @@ const DB = require('../../../api/db')
 const API = require('../../../api')
 const { v4: uuidv4 } = require('uuid')
 const WSManager = require('../../../api/WSManager')
-const { KeyboardReturnSharp } = require('@material-ui/icons')
 
 router.get('/:id', (req, res) => {
     // const body = req.body
