@@ -12,7 +12,7 @@
 ### Frontend
 
 <!-- - TS -->
-- NextJS (+PropTypes)
+- NextJS (+TS)
 - Redux (+Redux Saga)
 - SCSS
   
